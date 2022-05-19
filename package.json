@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
-    "build": "nx build",
+    "build": "nx build --production",
     "test": "nx test"
   },
   "private": true,
@@ -12,6 +12,7 @@
     "@emotion/react": "11.9.0",
     "@emotion/styled": "11.8.1",
     "core-js": "^3.6.5",
+    "firebase": "^9.8.1",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "regenerator-runtime": "0.13.7",

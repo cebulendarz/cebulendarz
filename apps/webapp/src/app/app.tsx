@@ -1,16 +1,15 @@
 import styled from '@emotion/styled';
-import NxWelcome from './nx-welcome';
 
-const StyledApp = styled.div`
-  // Your style here
+const Layout = styled.div`
+  margin: 32px auto;
+  text-align: center;
+  width: 600px;
 `;
 
-export function App() {
+export const App = () => {
   return (
-    <StyledApp>
-      <NxWelcome title="webapp" />
-    </StyledApp>
+    <Layout>
+      cebulendarz
+    </Layout>
   );
 }
-
-export default App;
