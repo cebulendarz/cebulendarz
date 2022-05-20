@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
 import CssBaseline from '@mui/material/CssBaseline';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {firebaseApp} from './firebase/firebase.app';
 import Button from '@mui/material/Button/Button';
+import {FirebaseContext} from './firebase/firebase.context';
+import {TestFirebaseButton} from './firebase/test-firebase-button';
 
 const Layout = styled.div`
   margin: 32px auto;
@@ -23,13 +26,13 @@ const theme = createTheme({
 export const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <>
-        <CssBaseline />
+      <FirebaseContext.Provider value={firebaseApp}>
+        <CssBaseline/>
         <Layout>
           <div>cebulendarz</div>
-          <div><Button variant="outlined">klikaj mocno</Button></div>
+          <div><TestFirebaseButton /></div>
         </Layout>
-      </>
+      </FirebaseContext.Provider>
     </ThemeProvider>
   );
 }
