@@ -1,4 +1,4 @@
 import React from 'react';
-import type firebase from 'firebase';
+import type {FirebaseApp} from '@firebase/app';
 
-export const FirebaseContext = React.createContext<firebase.app.App | undefined>(undefined);
+export const FirebaseContext = React.createContext<FirebaseApp | undefined>(undefined);

@@ -1,14 +1,12 @@
 import Button from '@mui/material/Button/Button';
-import {useFirebase} from './use-firebase';
+import {doc, getDoc} from 'firebase/firestore/lite';
+import {useFirestore} from './use-firestore';
 
 export const TestFirebaseButton = () => {
-  const firebase = useFirebase();
+  const db = useFirestore();
   const fetchSampleDocument = async () => {
-    const doc = await firebase.firestore()
-      .collection('events')
-      .doc('sample-event')
-      .get();
-    console.log(doc.data());
+    const sampleDocument = await getDoc(doc(db, 'events', 'sample-event'))
+    console.log(sampleDocument.data());
   }
   return <Button onClick={fetchSampleDocument}>
     Klikaj mocno
