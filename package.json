@@ -23,7 +23,6 @@
   "devDependencies": {
     "@emotion/babel-plugin": "11.9.2",
     "@nrwl/cli": "14.0.1",
-    "@nrwl/cypress": "14.0.1",
     "@nrwl/eslint-plugin-nx": "14.0.1",
     "@nrwl/jest": "14.0.1",
     "@nrwl/linter": "14.0.1",
@@ -39,10 +38,8 @@
     "@typescript-eslint/eslint-plugin": "5.18.0",
     "@typescript-eslint/parser": "5.18.0",
     "babel-jest": "27.5.1",
-    "cypress": "9.1.0",
     "eslint": "8.12.0",
     "eslint-config-prettier": "8.1.0",
-    "eslint-plugin-cypress": "2.10.3",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jsx-a11y": "6.5.1",
     "eslint-plugin-react": "7.29.4",
