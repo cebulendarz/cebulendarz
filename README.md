@@ -1,3 +1,3 @@
 # Cebulendarz
 
-![Cebulendarz logo](cebula.png)
+<img src="cebula.png" width="300">
