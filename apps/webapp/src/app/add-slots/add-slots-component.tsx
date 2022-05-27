@@ -35,9 +35,6 @@ export const AddSlotsComponent: FC<AddSlotsComponentProps> = (props) => {
     props.slotChanged({slotId: slotId, timeTo: value});
   }
 
-  console.log(props.slots[0].date);
-  console.log(moment(props.slots[0].date, "DD-MM-YYYY").toDate());
-
   return (
     <>
       {props?.slots?.map(slot =>
@@ -45,7 +42,7 @@ export const AddSlotsComponent: FC<AddSlotsComponentProps> = (props) => {
           <DesktopDatePicker
             label="Data"
             inputFormat="DD-MM-YYYY"
-            value={slot.date ? moment(slot.date, "DD-MM-YYYY").toDate(): ""}
+            value={slot.date ? moment(slot.date, "DD-MM-YYYY").toDate(): null}
             onChange={(value) => {
               if (value) {
                 handleDateChange(slot.id, moment(value).format("DD-MM-YYYY"));
