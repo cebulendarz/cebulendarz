@@ -5,7 +5,7 @@ import {Button, CircularProgress, Link, Snackbar, TextField} from "@mui/material
 import {useFirestore} from "../firebase/use-firestore";
 import {Meeting} from "../meeting/meeting";
 import {onSnapshot, doc, setDoc} from "firebase/firestore";
-import {AddSlotsComponent} from "../add-slots/AddSlotsComponent";
+import {AddSlotsComponent} from "../add-slots/add-slots-component";
 import styled from "@emotion/styled";
 import {v4} from "uuid";
 
