@@ -12,6 +12,7 @@ import {Splash} from "./splash/splash";
 import {MeetingEdit} from "./meeting-add/meeting-edit";
 import {MeetingAdd} from "./meeting-add/meeting-add";
 import {Join} from './join/join';
+import {Booking} from './booking/booking'
 
 const theme = createTheme({
   palette: {
@@ -37,6 +38,7 @@ export const App = () => {
             <Route path="meeting/join">
               <Route path=":inviteId" element={<Join/>}/>
             </Route>
+            <Route path="meeting/:inviteId/booking/:slotId" element={<Booking/>}/>
           </Routes>
         </BrowserRouter>
       </FirebaseContext.Provider>
