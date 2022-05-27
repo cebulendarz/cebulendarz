@@ -12,6 +12,10 @@ const Layout = styled.div`
   width: 600px;
 `;
 
+const SplashLogo = styled.img`
+  width: 150px;
+`;
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -29,8 +33,12 @@ export const App = () => {
       <FirebaseContext.Provider value={firebaseApp}>
         <CssBaseline/>
         <Layout>
-          <div>cebulendarz</div>
-          <div><TestFirebaseButton /></div>
+          <div>
+            <SplashLogo src="assets/cebula.png"/>
+          </div>
+          <div>
+            <TestFirebaseButton/>
+          </div>
         </Layout>
       </FirebaseContext.Provider>
     </ThemeProvider>
