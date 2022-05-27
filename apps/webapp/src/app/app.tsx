@@ -12,9 +12,11 @@ import {Splash} from "./splash/splash";
 import {MeetingEdit} from "./meeting-add/meeting-edit";
 import {MeetingAdd} from "./meeting-add/meeting-add";
 import {Join} from './join/join';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {Booking} from './booking/booking'
+import styled from "@emotion/styled";
+import {Layout} from "./ui-elements/layout";
 
 const theme = createTheme({
   palette: {
@@ -27,23 +29,32 @@ const theme = createTheme({
   },
 });
 
+const LogoWrapper = styled(Layout)`
+  //position: fixed;
+  //top: 8px;
+  //left: 8px;
+`;
+
 export const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <FirebaseContext.Provider value={firebaseApp}>
         <LocalizationProvider dateAdapter={AdapterMoment}>
-        <CssBaseline/>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Splash/>}/>
-            <Route path="meeting/add" element={<MeetingAdd/>}/>
-            <Route path="meeting/edit/:meetingId" element={<MeetingEdit/>}/>
-            <Route path="meeting/join">
-              <Route path=":inviteId" element={<Join/>}/>
-            </Route>
-            <Route path="meeting/:inviteId/booking/:slotId" element={<Booking/>}/>
-          </Routes>
-        </BrowserRouter>
+          <CssBaseline/>
+          <LogoWrapper>
+            <img src="assets/cebula.png" width="100px" />
+          </LogoWrapper>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Splash/>}/>
+              <Route path="meeting/add" element={<MeetingAdd/>}/>
+              <Route path="meeting/edit/:meetingId" element={<MeetingEdit/>}/>
+              <Route path="meeting/join">
+                <Route path=":inviteId" element={<Join/>}/>
+              </Route>
+              <Route path="meeting/:inviteId/booking/:slotId" element={<Booking/>}/>
+            </Routes>
+          </BrowserRouter>
         </LocalizationProvider>
       </FirebaseContext.Provider>
     </ThemeProvider>
