@@ -33,7 +33,7 @@ export const App = () => {
             <Route path="/" element={<Splash/>}/>
             <Route path="meeting/add" element={<MeetingAdd/>}/>
             <Route path="meeting/edit/:meetingId" element={<MeetingEdit/>}/>
-            <Route path="meeting/join" element={<div>do me</div>}/>
+            <Route path="meeting/join/:meetingId" element={<div>do me</div>}/>
           </Routes>
         </BrowserRouter>
       </FirebaseContext.Provider>
