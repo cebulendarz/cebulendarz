@@ -7,6 +7,7 @@ import {Meeting} from "../meeting/meeting";
 import {onSnapshot, doc, setDoc} from "firebase/firestore";
 import {AddSlotsComponent} from "../add-slots/AddSlotsComponent";
 import styled from "@emotion/styled";
+import {v4} from "uuid";
 
 const StyledLink = styled(Link)`
   cursor: pointer;
@@ -34,10 +35,17 @@ export const MeetingEdit = () => {
   useEffect(() => {
     if (meetingId) {
       const meetingDoc = doc(db, 'meetings', meetingId);
-      const unsubscribe = onSnapshot(meetingDoc, (doc: any) => setMeeting({
-        ...doc.data() as Meeting,
-        id: meetingId
-      }))
+      const unsubscribe = onSnapshot(meetingDoc, (doc: any) => {
+        const meeting = {...doc.data() as Meeting};
+        setMeeting({
+          ...meeting,
+          id: meetingId,
+          slots: meeting.slots.map(slot => ({
+            ...slot,
+            id: slot.id ?? v4()
+          }))
+        });
+      })
       return () => unsubscribe();
     } else {
       return undefined;
@@ -64,36 +72,65 @@ export const MeetingEdit = () => {
     {meeting && <>
       <FormRow>
         <StyledTextField label="Nazwa spotkania"
-                   variant="outlined"
-                   value={meeting.title ?? ''}
-                   onChange={change => {
-                     setMeeting({
-                       ...meeting,
-                       title: change.target.value
-                     });
-                     setDirty(true);
-                   }}
+                         variant="outlined"
+                         value={meeting.title ?? ''}
+                         onChange={change => {
+                           setMeeting({
+                             ...meeting,
+                             title: change.target.value
+                           });
+                           setDirty(true);
+                         }}
         />
       </FormRow>
       <FormRow>
         <StyledTextField label="Organizator"
-                   variant="outlined"
-                   value={meeting.organizerName ?? ''}
-                   onChange={change => {
-                     setMeeting({
-                       ...meeting,
-                       organizerName: change.target.value
-                     });
-                     setDirty(true);
-                   }}
+                         variant="outlined"
+                         value={meeting.organizerName ?? ''}
+                         onChange={change => {
+                           setMeeting({
+                             ...meeting,
+                             organizerName: change.target.value
+                           });
+                           setDirty(true);
+                         }}
         />
       </FormRow>
       <FormRow>
         <AddSlotsComponent
           slots={meeting.slots}
-          slotChanged={(event) => console.log(event)}
-          slotRemoved={(id) => console.log('remove slot %o', id)}
+          slotChanged={(event) => {
+            setMeeting({
+              ...meeting,
+              slots: meeting.slots.map(slot => {
+                if (slot.id === event.slotId) {
+                  return {
+                    ...slot,
+                    date: event.date ? event.date : slot.date,
+                    timeFrom: event.timeFrom ? event.timeFrom : slot.timeFrom,
+                    timeTo: event.timeTo ? event.timeTo : slot.timeTo,
+                  }
+                } else {
+                  return slot;
+                }
+              })
+            })
+            setDirty(true);
+          }}
+          slotRemoved={(id) => {
+            setMeeting({
+              ...meeting,
+              slots: meeting.slots.filter(slot => slot.id !== id)
+            });
+            setDirty(true);
+          }}
         />
+        <Button style={{marginTop: '8px'}} onClick={() => {
+          setMeeting({
+            ...meeting,
+            slots: [...meeting.slots || [], {id: v4()}]
+          })
+        }}>Dodaj slot</Button>
       </FormRow>
       <FormRow>
         <StyledLink href={inviteUrl}>{inviteUrl}</StyledLink>

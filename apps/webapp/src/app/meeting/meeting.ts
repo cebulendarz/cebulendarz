@@ -9,7 +9,7 @@ export interface MeetingSlotBooking {
 
 export interface MeetingSlot {
   id: string;
-  date: string;
+  date?: string;
   timeFrom?: string;
   timeTo?: string;
   lock?: MeetingSlotLock;
