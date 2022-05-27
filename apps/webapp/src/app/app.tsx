@@ -12,16 +12,6 @@ import {
 } from "react-router-dom";
 import {Splash} from "./splash/splash";
 
-const Layout = styled.div`
-  margin: 32px auto;
-  text-align: center;
-  width: 600px;
-`;
-
-const SplashLogo = styled.img`
-  width: 150px;
-`;
-
 const theme = createTheme({
   palette: {
     primary: {
