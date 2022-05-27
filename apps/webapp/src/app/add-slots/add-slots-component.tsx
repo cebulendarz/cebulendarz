@@ -19,8 +19,6 @@ export type AddSlotsComponentProps = {
   slotRemoved: (slotId: string) => void
 }
 
-const date = new Date();
-
 export const AddSlotsComponent: FC<AddSlotsComponentProps> = (props) => {
 
   const handleDateChange = (slotId: string, value: string) => {

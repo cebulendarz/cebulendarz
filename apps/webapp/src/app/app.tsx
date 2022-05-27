@@ -30,9 +30,6 @@ const theme = createTheme({
 });
 
 const LogoWrapper = styled(Layout)`
-  //position: fixed;
-  //top: 8px;
-  //left: 8px;
 `;
 
 export const App = () => {

@@ -6,17 +6,18 @@ import {v4} from "uuid";
 import {useFirestore} from "../firebase/use-firestore";
 import {doc, setDoc} from "firebase/firestore";
 import {Meeting} from '../meeting/meeting';
+import {useMount} from "../utils/use-mount";
 
 export const MeetingAdd = () => {
   const navigate = useNavigate();
   const db = useFirestore();
-  useEffect(() => {
+  useMount(() => {
     const id = v4();
     const meetingDoc = doc(db, 'meetings', id);
     const meeting: Meeting = {
       id,
       slots: [],
-      title: 'Nowe spotkanie',
+      title: '',
       inviteId: v4()
     };
     setDoc(meetingDoc, meeting)
@@ -28,7 +29,7 @@ export const MeetingAdd = () => {
         console.error(error);
         alert('Błąd tworzenia wydarzenia');
       })
-  }, []);
+  });
   return <Layout>
     <CircularProgress style={{marginTop: '32px'}}/>
   </Layout>;
