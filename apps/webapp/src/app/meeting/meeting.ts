@@ -9,9 +9,9 @@ export interface MeetingSlotBooking {
 
 export interface MeetingSlot {
   id: string;
-  date?: string;
-  timeFrom?: string;
-  timeTo?: string;
+  date: string;
+  timeFrom: string;
+  timeTo: string;
   lock?: MeetingSlotLock;
   booking?: MeetingSlotBooking;
 }

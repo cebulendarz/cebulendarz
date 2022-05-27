@@ -42,7 +42,10 @@ export const MeetingEdit = () => {
           id: meetingId,
           slots: meeting.slots.map(slot => ({
             ...slot,
-            id: slot.id ?? v4()
+            id: slot.id ?? v4(),
+            date: slot.date ?? '',
+            timeFrom: slot.timeFrom ?? '',
+            timeTo: slot.timeTo ?? ''
           }))
         });
       })
@@ -128,7 +131,7 @@ export const MeetingEdit = () => {
         <Button style={{marginTop: '8px'}} onClick={() => {
           setMeeting({
             ...meeting,
-            slots: [...meeting.slots || [], {id: v4()}]
+            slots: [...meeting.slots || [], {id: v4(), date: '', timeFrom: '', timeTo: ''}]
           })
         }}>Dodaj slot</Button>
       </FormRow>
