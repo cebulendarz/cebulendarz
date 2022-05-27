@@ -22,5 +22,5 @@ export interface Meeting {
   organizerName?: string;
   title?: string;
   description?: string;
-  slots: MeetingSlot[]
+  slots: MeetingSlot[];
 }
