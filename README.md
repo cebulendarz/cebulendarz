@@ -1,3 +1,3 @@
 # Cebulendarz
 
-<img src="cebula.png" width="300">
+<img src="assets/cebula.png" width="300">
