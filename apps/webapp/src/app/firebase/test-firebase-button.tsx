@@ -19,7 +19,10 @@ export const TestFirebaseButton = () => {
           id: v4(),
           date: '2022-05-28',
           timeFrom: '10:00',
-          timeTo: '11:00'
+          timeTo: '11:00',
+          booking: {
+            userName: 'Grzegorz'
+          }
         }
       ]
     };
