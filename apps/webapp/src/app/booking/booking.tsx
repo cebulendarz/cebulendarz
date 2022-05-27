@@ -5,6 +5,7 @@ import {Layout} from '../ui-elements/layout';
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {MeetingSlot} from '../meeting/meeting';
+import {CircularProgress} from '@mui/material';
 
 export const Booking = () => {
   const db = useFirestore();
@@ -35,7 +36,7 @@ export const Booking = () => {
   } else {
     return <Layout>
       <Container maxWidth="sm">
-        <div>Nie ma takiego spotkania</div>
+        <CircularProgress/>
       </Container>
     </Layout>
   }
