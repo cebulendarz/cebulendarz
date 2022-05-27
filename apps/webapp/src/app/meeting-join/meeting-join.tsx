@@ -18,17 +18,14 @@ export const MeetingJoin: FC = () => {
 
   useEffect(() => {
     if (inviteId) {
-      const q = query(collection(db, 'meetings'), where('inviteId', '==', inviteId));
+      const q = query(collection(db, 'meetings'),where('inviteId', '==', inviteId));
       const unsubscribe = onSnapshot(q, (docs: any) => {
         const meetings: Meeting[] = [];
-        console.log(meetings);
-        if(meetings.length > 0){
-          docs.forEach((d: any) => meetings.push(d.data() as Meeting));
-          setMeeting({
-            ...meetings[0] as Meeting,
-            inviteId: inviteId
-          })
-        }
+        docs.forEach((d: any) => meetings.push(d.data() as Meeting));
+        setMeeting({
+          ...meetings[0] as Meeting,
+          inviteId: inviteId
+        })
       });
       return () => unsubscribe();
     } else {
@@ -45,7 +42,7 @@ export const MeetingJoin: FC = () => {
       const collectionReference = doc(db, 'meetings', meeting.id ?? '');
       meeting.slots[slotId].booking = {userName: name};
       setDoc(collectionReference, meeting).then(() => console.log("Zarezerwowałem slot"));
-      // navigate("./booking/" + meeting.slots[slotId].id);
+      navigate("/meeting/" + meeting.inviteId + "/booking/" + meeting.slots[slotId].id, {replace: true});
     }
   }
 
@@ -68,13 +65,13 @@ export const MeetingJoin: FC = () => {
   return (
     <Layout>
       {!meeting && <LoadingScreen/>}
-      {meeting && <>
+      {(meeting && meeting.slots) && <>
         <div>{meeting.title}</div>
         <div>{meeting.description}</div>
         <div>{meeting.organizerName}</div>
         <div>Dostępne terminy</div>
         <div style={{display: 'flex'}}>
-          {meeting.slots?.map((slot, index) => <MeetingSlot date={slot.date} timeFrom={slot.timeFrom}
+          {meeting.slots.map((slot, index) => <MeetingSlot date={slot.date} timeFrom={slot.timeFrom}
                                                            timeTo={slot.timeTo}
                                                            handleLock={() => handleLock(index)}
                                                            handleBooking={(name: string) => handleBookingSlot(name, index)}/>)}

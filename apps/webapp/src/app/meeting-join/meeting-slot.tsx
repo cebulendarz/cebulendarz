@@ -38,7 +38,7 @@ export const MeetingSlot = (slot: MeetingSlotProps) => {
   return (
     <>
       <div onClick={handleSlotClick} style={{
-        background: 'green',
+        background: '#66d24e',
         width: '120px',
         height: '60px',
         margin: '10px',
@@ -46,7 +46,8 @@ export const MeetingSlot = (slot: MeetingSlotProps) => {
         flexDirection: 'column',
         alignItems: 'center',
         borderRadius: '20px',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        cursor: 'pointer'
       }}>
         <div>{slot.timeFrom} - {slot.timeTo}</div>
         <div>{slot.date}</div>
