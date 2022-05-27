@@ -11,12 +11,12 @@ import {
 import {Splash} from "./splash/splash";
 import {MeetingEdit} from "./meeting-add/meeting-edit";
 import {MeetingAdd} from "./meeting-add/meeting-add";
-import {Join} from './join/join';
 import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {Booking} from './booking/booking'
 import styled from "@emotion/styled";
 import {Layout} from "./ui-elements/layout";
+import {MeetingJoin} from './meeting-join/meeting-join';
 
 const theme = createTheme({
   palette: {
@@ -50,7 +50,7 @@ export const App = () => {
               <Route path="meeting/add" element={<MeetingAdd/>}/>
               <Route path="meeting/edit/:meetingId" element={<MeetingEdit/>}/>
               <Route path="meeting/join">
-                <Route path=":inviteId" element={<Join/>}/>
+                <Route path=":inviteId" element={<MeetingJoin/>}/>
               </Route>
               <Route path="meeting/:inviteId/booking/:slotId" element={<Booking/>}/>
             </Routes>
