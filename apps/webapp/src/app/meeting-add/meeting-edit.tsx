@@ -1,6 +1,6 @@
 import {Layout} from "../ui-elements/layout";
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Button, CircularProgress, Link, Snackbar, TextField} from "@mui/material";
 import {useFirestore} from "../firebase/use-firestore";
 import {Meeting} from "../meeting/meeting";
@@ -31,6 +31,7 @@ export const MeetingEdit = () => {
   const [meeting, setMeeting] = useState<Meeting>();
   const [saveSnackbar, setSaveSnackbar] = useState<boolean>(false);
   const [dirty, setDirty] = useState<boolean>(false);
+  const [inSave, setInSave] = useState<boolean>(false);
 
   useEffect(() => {
     if (meetingId) {
@@ -57,18 +58,38 @@ export const MeetingEdit = () => {
 
   const inviteUrl = meeting ? `${appPath}/meeting/join/${meeting.inviteId}` : 'loading...';
 
-  const onSave = () => {
+  const onSave = useCallback(() => {
+    setInSave(true);
     const meetingDoc = doc(db, 'meetings', meetingId ?? '');
     setDoc(meetingDoc, meeting)
-      .then(result => {
+      .then(() => {
         setSaveSnackbar(true);
         setDirty(false);
+        setInSave(false);
       })
       .catch(error => {
         console.error(error);
+        setInSave(false);
         alert('Nie udało się zapisać');
       })
-  };
+  }, [setSaveSnackbar, setDirty, meeting, meetingId]);
+
+  // useEffect(() => {
+  //   if (dirty) {
+  //     const timeout = setTimeout(() => {
+  //       if (dirty) {
+  //         console.log('timer save');
+  //         onSave();
+  //       }
+  //     }, 700);
+  //     return () => {
+  //       console.log('clear timeout')
+  //       clearTimeout(timeout);
+  //     };
+  //   } else {
+  //     return undefined;
+  //   }
+  // }, [dirty, onSave])
 
   return <Layout>
     {!meeting && <LoadingScreen/>}
@@ -132,14 +153,15 @@ export const MeetingEdit = () => {
           setMeeting({
             ...meeting,
             slots: [...meeting.slots || [], {id: v4(), date: '', timeFrom: '', timeTo: ''}]
-          })
+          });
+          setDirty(true);
         }}>Dodaj slot</Button>
       </FormRow>
       <FormRow>
         <StyledLink href={inviteUrl}>{inviteUrl}</StyledLink>
       </FormRow>
       <FormRow>
-        <Button variant="contained" onClick={onSave} disabled={!dirty}>
+        <Button variant="contained" onClick={onSave} disabled={!dirty || inSave}>
           Zapisz
         </Button>
         <Snackbar
