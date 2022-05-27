@@ -12,6 +12,8 @@ import {Splash} from "./splash/splash";
 import {MeetingEdit} from "./meeting-add/meeting-edit";
 import {MeetingAdd} from "./meeting-add/meeting-add";
 import {Join} from './join/join';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import {LocalizationProvider} from "@mui/x-date-pickers";
 import {Booking} from './booking/booking'
 
 const theme = createTheme({
@@ -29,6 +31,7 @@ export const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <FirebaseContext.Provider value={firebaseApp}>
+        <LocalizationProvider dateAdapter={AdapterMoment}>
         <CssBaseline/>
         <BrowserRouter>
           <Routes>
@@ -41,6 +44,7 @@ export const App = () => {
             <Route path="meeting/:inviteId/booking/:slotId" element={<Booking/>}/>
           </Routes>
         </BrowserRouter>
+        </LocalizationProvider>
       </FirebaseContext.Provider>
     </ThemeProvider>
   );

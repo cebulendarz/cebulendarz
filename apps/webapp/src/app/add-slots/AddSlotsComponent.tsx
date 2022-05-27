@@ -2,7 +2,10 @@ import {FC} from "react";
 import {MeetingSlot} from "../meeting/meeting";
 import {TextField} from "@mui/material";
 import Button from "@mui/material/Button/Button";
+import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
 import DeleteIcon from '@mui/icons-material/Delete';
+import {format, parse} from "date-fns";
+import moment from "moment";
 
 export type SlotChangedEvent = {
   slotId: string;
@@ -16,6 +19,8 @@ export type AddSlotsComponentProps = {
   slotChanged: (event: SlotChangedEvent) => void
   slotRemoved: (slotId: string) => void
 }
+
+const date = new Date();
 
 export const AddSlotsComponent: FC<AddSlotsComponentProps> = (props) => {
 
@@ -31,21 +36,32 @@ export const AddSlotsComponent: FC<AddSlotsComponentProps> = (props) => {
     props.slotChanged({slotId: slotId, timeTo: value});
   }
 
+  console.log(props.slots[0].date);
+  console.log(moment(props.slots[0].date, "DD-MM-YYYY").toDate());
+
   return (
     <>
       {props?.slots?.map(slot =>
         <div style={{marginTop: "10px", display: "flex"}} key={slot.id}>
-          <TextField
-            style={{marginRight: "20px", width: "150px"}}
+          <DesktopDatePicker
             label="Data"
-            value={slot.date ?? ""}
-            onChange={(event) => {
-              handleDateChange(slot.id, event.target.value)
+            inputFormat="DD-MM-YYYY"
+            value={slot.date ? moment(slot.date, "DD-MM-YYYY").toDate(): ""}
+            onChange={(value) => {
+              if (value) {
+                handleDateChange(slot.id, moment(value).format("DD-MM-YYYY"));
+              } else {
+                handleDateChange(slot.id, "");
+              }
             }}
-            variant="standard"
+            renderInput={(params) =>
+              <TextField
+                style={{marginRight: "15px", width: "150px"}}
+                variant={"standard"}
+                {...params} />}
           />
           <TextField
-            style={{marginRight: "10px", width: "150px"}}
+            style={{marginRight: "15px", width: "150px"}}
             label="Od"
             value={slot.timeFrom ?? ""}
             onChange={(event) => {
@@ -54,7 +70,7 @@ export const AddSlotsComponent: FC<AddSlotsComponentProps> = (props) => {
             variant="standard"
           />
           <TextField
-            style={{marginRight: "10px", width: "150px"}}
+            style={{marginRight: "15px", width: "150px"}}
             label="Do"
             value={slot.timeTo ?? ""}
             onChange={(event) => {
