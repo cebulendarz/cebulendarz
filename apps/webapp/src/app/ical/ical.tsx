@@ -1,6 +1,7 @@
 import moment from 'moment';
 import {createEvent, DateArray} from 'ics';
 import {useEffect, useState} from 'react';
+import {useQRCode} from 'next-qrcode';
 
 export const Ical = (props: {
   title: string,
@@ -9,12 +10,19 @@ export const Ical = (props: {
   timeFrom: string,
   timeTo: string
 }) => {
-  const [ical, setIcal] = useState<string>();
+  const [ical, setIcal] = useState<string>('');
+  const [raw, setRaw] = useState<string>('');
+
+  function dateArray(date: string, timeFrom: moment.Moment | Date | string | number | (number | string)[] | moment.MomentInputObject = props.timeFrom) {
+    const dateTime = moment(date + 'T' + timeFrom).toArray().splice(0, 5);
+    dateTime[1]++;
+    return dateTime as unknown as DateArray;
+  }
 
   useEffect(() => {
     try {
-      const start = moment(props.date + 'T' + props.timeFrom).toArray().splice(0, 5) as unknown as DateArray;
-      const end = moment(props.date + 'T' + props.timeTo).toArray().splice(0, 5) as unknown as DateArray;
+      const start = dateArray(props.date, props.timeFrom);
+      const end = dateArray(props.date, props.timeTo);
 
       const {error, value: ical} = createEvent({
         title: props.title,
@@ -26,14 +34,31 @@ export const Ical = (props: {
         console.log(error);
       } else {
         setIcal(ical);
+        setRaw(URL.createObjectURL(new Blob([ical], {
+          type: "text/calendar"
+        })));
       }
     } catch (e) {
       console.log(e);
     }
   }, [props]);
 
+  const {Canvas} = useQRCode();
+
   return <div>
-    <pre>{ical}</pre>
+    <a href={raw}>
+      {ical && <Canvas
+        text={ical}
+        options={{
+          type: 'image/jpeg',
+          quality: 0.3,
+          level: 'M',
+          margin: 4,
+          scale: 4,
+          width: 300,
+        }}
+      />}
+    </a>
   </div>
 
 }
