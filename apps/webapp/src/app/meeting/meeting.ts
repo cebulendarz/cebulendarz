@@ -19,6 +19,7 @@ export interface MeetingSlot {
 export interface Meeting {
   id?: string;
   inviteId: string;
+  organizerName?: string;
   title?: string;
   description?: string;
   slots: MeetingSlot[]

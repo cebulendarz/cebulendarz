@@ -7,7 +7,7 @@ import {Meeting} from "../meeting/meeting";
 export const TestFirebaseButton = () => {
   const db = useFirestore();
   const fetchSampleDocument = async () => {
-    // const sampleDocument = await getDoc(doc(db, 'events', 'sample-meeting'))
+    // const sampleDocument = await getDoc(doc(db, 'meetings', 'sample-meeting'))
     // console.log(sampleDocument.data());
 
     const meeting: Meeting = {
@@ -27,7 +27,7 @@ export const TestFirebaseButton = () => {
       ]
     };
 
-    const ref = doc(db, 'events', v4());
+    const ref = doc(db, 'meetings', v4());
     await setDoc(ref, meeting);
   }
   return <Button onClick={fetchSampleDocument}>

@@ -12,7 +12,7 @@ export const MeetingAdd = () => {
   const db = useFirestore();
   useEffect(() => {
     const id = v4();
-    const meetingDoc = doc(db, 'events', id);
+    const meetingDoc = doc(db, 'meetings', id);
     const meeting: Meeting = {
       id,
       slots: [],
