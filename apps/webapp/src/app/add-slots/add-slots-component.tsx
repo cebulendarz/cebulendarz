@@ -41,12 +41,12 @@ export const AddSlotsComponent: FC<AddSlotsComponentProps> = (props) => {
         <div style={{marginTop: "10px", display: "flex"}} key={slot.id}>
           <DesktopDatePicker
             label="Data"
-            mask="__-__-____"
-            inputFormat="DD-MM-YYYY"
-            value={slot.date ? moment(slot.date, "DD-MM-YYYY").toDate(): null}
+            mask="____-__-__"
+            inputFormat="YYYY-MM-DD"
+            value={slot.date ? moment(slot.date, "YYYY-MM-DD").toDate(): null}
             onChange={(value) => {
               if (value) {
-                handleDateChange(slot.id, moment(value).format("DD-MM-YYYY"));
+                handleDateChange(slot.id, moment(value).format("YYYY-MM-DD"));
               } else {
                 handleDateChange(slot.id, "");
               }
