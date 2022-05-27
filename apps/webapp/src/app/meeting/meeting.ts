@@ -1,25 +1,25 @@
-export interface EventSlotLock {
+export interface MeetingSlotLock {
   user: string; // uuid przeglądarki usera?
   expire: Date; // data wygaśnięcia locka (np. założenie + 30min)
 }
 
-export interface EventSlotBooking {
+export interface MeetingSlotBooking {
   userName: string;
 }
 
-export interface EventSlot {
+export interface MeetingSlot {
   id: string;
   date: string;
   timeFrom?: string;
   timeTo?: string;
-  lock?: EventSlotLock;
-  booking?: EventSlotBooking;
+  lock?: MeetingSlotLock;
+  booking?: MeetingSlotBooking;
 }
 
-export interface Event {
+export interface Meeting {
   id?: string;
   inviteId: string;
-  title: string;
+  title?: string;
   description?: string;
-  slots: EventSlot[]
+  slots: MeetingSlot[]
 }

@@ -1,16 +1,16 @@
 import Button from '@mui/material/Button/Button';
-import {doc, setDoc} from 'firebase/firestore/lite';
+import {doc, setDoc} from 'firebase/firestore';
 import {useFirestore} from './use-firestore';
-import {Event} from '../event/event';
 import {v4} from 'uuid';
+import {Meeting} from "../meeting/meeting";
 
 export const TestFirebaseButton = () => {
   const db = useFirestore();
   const fetchSampleDocument = async () => {
-    // const sampleDocument = await getDoc(doc(db, 'events', 'sample-event'))
+    // const sampleDocument = await getDoc(doc(db, 'events', 'sample-meeting'))
     // console.log(sampleDocument.data());
 
-    const event: Event = {
+    const meeting: Meeting = {
       title: 'Konsultacje Consdathon',
       description: 'Zapraszamy!',
       inviteId: v4(),
@@ -28,8 +28,7 @@ export const TestFirebaseButton = () => {
     };
 
     const ref = doc(db, 'events', v4());
-    await setDoc(ref, event);
-
+    await setDoc(ref, meeting);
   }
   return <Button onClick={fetchSampleDocument}>
     Klikaj mocno

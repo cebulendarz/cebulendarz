@@ -1,6 +1,6 @@
 import React from 'react';
 import {FirebaseContext} from './firebase.context';
-import {getFirestore} from 'firebase/firestore/lite';
+import {getFirestore} from 'firebase/firestore';
 
 export const useFirestore = () => {
   const context = React.useContext(FirebaseContext);

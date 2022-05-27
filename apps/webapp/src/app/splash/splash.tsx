@@ -16,7 +16,7 @@ export const Splash = () => <Layout>
     <SplashLogo src="assets/cebula.png"/>
   </div>
   <div>
-    <StyledRouterLink to={'/event/add'}>
+    <StyledRouterLink to={'/meeting/add'}>
       <Button>stwórz wydarzenie</Button>
     </StyledRouterLink>
   </div>
