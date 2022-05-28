@@ -6,13 +6,12 @@ import {v4} from "uuid";
 import {useFirestore} from "../firebase/use-firestore";
 import {doc, setDoc} from "firebase/firestore";
 import {Meeting} from '../meeting/meeting';
-import {useMount} from "../utils/use-mount";
 import {userSession} from "../session/user-session";
 
 export const MeetingAdd = () => {
   const navigate = useNavigate();
   const db = useFirestore();
-  useMount(() => {
+  useEffect(() => {
     const id = v4();
     const meetingDoc = doc(db, 'meetings', id);
     const meeting: Meeting = {
@@ -33,7 +32,7 @@ export const MeetingAdd = () => {
         console.error(error);
         alert('Błąd tworzenia wydarzenia');
       })
-  });
+  }, []);
   return <Layout>
     <CircularProgress style={{marginTop: '32px'}}/>
   </Layout>;
