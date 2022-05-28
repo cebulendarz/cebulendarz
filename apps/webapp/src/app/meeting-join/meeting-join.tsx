@@ -8,6 +8,7 @@ import {Layout} from '../ui-elements/layout';
 import moment from 'moment/moment';
 import styled from "@emotion/styled";
 import {userSession} from "../session/user-session";
+import {useMeetingByInvite} from "../invite/use-meeting-by-invite";
 
 export const MeetingJoin = () => {
   const db = useFirestore();
@@ -52,31 +53,6 @@ export const MeetingJoin = () => {
     {!meeting && <CircularProgress/>}
   </Layout>
 };
-
-function useMeetingByInvite(inviteId?: string) {
-  const [meeting, setMeeting] = useState<Meeting>();
-  const db = useFirestore();
-  useEffect(
-    () => {
-      if (inviteId) {
-        const unsubscribe = onSnapshot(
-          query(collection(db, 'meetings'), where('inviteId', '==', inviteId)),
-          docs => {
-            if (docs.size !== 1) {
-              throw new Error('Expected exactly one document for invite id = ' + inviteId);
-            }
-            setMeeting(docs.docs[0].data() as Meeting);
-          });
-        return () => unsubscribe();
-      } else {
-        return undefined;
-      }
-    },
-    [inviteId]
-  )
-  return meeting;
-}
-
 
 const Panel = styled.div`
   text-align: initial;
