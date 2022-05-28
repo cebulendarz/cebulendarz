@@ -2,11 +2,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {firebaseApp} from './firebase/firebase.app';
 import {FirebaseContext} from './firebase/firebase.context';
+import moment from 'moment';
+import 'moment/locale/pl';
 
 import {
   BrowserRouter,
   Routes,
-  Route, Navigate,
+  Route
 } from "react-router-dom";
 import {Splash} from "./splash/splash";
 import {MeetingEdit} from "./meeting-add/meeting-edit";
@@ -20,6 +22,8 @@ import {MeetingJoin} from './meeting-join/meeting-join';
 import {userSession} from "./session/user-session";
 import {Login} from "./login/login";
 import {useState} from "react";
+
+moment.locale('pl');
 
 const theme = createTheme({
   palette: {
