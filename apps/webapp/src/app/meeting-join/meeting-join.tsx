@@ -13,6 +13,7 @@ export const MeetingJoin = () => {
   const db = useFirestore();
   const {inviteId} = useParams<{ inviteId: string }>();
   const meeting = useMeetingByInvite(inviteId);
+  const navigate = useNavigate();
 
   const reserveSlot = async (slot: MeetingSlot) => {
     if (!meeting || !meeting.id) {
@@ -34,6 +35,7 @@ export const MeetingJoin = () => {
             transaction.update(docRef, {
               [`bookings.${slot.id}.userName`]: userSession.getUserName()
             });
+            navigate("/meeting/" + meeting.inviteId + "/booking/" + slot.id);
           }
         }
       });
