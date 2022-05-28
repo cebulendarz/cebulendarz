@@ -4,11 +4,10 @@ import {useCallback, useEffect, useState} from "react";
 import {Button, CircularProgress, Link, Snackbar, TextField} from "@mui/material";
 import {useFirestore} from "../firebase/use-firestore";
 import {Meeting, MeetingSlot} from "../meeting/meeting";
-import {doc, onSnapshot, setDoc} from "firebase/firestore";
-import {AddSlotsComponent} from "../add-slots/add-slots-component";
+import {doc, type Firestore, onSnapshot, setDoc} from "firebase/firestore";
+import {SlotsEditor} from "./slots-editor";
 import styled from "@emotion/styled";
 import {v4} from "uuid";
-import {type Firestore} from 'firebase/firestore';
 
 // eslint-disable-next-line no-restricted-globals
 const appPath = location.protocol + '//' + location.host;
@@ -151,14 +150,14 @@ const MeetingOrganizerEditor = ({meeting, editor}: { meeting: Meeting, editor: O
   />;
 
 const MeetingSlotsEditor = ({meeting, editor}: { meeting: Meeting, editor: OnMeetingChanged }) =>
-  <AddSlotsComponent
+  <SlotsEditor
     slots={meeting.slots}
     slotChanged={event => editor({
       slots: meeting.slots.map(slot => slot.id === event.slotId ? {
         ...slot,
-        date: event.date ? event.date : slot.date,
-        timeFrom: event.timeFrom ? event.timeFrom : slot.timeFrom,
-        timeTo: event.timeTo ? event.timeTo : slot.timeTo,
+        date: event.date !== undefined ? event.date : slot.date,
+        timeFrom: event.timeFrom !== undefined ? event.timeFrom : slot.timeFrom,
+        timeTo: event.timeTo !== undefined ? event.timeTo : slot.timeTo,
       } : slot)
     })}
     slotRemoved={id => editor({

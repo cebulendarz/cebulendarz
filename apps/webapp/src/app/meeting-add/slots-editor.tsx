@@ -19,7 +19,7 @@ export type AddSlotsComponentProps = {
   slotRemoved: (slotId: string) => void
 }
 
-export const AddSlotsComponent: FC<AddSlotsComponentProps> = (props) => {
+export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
 
   const handleDateChange = (slotId: string, value: string) => {
     props.slotChanged({slotId: slotId, date: value});
@@ -35,12 +35,13 @@ export const AddSlotsComponent: FC<AddSlotsComponentProps> = (props) => {
 
   return (
     <>
-      {props?.slots?.map(slot =>
+      {props?.slots?.map((slot, index) =>
         <div style={{marginTop: "10px", display: "flex"}} key={slot.id}>
           <DesktopDatePicker
             label="Data"
-            mask="____-__-__"
-            inputFormat="YYYY-MM-DD"
+            minDate={moment()}
+            mask="__-__-____"
+            inputFormat="DD-MM-YYYY"
             value={slot.date ? moment(slot.date, "YYYY-MM-DD").toDate(): null}
             onChange={(value) => {
               if (value) {
@@ -73,6 +74,7 @@ export const AddSlotsComponent: FC<AddSlotsComponentProps> = (props) => {
             }}
             variant="standard"
           />
+          {index !== props.slots.length -1 &&
           <div style={{display: "flex", alignItems: "end"}}>
             <Button
               color="primary"
@@ -81,7 +83,7 @@ export const AddSlotsComponent: FC<AddSlotsComponentProps> = (props) => {
               startIcon={<DeleteIcon/>}>
               Usuń
             </Button>
-          </div>
+          </div>}
         </div>)
       }
     </>

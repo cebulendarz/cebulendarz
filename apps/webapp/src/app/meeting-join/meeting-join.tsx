@@ -1,6 +1,6 @@
-import {useEffect, useState} from 'react';
+import {useMemo} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import {collection, doc, onSnapshot, query, updateDoc, where, runTransaction} from "firebase/firestore";
+import {doc, runTransaction} from "firebase/firestore";
 import {useFirestore} from '../firebase/use-firestore';
 import {Meeting, MeetingSlot} from '../meeting/meeting';
 import {CircularProgress} from '@mui/material';
@@ -92,18 +92,22 @@ enum SlotAvailable {
 }
 
 const SlotEntry = styled.div`
-  font-style: italic;
-  cursor: pointer;
+
+  cursor: ${(props: { state: SlotAvailable }) => {
+    return props.state === SlotAvailable.Available ? 'pointer' : 'default';
+  }};
 
   &:hover {
-    color: #b31536;
+    color: ${(props: { state: SlotAvailable }) => {
+      return props.state === SlotAvailable.Available ? '#b31536' : undefined;
+    }};
   }
 
   color: ${(props: { state: SlotAvailable }) => {
     if (props.state === SlotAvailable.Available) {
       return 'green';
     } else if (props.state === SlotAvailable.Booked) {
-      return 'red';
+      return 'lightGray';
     } else {
       return 'gray';
     }
@@ -130,17 +134,93 @@ function isLockExpired(expire: string) {
   return moment(Date.now()).isAfter(expire);
 }
 
-const SlotsRow = ({meeting, reserveSlot}: { meeting: Meeting, reserveSlot: (slot: MeetingSlot) => void }) => <Row>
-  <RowHeader>Dostępne terminy</RowHeader>
-  <div>
-    {meeting.slots.map(
-      slot => <SlotEntry key={slot.id} state={slotState(meeting, slot)} onClick={() => reserveSlot(slot)}>
-        {slot.date}, {slot.timeFrom} - {slot.timeTo}
-        {meeting.locks[slot.id]?.expire && !isLockExpired(meeting.locks[slot.id]?.expire) && ` (rezerwacja wygasa ${meeting.locks[slot.id]?.expire})`}
-        {meeting.bookings[slot.id]?.userName && ` (zarezerwowane przez ${meeting.bookings[slot.id]?.userName})`}
-      </SlotEntry>
-    )}
-  </div>
-</Row>;
+const getDayName = (dayIndex: number) => {
+  switch (dayIndex) {
+    case 1: {
+      return "poniedziałek";
+      break;
+    }
+    case 2: {
+      return "wtorek";
+      break;
+    }
+    case 3: {
+      return "środa";
+      break;
+    }
+    case 4: {
+      return "czwartek";
+      break;
+    }
+    case 5: {
+      return "piątek";
+      break;
+    }
+    case 6: {
+      return "sobota";
+      break;
+    }
+    case 7: {
+      return "niedziela";
+      break;
+    }
+    default: {
+      return "";
+    }
+  }
+}
+
+const SlotsRow = ({meeting, reserveSlot}: { meeting: Meeting, reserveSlot: (slot: MeetingSlot) => void }) => {
+  const slotsMap = useMemo(() => {
+    if (meeting) {
+      return meeting.slots.reduce(
+        (map, slot) => {
+          map[slot.date] = map[slot.date] || [];
+          map[slot.date].push(slot);
+          return map;
+        },
+        {} as { [key: string]: MeetingSlot[] }
+      );
+    } else {
+      return {};
+    }
+  }, [meeting]);
+
+  const sortedDays = useMemo(
+    () => Object.keys(slotsMap).sort((a, b) => a.localeCompare(b)),
+    [slotsMap]
+  );
+
+  return <Row>
+    <RowHeader>Dostępne terminy</RowHeader>
+    <div>
+      {sortedDays.map(day => <SlotDayRow key={day}>
+        <SlotDayRowHeader>
+          {moment(day).format("DD-MM-YYYY")} ({getDayName(moment(day).day())})
+        </SlotDayRowHeader>
+        <SlotDayRowHourSlots>
+          {slotsMap[day].map(
+            slot => <SlotEntry key={slot.id} state={slotState(meeting, slot)} onClick={() => reserveSlot(slot)}>
+              {slot.timeFrom} - {slot.timeTo}
+              {meeting.locks[slot.id]?.expire && !isLockExpired(meeting.locks[slot.id]?.expire) && ` (rezerwacja wygasa ${meeting.locks[slot.id]?.expire})`}
+              {meeting.bookings[slot.id]?.userName && ` (${meeting.bookings[slot.id]?.userName})`}
+            </SlotEntry>
+          )}
+        </SlotDayRowHourSlots>
+      </SlotDayRow>)}
+    </div>
+  </Row>
+};
+
+const SlotDayRow = styled.div`
+  margin-bottom: 8px;
+`;
+
+const SlotDayRowHeader = styled.div`
+  font-weight: 600;
+`;
+
+const SlotDayRowHourSlots = styled.div`
+`;
 
 
