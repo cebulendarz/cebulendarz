@@ -169,6 +169,7 @@ const MeetingOrganizerEditor = ({meeting, editor}: { meeting: Meeting, editor: O
 
 const MeetingSlotsEditor = ({meeting, editor}: { meeting: Meeting, editor: OnMeetingChanged }) =>
   <SlotsEditor
+    meeting={meeting}
     slots={meeting.slots}
     slotChanged={event => editor({
       slots: meeting.slots.map(slot => slot.id === event.slotId ? {
@@ -181,9 +182,26 @@ const MeetingSlotsEditor = ({meeting, editor}: { meeting: Meeting, editor: OnMee
     slotRemoved={id => editor({
       slots: meeting.slots.filter(slot => slot.id !== id)
     })}
+    slotImported={slots => editor({
+      slots: [...filterOutAddPlaceholderSlot(meeting.slots), ...slots.map(slot => ({
+        id: v4(),
+        date: slot.date ?? '',
+        timeFrom: slot.timeFrom ?? '',
+        timeTo: slot.timeTo ?? '',
+      }))]
+    })}
   />;
 
 const MeetingInviteUrl = ({meeting}: { meeting: Meeting }) => {
   const inviteUrl = meeting ? `${appPath}/meeting/join/${meeting.inviteId}` : 'loading...';
   return <StyledLink href={inviteUrl}>{inviteUrl}</StyledLink>;
 };
+
+function filterOutAddPlaceholderSlot(slots: MeetingSlot[]) {
+  const lastSlot = slots[slots.length - 1];
+  if (!lastSlot.date) {
+    return slots.slice(0, slots.length - 1);
+  } else {
+    return slots;
+  }
+}

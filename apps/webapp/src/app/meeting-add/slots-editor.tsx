@@ -1,10 +1,13 @@
 import {FC} from "react";
-import {MeetingSlot} from "../meeting/meeting";
-import {TextField} from "@mui/material";
+import {Meeting, MeetingSlot} from "../meeting/meeting";
+import {TextField, Tooltip} from "@mui/material";
 import Button from "@mui/material/Button/Button";
 import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
 import DeleteIcon from '@mui/icons-material/Delete';
 import moment from "moment";
+import styled from "@emotion/styled";
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import {SlotsImport} from "./slots-import";
 
 export type SlotChangedEvent = {
   slotId: string;
@@ -14,10 +17,16 @@ export type SlotChangedEvent = {
 }
 
 export type AddSlotsComponentProps = {
-  slots: MeetingSlot[],
-  slotChanged: (event: SlotChangedEvent) => void
-  slotRemoved: (slotId: string) => void
+  meeting: Meeting
+  slots: MeetingSlot[];
+  slotChanged: (event: SlotChangedEvent) => void;
+  slotRemoved: (slotId: string) => void;
+  slotImported: (slots: Partial<MeetingSlot>[]) => void;
 }
+
+const FlexFill = styled.div`
+  flex: 1;
+`;
 
 export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
 
@@ -42,7 +51,7 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
             minDate={moment()}
             mask="__-__-____"
             inputFormat="DD-MM-YYYY"
-            value={slot.date ? moment(slot.date, "YYYY-MM-DD").toDate(): null}
+            value={slot.date ? moment(slot.date, "YYYY-MM-DD").toDate() : null}
             onChange={(value) => {
               if (value) {
                 handleDateChange(slot.id, moment(value).format("YYYY-MM-DD"));
@@ -74,18 +83,34 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
             }}
             variant="standard"
           />
-          {index !== props.slots.length -1 &&
-          <div style={{display: "flex", alignItems: "end"}}>
-            <Button
-              color="primary"
-              onClick={() => props.slotRemoved(slot.id)}
-              size="small"
-              startIcon={<DeleteIcon/>}>
-              Usuń
-            </Button>
+          <FlexFill/>
+          {index !== props.slots.length - 1 && <>
+            {props.meeting.bookings[slot.id] && <SlotBooked>
+              <Tooltip title={`Zarezerwowany przez ${props.meeting.bookings[slot.id].userName}`}>
+                <DoDisturbIcon/>
+              </Tooltip>
+            </SlotBooked>}
+            {!props.meeting.bookings[slot.id] && <div style={{display: "flex", alignItems: "end"}}>
+              <Button
+                color="primary"
+                onClick={() => props.slotRemoved(slot.id)}
+                size="small"
+                startIcon={<DeleteIcon/>}>
+                Usuń
+              </Button>
+            </div>}
+          </>}
+          {index === props.slots.length - 1 && <div style={{display: "flex", alignItems: "end"}}>
+            <SlotsImport onImport={props.slotImported}/>
           </div>}
         </div>)
       }
     </div>
   );
 };
+
+const SlotBooked = styled.div`
+  display: flex;
+  align-items: center;
+  color: lightgray;
+`;
