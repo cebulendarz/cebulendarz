@@ -34,7 +34,7 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
   }
 
   return (
-    <>
+    <div>
       {props?.slots?.map((slot, index) =>
         <div style={{marginTop: "10px", display: "flex"}} key={slot.id}>
           <DesktopDatePicker
@@ -86,6 +86,6 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
           </div>}
         </div>)
       }
-    </>
+    </div>
   );
-}
+};

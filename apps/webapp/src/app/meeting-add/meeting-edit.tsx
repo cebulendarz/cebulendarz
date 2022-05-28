@@ -36,8 +36,10 @@ async function saveMeeting(db: Firestore, meeting: Meeting, done: () => void) {
       ...meeting,
       slots: meeting.slots.filter(slot => !!slot.date)
     };
-    await setDoc(doc(db, 'meetings', meetingToSave.id!), meetingToSave)
-    done();
+    if (meetingToSave.id) {
+      await setDoc(doc(db, 'meetings', meetingToSave.id), meetingToSave)
+      done();
+    }
   } catch (error) {
     console.error(error);
     alert('Nie udało się zapisać');
@@ -58,7 +60,7 @@ export const MeetingEdit = () => {
     } else {
       return undefined;
     }
-  }, [meetingId]);
+  }, [db, meetingId]);
 
   const onMeetingChanged = (changed: Partial<Meeting>) => {
     setMeeting(prev => ensureAtLeastOneEmptySlot({
@@ -74,13 +76,13 @@ export const MeetingEdit = () => {
         await saveMeeting(db, meeting, () => done());
       }
     },
-    [meeting]
+    [db, meeting]
   );
 
   useEffect(() => {
     const sub = change$
       .pipe(debounceTime(500))
-      .subscribe((val) => onSave(() => setSaveSnackbar(true)));
+      .subscribe(() => onSave(() => setSaveSnackbar(true)));
     return () => sub.unsubscribe();
   }, [change$, onSave]);
 

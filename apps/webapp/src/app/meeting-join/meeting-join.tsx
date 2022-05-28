@@ -10,6 +10,12 @@ import styled from "@emotion/styled";
 import {userSession} from "../session/user-session";
 import {useMeetingByInvite} from "../invite/use-meeting-by-invite";
 
+enum SlotAvailable {
+  Booked,
+  Locked,
+  Available
+}
+
 export const MeetingJoin = () => {
   const db = useFirestore();
   const {inviteId} = useParams<{ inviteId: string }>();
@@ -86,12 +92,6 @@ const OrganizerRow = ({meeting}: { meeting: Meeting }) => <Row>
   <RowValue>{meeting.organizerName}</RowValue>
 </Row>;
 
-enum SlotAvailable {
-  Booked,
-  Locked,
-  Available
-}
-
 const SlotEntry = styled.div`
 
   cursor: ${(props: { state: SlotAvailable }) => {
@@ -137,37 +137,14 @@ function isLockExpired(expire: string) {
 
 const getDayName = (dayIndex: number) => {
   switch (dayIndex) {
-    case 1: {
-      return "poniedziałek";
-      break;
-    }
-    case 2: {
-      return "wtorek";
-      break;
-    }
-    case 3: {
-      return "środa";
-      break;
-    }
-    case 4: {
-      return "czwartek";
-      break;
-    }
-    case 5: {
-      return "piątek";
-      break;
-    }
-    case 6: {
-      return "sobota";
-      break;
-    }
-    case 0: {
-      return "niedziela";
-      break;
-    }
-    default: {
-      return "";
-    }
+    case 1: return "poniedziałek";
+    case 2: return "wtorek";
+    case 3: return "środa";
+    case 4: return "czwartek";
+    case 5: return "piątek";
+    case 6: return "sobota";
+    case 0: return "niedziela";
+    default: return ""
   }
 }
 

@@ -47,7 +47,9 @@ export const App = () => {
         <LocalizationProvider dateAdapter={AdapterMoment}>
           <CssBaseline/>
           <LogoWrapper>
-            <img src="assets/cebula.png" width="100px"/>
+            <a href="/">
+              <img src="assets/cebula.png" alt="Logo aplikacji" width="100px"/>
+            </a>
           </LogoWrapper>
           {user && <BrowserRouter>
             <Routes>

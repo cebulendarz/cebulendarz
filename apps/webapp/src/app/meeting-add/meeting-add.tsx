@@ -32,7 +32,7 @@ export const MeetingAdd = () => {
         console.error(error);
         alert('Błąd tworzenia wydarzenia');
       })
-  }, []);
+  }, [db, navigate]);
   return <Layout>
     <CircularProgress style={{marginTop: '32px'}}/>
   </Layout>;

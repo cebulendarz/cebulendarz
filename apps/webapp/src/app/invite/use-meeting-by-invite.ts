@@ -24,7 +24,7 @@ export function useMeetingByInvite(inviteId?: string): [Meeting|undefined, strin
         return undefined;
       }
     },
-    [inviteId]
+    [db, inviteId]
   )
   return [meeting, error]
 }
