@@ -3,7 +3,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {doc, runTransaction} from "firebase/firestore";
 import {useFirestore} from '../firebase/use-firestore';
 import {Meeting, MeetingSlot} from '../meeting/meeting';
-import {CircularProgress} from '@mui/material';
+import {Alert, CircularProgress} from '@mui/material';
 import {Layout} from '../ui-elements/layout';
 import moment from 'moment/moment';
 import styled from "@emotion/styled";
@@ -13,7 +13,7 @@ import {useMeetingByInvite} from "../invite/use-meeting-by-invite";
 export const MeetingJoin = () => {
   const db = useFirestore();
   const {inviteId} = useParams<{ inviteId: string }>();
-  const meeting = useMeetingByInvite(inviteId);
+  const [meeting, error] = useMeetingByInvite(inviteId);
   const navigate = useNavigate();
 
   const reserveSlot = async (slot: MeetingSlot) => {
@@ -44,13 +44,14 @@ export const MeetingJoin = () => {
   };
 
   return <Layout>
-    {meeting && <Panel>
+    {error && <Alert severity="error">{error}</Alert>}
+    {!error && meeting && <Panel>
       <TitleRow meeting={meeting}/>
       {meeting.description && <DescriptionRow meeting={meeting}/>}
       <OrganizerRow meeting={meeting}/>
       <SlotsRow meeting={meeting} reserveSlot={reserveSlot}/>
     </Panel>}
-    {!meeting && <CircularProgress/>}
+    {!error && !meeting && <CircularProgress/>}
   </Layout>
 };
 
@@ -160,7 +161,7 @@ const getDayName = (dayIndex: number) => {
       return "sobota";
       break;
     }
-    case 7: {
+    case 0: {
       return "niedziela";
       break;
     }
@@ -222,5 +223,3 @@ const SlotDayRowHeader = styled.div`
 
 const SlotDayRowHourSlots = styled.div`
 `;
-
-
