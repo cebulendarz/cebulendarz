@@ -17,6 +17,9 @@ import {Booking} from './booking/booking'
 import styled from "@emotion/styled";
 import {Layout} from "./ui-elements/layout";
 import {MeetingJoin} from './meeting-join/meeting-join';
+import {userSession} from "./session/user-session";
+import {Login} from "./login/login";
+import {useState} from "react";
 
 const theme = createTheme({
   palette: {
@@ -33,25 +36,25 @@ const LogoWrapper = styled(Layout)`
 `;
 
 export const App = () => {
+  const [user, setUser] = useState(userSession.getUserName());
   return (
     <ThemeProvider theme={theme}>
       <FirebaseContext.Provider value={firebaseApp}>
         <LocalizationProvider dateAdapter={AdapterMoment}>
           <CssBaseline/>
           <LogoWrapper>
-            <img src="assets/cebula.png" width="100px" />
+            <img src="assets/cebula.png" width="100px"/>
           </LogoWrapper>
-          <BrowserRouter>
+          {user && <BrowserRouter>
             <Routes>
               <Route path="/" element={<Splash/>}/>
               <Route path="meeting/add" element={<MeetingAdd/>}/>
               <Route path="meeting/edit/:meetingId" element={<MeetingEdit/>}/>
-              <Route path="meeting/join">
-                <Route path=":inviteId" element={<MeetingJoin/>}/>
-              </Route>
+              <Route path="meeting/join/:inviteId" element={<MeetingJoin/>}/>
               <Route path="meeting/:inviteId/booking/:slotId" element={<Booking/>}/>
             </Routes>
-          </BrowserRouter>
+          </BrowserRouter>}
+          {!user && <Login onLogin={setUser}/>}
         </LocalizationProvider>
       </FirebaseContext.Provider>
     </ThemeProvider>

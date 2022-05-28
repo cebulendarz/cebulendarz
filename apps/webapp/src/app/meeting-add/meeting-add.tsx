@@ -7,6 +7,7 @@ import {useFirestore} from "../firebase/use-firestore";
 import {doc, setDoc} from "firebase/firestore";
 import {Meeting} from '../meeting/meeting';
 import {useMount} from "../utils/use-mount";
+import {userSession} from "../session/user-session";
 
 export const MeetingAdd = () => {
   const navigate = useNavigate();
@@ -18,7 +19,10 @@ export const MeetingAdd = () => {
       id,
       slots: [],
       title: '',
-      inviteId: v4()
+      inviteId: v4(),
+      locks: {},
+      bookings: {},
+      organizerName: userSession.getUserName() ?? ''
     };
     setDoc(meetingDoc, meeting)
       .then(() => {

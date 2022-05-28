@@ -6,13 +6,11 @@ import {useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {Meeting, MeetingSlot} from '../meeting/meeting';
 import {CircularProgress} from '@mui/material';
-import {createEvent, DateArray} from 'ics'
-import moment from 'moment';
 import {Ical} from '../ical/ical';
 
 export const Booking = () => {
   const db = useFirestore();
-  let {inviteId, slotId} = useParams<{ inviteId: string, slotId: string }>();
+  const {inviteId, slotId} = useParams<{ inviteId: string, slotId: string }>();
   const [meeting, setMeeting] = useState<Meeting>();
   const [slot, setSlot] = useState<MeetingSlot>();
 
@@ -35,7 +33,7 @@ export const Booking = () => {
   if (meeting && slot) {
     return <Layout>
       <Container maxWidth="sm">
-        <h1>{slot?.booking?.userName}, jesteśmy umówieni!</h1>
+        <h1>{meeting.bookings[slot.id]?.userName}, jesteśmy umówieni!</h1>
         <h3>Widzimy się {slot.date} o godzinie {slot.timeFrom}</h3>
         <div>dodaj to wydarzenie do kalendarza:</div>
         <Ical title={meeting.title || 'Spotkanie'}
