@@ -1,7 +1,7 @@
 import {Layout} from "../ui-elements/layout";
 import {useParams} from "react-router-dom";
 import {useCallback, useEffect, useState} from "react";
-import {CircularProgress, Link, Snackbar, TextField} from "@mui/material";
+import {Alert, CircularProgress, Link, Snackbar, TextField} from "@mui/material";
 import {useFirestore} from "../firebase/use-firestore";
 import {Meeting, MeetingSlot} from "../meeting/meeting";
 import {doc, type Firestore, onSnapshot, setDoc} from "firebase/firestore";
@@ -14,15 +14,18 @@ import {debounceTime} from "rxjs/operators";
 // eslint-disable-next-line no-restricted-globals
 const appPath = location.protocol + '//' + location.host;
 
-function subscribeToMeetingDocument(db: Firestore, meetingId: string, setMeeting: (meeting: Meeting) => void) {
+function subscribeToMeetingDocument(db: Firestore, meetingId: string, setMeeting: (meeting: Meeting) => void, setError: (error: string) => void) {
   const unsubscribe = onSnapshot(doc(db, 'meetings', meetingId), (doc: any) => {
-    const meeting = {...doc.data() as Meeting};
-    ensureAtLeastOneEmptySlot(meeting);
-    setMeeting({
-      ...meeting,
-      id: meetingId,
-      slots: normalizeSlots(meeting.slots)
-    });
+    if (doc.exists()) {
+      const meeting = {...doc.data() as Meeting};
+      setMeeting(ensureAtLeastOneEmptySlot({
+        ...meeting,
+        id: meetingId,
+        slots: normalizeSlots(meeting.slots)
+      }));
+    } else {
+      setError(`Spotkanie o identyfikatorze "${meetingId}" nie istnieje.`)
+    }
   })
   return () => unsubscribe();
 }
@@ -45,12 +48,13 @@ export const MeetingEdit = () => {
   const db = useFirestore();
   const {meetingId} = useParams<{ meetingId: string }>();
   const [meeting, setMeeting] = useState<Meeting>();
+  const [error, setError] = useState<string>();
   const [saveSnackbar, setSaveSnackbar] = useState<boolean>(false);
   const [change$] = useState(new ReplaySubject());
 
   useEffect(() => {
     if (meetingId) {
-      return subscribeToMeetingDocument(db, meetingId, setMeeting);
+      return subscribeToMeetingDocument(db, meetingId, setMeeting, setError);
     } else {
       return undefined;
     }
@@ -81,8 +85,9 @@ export const MeetingEdit = () => {
   }, [change$, onSave]);
 
   return <Layout>
-    {!meeting && <LoadingScreen/>}
-    {meeting && <>
+    {error && <Alert severity="error">{error}</Alert>}
+    {!meeting && !error && <LoadingScreen/>}
+    {meeting && !error && <>
       <FormRow>
         <MeetingTitleEditor meeting={meeting} editor={onMeetingChanged}/>
       </FormRow>
@@ -132,7 +137,7 @@ const ensureAtLeastOneEmptySlot = (meeting: Meeting): Meeting => {
 
 type OnMeetingChanged = (changed: Partial<Meeting>) => void;
 
-function normalizeSlots(slots: MeetingSlot[]) {
+function normalizeSlots(slots: MeetingSlot[] = []) {
   return slots.map(slot => ({
     ...slot,
     id: slot.id ?? v4(),
