@@ -1,13 +1,15 @@
 import {Layout} from "../ui-elements/layout";
 import {useParams} from "react-router-dom";
 import {useCallback, useEffect, useState} from "react";
-import {Button, CircularProgress, Link, Snackbar, TextField} from "@mui/material";
+import {CircularProgress, Link, Snackbar, TextField} from "@mui/material";
 import {useFirestore} from "../firebase/use-firestore";
 import {Meeting, MeetingSlot} from "../meeting/meeting";
 import {doc, type Firestore, onSnapshot, setDoc} from "firebase/firestore";
 import {SlotsEditor} from "./slots-editor";
 import styled from "@emotion/styled";
 import {v4} from "uuid";
+import {ReplaySubject} from "rxjs";
+import {debounceTime} from "rxjs/operators";
 
 // eslint-disable-next-line no-restricted-globals
 const appPath = location.protocol + '//' + location.host;
@@ -43,8 +45,8 @@ export const MeetingEdit = () => {
   const db = useFirestore();
   const {meetingId} = useParams<{ meetingId: string }>();
   const [meeting, setMeeting] = useState<Meeting>();
-  const [dirty, setDirty] = useState<boolean>(false);
-  const [inSave, setInSave] = useState<boolean>(false);
+  const [saveSnackbar, setSaveSnackbar] = useState<boolean>(false);
+  const [change$] = useState(new ReplaySubject());
 
   useEffect(() => {
     if (meetingId) {
@@ -54,27 +56,29 @@ export const MeetingEdit = () => {
     }
   }, [meetingId]);
 
-  const onSave = useCallback(
-    async (done: () => void) => {
-      if (meeting && meeting.id) {
-        setInSave(true);
-        setDirty(false);
-        await saveMeeting(db, meeting, () => {
-          setInSave(false);
-          done();
-        });
-      }
-    },
-    [setDirty, setInSave, meeting]
-  );
-
   const onMeetingChanged = (changed: Partial<Meeting>) => {
     setMeeting(prev => ensureAtLeastOneEmptySlot({
       ...prev,
       ...changed
     } as Meeting));
-    setDirty(true);
+    change$.next(undefined);
   };
+
+  const onSave = useCallback(
+    async (done: () => void) => {
+      if (meeting && meeting.id) {
+        await saveMeeting(db, meeting, () => done());
+      }
+    },
+    [meeting]
+  );
+
+  useEffect(() => {
+    const sub = change$
+      .pipe(debounceTime(500))
+      .subscribe((val) => onSave(() => setSaveSnackbar(true)));
+    return () => sub.unsubscribe();
+  }, [change$, onSave]);
 
   return <Layout>
     {!meeting && <LoadingScreen/>}
@@ -91,9 +95,16 @@ export const MeetingEdit = () => {
       <FormRow>
         <MeetingInviteUrl meeting={meeting}/>
       </FormRow>
-      <FormRow>
-        <MeetingSaveAction dirty={dirty} inSave={inSave} onSave={onSave}/>
-      </FormRow>
+      <Snackbar
+        open={saveSnackbar}
+        onClose={(event, reason) => {
+          if (reason === 'timeout') {
+            setSaveSnackbar(false)
+          }
+        }}
+        autoHideDuration={1000}
+        message="Zapisano!"
+      />
     </>}
   </Layout>;
 }
@@ -169,22 +180,3 @@ const MeetingInviteUrl = ({meeting}: { meeting: Meeting }) => {
   const inviteUrl = meeting ? `${appPath}/meeting/join/${meeting.inviteId}` : 'loading...';
   return <StyledLink href={inviteUrl}>{inviteUrl}</StyledLink>;
 };
-
-const MeetingSaveAction = ({
-                             onSave,
-                             dirty,
-                             inSave
-                           }: { onSave: (done: () => void) => void, dirty: boolean, inSave: boolean }) => {
-  const [saveSnackbar, setSaveSnackbar] = useState<boolean>(false);
-  return <div>
-    <Button variant="contained" onClick={() => onSave(() => setSaveSnackbar(true))} disabled={!dirty || inSave}>
-      Zapisz
-    </Button>
-    <Snackbar
-      open={saveSnackbar}
-      onClose={() => setSaveSnackbar(false)}
-      autoHideDuration={5000}
-      message="Zapisano!"
-    />
-  </div>;
-}
