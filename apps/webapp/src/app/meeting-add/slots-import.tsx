@@ -53,19 +53,23 @@ export const SlotsImport = ({onImport}: { onImport: (slots: Partial<MeetingSlot>
       <MenuItem disabled={true} onClick={() => menuSelected(ImportAction.Repeatable)}>Generuj cykliczne</MenuItem>
     </Menu>
     <Dialog open={dialogOpen} onClose={() => setDialogAction(null)}>
-      <DialogTitle>Importuj</DialogTitle>
+      <DialogTitle>Dodaj terminy</DialogTitle>
       <DialogContent>
         {dialogAction === ImportAction.Csv && <div>
-          <TextField
-            style={{marginTop: '8px', width: '400px'}}
+          <CsvImportInput
             multiline
             onChange={event => setDataToImport(parseCsv(event.target.value))}
             rows={4}
           />
+          <CsvImportTip>
+            <div>Każda linia zawiera jeden termin w formacie "rok-miesiąc-dzień;godzina od;godzina do".</div>
+            <div>Przykład: 2022-06-30;10:00;10:30</div>
+            <div>Puste i zaczynające się od # linie zostaną zignorowane i nie wpłyną na generowanie terminów.</div>
+          </CsvImportTip>
         </div>}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleImport}>Importuj</Button>
+        <Button onClick={handleImport}>Dodaj terminy</Button>
       </DialogActions>
     </Dialog>
   </>;
@@ -87,3 +91,15 @@ function parseCsv(value: string): Partial<MeetingSlot>[] {
     });
   return slots;
 }
+
+const CsvImportTip = styled.div`
+  margin-top: 6px;
+  font-size: 0.7em;
+  font-weight: 300;
+  font-style: italic;
+  color: gray;
+`;
+
+const CsvImportInput = styled(TextField)`
+  width: 100%;
+`;
