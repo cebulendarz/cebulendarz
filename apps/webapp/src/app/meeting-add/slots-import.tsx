@@ -22,9 +22,11 @@ enum ImportAction {
 export const SlotsImport = ({onImport}: { onImport: (slots: Partial<MeetingSlot>[]) => void }) => {
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(menuAnchorEl);
-  const menuSelected = (action: ImportAction) => {
+  const menuSelected = (action?: ImportAction) => {
     setMenuAnchorEl(null);
-    setDialogAction(action);
+    if (action != undefined) {
+      setDialogAction(action);
+    }
   };
 
   const [dataToImport, setDataToImport] = useState<Partial<MeetingSlot>[]>([]);
@@ -45,7 +47,7 @@ export const SlotsImport = ({onImport}: { onImport: (slots: Partial<MeetingSlot>
     <Menu
       anchorEl={menuAnchorEl}
       open={menuOpen}
-      onClose={menuSelected}
+      onClose={() => menuSelected(undefined)}
     >
       <MenuItem onClick={() => menuSelected(ImportAction.Csv)}>Importuj CSV</MenuItem>
       <MenuItem disabled={true} onClick={() => menuSelected(ImportAction.Repeatable)}>Generuj cykliczne</MenuItem>
