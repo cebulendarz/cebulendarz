@@ -2,6 +2,9 @@ import moment from 'moment';
 import {createEvent, DateArray} from 'ics';
 import {useEffect, useState} from 'react';
 import {useQRCode} from 'next-qrcode';
+import {LoggerFactory} from '@consdata/logger-api';
+
+const log = LoggerFactory.getLogger('Ical');
 
 export const Ical = (props: {
   title: string,
@@ -31,7 +34,7 @@ export const Ical = (props: {
         end: end,
       }) as any;
       if (error) {
-        console.log(error);
+        log.error(error);
       } else {
         setIcal(ical);
         setRaw(URL.createObjectURL(new Blob([ical], {
@@ -39,7 +42,7 @@ export const Ical = (props: {
         })));
       }
     } catch (e) {
-      console.log(e);
+      log.error(`Error while generating ical`, e);
     }
   }, [props]);
 

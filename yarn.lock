@@ -1128,6 +1128,16 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@consdata/logger-api@0.14.0":
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/@consdata/logger-api/-/logger-api-0.14.0.tgz#cf7a11af7cd01a1f27188fb27bd0c3decd4750a1"
+  integrity sha512-BZW5mXTeJTFxJj1QaAEyl00dFBRudTetLgk7tu98H7pzL2QAAJ82uBerySfBYeUO5Er6U/yuixYeazq/UPoZ8A==
+
+"@consdata/logger-console@0.14.0":
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/@consdata/logger-console/-/logger-console-0.14.0.tgz#0ce3518f98f1d7e4b609f73f67dc7bc1527c840d"
+  integrity sha512-quqG6u4qlfXyzg7Z36kKMmmykniu5xfLv3qEfHxe3QW8rCGquPDdXEJBxc9zjZ60k1b0gCQeJP+wA9ptAOXLdA==
+
 "@cypress/webpack-preprocessor@^5.9.1":
   version "5.11.1"
   resolved "https://registry.yarnpkg.com/@cypress/webpack-preprocessor/-/webpack-preprocessor-5.11.1.tgz#697d830e40eab7b63d37981863f6319098e6b78e"
