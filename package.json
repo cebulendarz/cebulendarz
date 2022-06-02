@@ -28,7 +28,7 @@
     "regenerator-runtime": "0.13.9",
     "rxjs": "7.5.5",
     "tslib": "2.4.0",
-    "uuid": "8.3.2"
+    "uuid": "8.3.2",
     "@consdata/logger-api":  "0.14.0",
     "@consdata/logger-console":  "0.14.0"
   },
