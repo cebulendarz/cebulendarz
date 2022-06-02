@@ -7,6 +7,9 @@ import {useFirestore} from "../firebase/use-firestore";
 import {doc, setDoc} from "firebase/firestore";
 import {Meeting} from '../meeting/meeting';
 import {userSession} from "../session/user-session";
+import {LoggerFactory} from '@consdata/logger-api';
+
+const log = LoggerFactory.getLogger('MeetingAdd');
 
 export const MeetingAdd = () => {
   const navigate = useNavigate();
@@ -25,11 +28,11 @@ export const MeetingAdd = () => {
     };
     setDoc(meetingDoc, meeting)
       .then(() => {
-        console.log(`Stworzono wydarzenie: ${meetingDoc.id}`)
-        navigate(`/meeting/edit/${meetingDoc.id}`);
+        log.info(`Stworzono wydarzenie: ${meetingDoc.id}`)
+        navigate(`/meeting/edit/${meetingDoc.id}`, {replace: true});
       })
       .catch(error => {
-        console.error(error);
+        log.error(error);
         alert('Błąd tworzenia wydarzenia');
       })
   }, [db, navigate]);
