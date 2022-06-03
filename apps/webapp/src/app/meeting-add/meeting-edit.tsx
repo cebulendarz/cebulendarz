@@ -23,10 +23,11 @@ function subscribeToMeetingDocument(db: Firestore, meetingId: string, setMeeting
         id: meetingId,
         slots: normalizeSlots(meeting.slots)
       }));
+      document.title = meeting?.title ?? 'Cebulendarz';
     } else {
       setError(`Spotkanie o identyfikatorze "${meetingId}" nie istnieje.`)
     }
-  })
+  });
   return () => unsubscribe();
 }
 

@@ -5,7 +5,6 @@ import {Alert, CircularProgress} from '@mui/material';
 import {Ical} from '../ical/ical';
 import {useMeetingByInvite} from "../invite/use-meeting-by-invite";
 import styled from "@emotion/styled";
-import { useTheme } from '@mui/material/styles';
 import {useFirestore} from "../firebase/use-firestore";
 import {deleteField, doc, updateDoc} from "firebase/firestore";
 
