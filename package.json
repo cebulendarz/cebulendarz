@@ -30,7 +30,7 @@
     "tslib": "2.4.0",
     "uuid": "8.3.2",
     "@consdata/logger-api":  "0.14.0",
-    "@consdata/logger-console":  "0.14.0"
+    "@consdata/logger-console":  "0.15.0"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "11.9.2",
