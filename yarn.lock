@@ -7534,10 +7534,10 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-next-qrcode@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/next-qrcode/-/next-qrcode-2.0.0.tgz#205c541a0428c69d7d368b255b32afb7c4a020d1"
-  integrity sha512-2rPMGeT4raIrJxAxbTVeCj1u23CtbBIHv0pH6T04MQvDIlups5wnmcBKDrnGZ0Y64/wzg9lVDxGCp8aRApqJWQ==
+next-qrcode@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/next-qrcode/-/next-qrcode-2.1.0.tgz#b28b0cef7882a6fae4a5a811cf7ad2b7b2c1271f"
+  integrity sha512-Nkvxgm4j3Nsi9Zaun53sAFJeCtG72k45Zf5mou7OnqBgpI59JwUQ6htGOeU7Za+Z0/+EkmKLqw4L0SQHZoXJQA==
   dependencies:
     qrcode "^1.4.4"
 
