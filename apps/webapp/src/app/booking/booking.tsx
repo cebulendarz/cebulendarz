@@ -1,9 +1,19 @@
 import Container from '@mui/material/Container';
 import {Layout} from '../ui-elements/layout';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {Alert, CircularProgress} from '@mui/material';
 import {Ical} from '../ical/ical';
 import {useMeetingByInvite} from "../invite/use-meeting-by-invite";
+import styled from "@emotion/styled";
+import { useTheme } from '@mui/material/styles';
+import {useFirestore} from "../firebase/use-firestore";
+import {deleteField, doc, updateDoc} from "firebase/firestore";
+
+// TODO: tmp, use types for mui theme https://mui.com/material-ui/customization/theming/#custom-variables
+const CancelBooking = styled.div`
+  color: ${props => (props.theme as any).palette.primary.main};
+  cursor: pointer
+`;
 
 export const Booking = () => {
   const {inviteId, slotId} = useParams<{ inviteId: string, slotId: string }>();
@@ -11,6 +21,16 @@ export const Booking = () => {
   const [meeting, error] = useMeetingByInvite(inviteId);
   const booking = slotId && meeting?.bookings[slotId];
   const slot = slotId && meeting?.slots.find(s => s.id === slotId);
+  const navigate = useNavigate();
+  const db = useFirestore();
+
+  const onBookingCancel = async() => {
+    if (meeting && meeting.id && slotId) {
+      const docRef = doc(db, 'meetings', meeting.id);
+      await updateDoc(docRef, `bookings.${slotId}`, deleteField());
+      navigate(`/meeting/join/${meeting.inviteId}`);
+    }
+  }
 
   if (error) {
     return <Layout>
@@ -27,6 +47,7 @@ export const Booking = () => {
               date={slot.date}
               timeFrom={slot.timeFrom}
               timeTo={slot.timeTo}/>
+        <CancelBooking onClick={() => onBookingCancel()}>Odwołaj</CancelBooking>
       </Container>
     </Layout>
   } else {
