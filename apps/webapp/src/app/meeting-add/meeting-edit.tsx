@@ -17,7 +17,7 @@ import { v4 } from 'uuid';
 import { ReplaySubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DocumentSnapshot } from '@firebase/firestore';
-import {useDocumentTitle} from '../document-title/use-document-title';
+import { useDocumentTitle } from '../document-title/use-document-title';
 
 // eslint-disable-next-line no-restricted-globals
 const appPath = location.protocol + '//' + location.host;
@@ -32,7 +32,7 @@ function subscribeToMeetingDocument(
     doc(db, 'meetings', meetingId),
     (doc: DocumentSnapshot) => {
       if (doc.exists()) {
-        const meeting = {...(doc.data() as Meeting)};
+        const meeting = { ...(doc.data() as Meeting) };
         setMeeting(
           ensureAtLeastOneEmptySlot({
             ...meeting,

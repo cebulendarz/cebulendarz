@@ -1,14 +1,14 @@
 import Container from '@mui/material/Container';
-import {Layout} from '../ui-elements/layout';
-import {useNavigate, useParams} from 'react-router-dom';
-import {Alert, CircularProgress} from '@mui/material';
-import {Ical} from '../ical/ical';
-import {useMeetingByInvite} from '../invite/use-meeting-by-invite';
+import { Layout } from '../ui-elements/layout';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Alert, CircularProgress } from '@mui/material';
+import { Ical } from '../ical/ical';
+import { useMeetingByInvite } from '../invite/use-meeting-by-invite';
 import styled from '@emotion/styled';
-import {useFirestore} from '../firebase/use-firestore';
-import {deleteField, doc, updateDoc} from 'firebase/firestore';
-import {AppTheme} from '../ui-elements/appTheme';
-import {useDocumentTitle} from '../document-title/use-document-title';
+import { useFirestore } from '../firebase/use-firestore';
+import { deleteField, doc, updateDoc } from 'firebase/firestore';
+import { AppTheme } from '../ui-elements/appTheme';
+import { useDocumentTitle } from '../document-title/use-document-title';
 
 const CancelBooking = styled.div`
   color: ${(props) => (props.theme as AppTheme).palette.primary.main};
@@ -16,7 +16,7 @@ const CancelBooking = styled.div`
 `;
 
 export const Booking = () => {
-  const {inviteId, slotId} = useParams<{
+  const { inviteId, slotId } = useParams<{
     inviteId: string;
     slotId: string;
   }>();
@@ -67,7 +67,7 @@ export const Booking = () => {
   } else {
     return (
       <Layout>
-        <CircularProgress/>
+        <CircularProgress />
       </Layout>
     );
   }

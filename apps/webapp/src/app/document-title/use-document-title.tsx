@@ -1,5 +1,5 @@
-import {Meeting} from '../meeting/meeting';
-import {useEffect, useState} from 'react';
+import { Meeting } from '../meeting/meeting';
+import { useEffect, useState } from 'react';
 
 export const useDocumentTitle = (meeting: Meeting | undefined): string => {
   const [meetingTitle, setMeetingTitle] = useState<string>();
@@ -7,4 +7,4 @@ export const useDocumentTitle = (meeting: Meeting | undefined): string => {
     setMeetingTitle(meeting?.title);
   }, [meeting?.title]);
   return meetingTitle || 'Cebulendarz';
-}
+};
