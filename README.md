@@ -20,4 +20,3 @@ TBD
 <p align="center">
   <img src="docs/consdathon.png" width="300">
 </p>
-

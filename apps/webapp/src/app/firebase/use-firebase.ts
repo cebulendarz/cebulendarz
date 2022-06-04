@@ -1,5 +1,5 @@
 import React from 'react';
-import {FirebaseContext} from './firebase.context';
+import { FirebaseContext } from './firebase.context';
 
 export const useFirebase = () => {
   const context = React.useContext(FirebaseContext);
@@ -7,4 +7,4 @@ export const useFirebase = () => {
     throw new Error('useFirebase must be used within a FirebaseContext');
   }
   return context;
-}
+};

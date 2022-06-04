@@ -21,6 +21,6 @@ export interface Meeting {
   title?: string;
   description?: string;
   slots: MeetingSlot[];
-  locks: {[key: string]: MeetingSlotLock};
-  bookings: {[key: string]: MeetingSlotBooking};
+  locks: { [key: string]: MeetingSlotLock };
+  bookings: { [key: string]: MeetingSlotBooking };
 }
