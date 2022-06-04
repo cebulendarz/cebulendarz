@@ -10,6 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: yarn install --frozen-lockfile
+      - run: yarn nx workspace-lint
       - run: yarn nx format:check --all
       - run: yarn nx build --production
         env:
