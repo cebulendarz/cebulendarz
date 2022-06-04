@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols - used by build
+
 export default {
   displayName: 'webapp',
   preset: '../../jest.preset.js',

@@ -9,7 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn install --frozen-lockfile && yarn build
+      - run: yarn install --frozen-lockfile
+      - run: yarn nx workspace-lint
+      - run: yarn nx format:check --all
+      - run: yarn nx lint
+      - run: yarn nx test
+      - run: yarn nx build --production
         env:
           NX_FIREBASE_API_KEY: ${{ secrets.NX_FIREBASE_API_KEY }}
           NX_FIREBASE_AUTH_DOMAIN: ${{ secrets.NX_FIREBASE_AUTH_DOMAIN }}

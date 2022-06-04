@@ -1,6 +1,6 @@
 export interface MeetingSlotLock {
-  user: string; // uuid przeglądarki usera?
-  expire: string; // data wygaśnięcia locka (np. założenie + 30min)
+  user: string; // uuid przeglądarki użytkownika?
+  expire: string; // Data wygaśnięcia locka (np. założenie + 30min)
 }
 
 export interface MeetingSlotBooking {
@@ -21,6 +21,6 @@ export interface Meeting {
   title?: string;
   description?: string;
   slots: MeetingSlot[];
-  locks: {[key: string]: MeetingSlotLock};
-  bookings: {[key: string]: MeetingSlotBooking};
+  locks: { [key: string]: MeetingSlotLock };
+  bookings: { [key: string]: MeetingSlotBooking };
 }
