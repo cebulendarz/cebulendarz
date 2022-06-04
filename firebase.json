@@ -7,9 +7,8 @@
     "site": "cebulendarz",
     "public": "dist/apps/webapp",
     "ignore": [
-      "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "*.js.map"
     ],
     "rewrites": [
       {
