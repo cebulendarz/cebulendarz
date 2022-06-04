@@ -7,8 +7,9 @@ import { Alert, CircularProgress } from '@mui/material';
 import { Layout } from '../ui-elements/layout';
 import moment from 'moment/moment';
 import styled from '@emotion/styled';
-import { userSession } from '../session/user-session';
 import { useMeetingByInvite } from '../invite/use-meeting-by-invite';
+import { useAuthentication } from '../auth/use-authentication';
+import { AuthenticationUser } from '../auth/authentication.state';
 
 enum SlotAvailable {
   Booked,
@@ -21,12 +22,13 @@ export const MeetingJoin = () => {
   const { inviteId } = useParams<{ inviteId: string }>();
   const [meeting, error] = useMeetingByInvite(inviteId);
   const navigate = useNavigate();
+  const { state: auth } = useAuthentication();
 
   const reserveSlot = async (slot: MeetingSlot) => {
     if (!meeting || !meeting.id) {
       return;
     }
-    const state = slotState(meeting, slot);
+    const state = slotState(meeting, slot, auth.user!);
     if (state === SlotAvailable.Available) {
       const docRef = doc(db, 'meetings', meeting.id);
       await runTransaction(db, async (transaction) => {
@@ -40,7 +42,7 @@ export const MeetingJoin = () => {
             alert('Niestety, ktoś już zajął ten slot. Spróbuj z innym :)');
           } else {
             transaction.update(docRef, {
-              [`bookings.${slot.id}.userName`]: userSession.getUserName(),
+              [`bookings.${slot.id}.userName`]: auth.user?.name,
             });
             navigate('/meeting/' + meeting.inviteId + '/booking/' + slot.id);
           }
@@ -123,14 +125,18 @@ const SlotEntry = styled.div`
   }};
 `;
 
-const slotState = (meeting: Meeting, slot: MeetingSlot): SlotAvailable => {
+const slotState = (
+  meeting: Meeting,
+  slot: MeetingSlot,
+  user: AuthenticationUser
+): SlotAvailable => {
   if (meeting.bookings[slot.id]) {
     return SlotAvailable.Booked;
   } else if (!meeting.locks[slot.id]) {
     return SlotAvailable.Available;
   } else {
     const expired = isLockExpired(meeting.locks[slot.id].expire);
-    const owner = meeting.locks[slot.id].user === userSession.getSessionId();
+    const owner = meeting.locks[slot.id].user === user.uuid;
     if (expired || owner) {
       return SlotAvailable.Available;
     } else {
@@ -188,6 +194,8 @@ const SlotsRow = ({
     [slotsMap]
   );
 
+  const { state: auth } = useAuthentication();
+
   return (
     <Row>
       <RowHeader>Dostępne terminy</RowHeader>
@@ -202,7 +210,7 @@ const SlotsRow = ({
               {slotsMap[day].map((slot) => (
                 <SlotEntry
                   key={slot.id}
-                  state={slotState(meeting, slot)}
+                  state={slotState(meeting, slot, auth.user!)}
                   onClick={() => reserveSlot(slot)}
                 >
                   {slot.timeFrom} - {slot.timeTo}
