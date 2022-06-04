@@ -6,14 +6,15 @@ import { v4 } from 'uuid';
 import { useFirestore } from '../firebase/use-firestore';
 import { doc, setDoc } from 'firebase/firestore';
 import { Meeting } from '../meeting/meeting';
-import { userSession } from '../session/user-session';
 import { LoggerFactory } from '@consdata/logger-api';
+import { useAuthentication } from '../auth/use-authentication';
 
 const log = LoggerFactory.getLogger('MeetingAdd');
 
 export const MeetingAdd = () => {
   const navigate = useNavigate();
   const db = useFirestore();
+  const { state: auth } = useAuthentication();
   useEffect(() => {
     const id = v4();
     const meetingDoc = doc(db, 'meetings', id);
@@ -24,7 +25,7 @@ export const MeetingAdd = () => {
       inviteId: v4(),
       locks: {},
       bookings: {},
-      organizerName: userSession.getUserName() ?? '',
+      organizerName: auth.user?.name ?? '',
     };
     setDoc(meetingDoc, meeting)
       .then(() => {
