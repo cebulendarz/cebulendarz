@@ -1,4 +1,4 @@
-import {v4} from "uuid";
+import { v4 } from 'uuid';
 
 class UserSession {
   getSessionId(): string {
@@ -11,7 +11,7 @@ class UserSession {
       return newUuid;
     }
   }
-  getUserName(): string|null {
+  getUserName(): string | null {
     return localStorage.getItem('user-name');
   }
   setUserName(name: string): void {
