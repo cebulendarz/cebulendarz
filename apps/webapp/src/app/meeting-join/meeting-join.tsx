@@ -9,6 +9,7 @@ import moment from 'moment/moment';
 import styled from "@emotion/styled";
 import {userSession} from "../session/user-session";
 import {useMeetingByInvite} from "../invite/use-meeting-by-invite";
+import {useDocumentTitle} from '../document-title/use-document-title';
 
 enum SlotAvailable {
   Booked,
@@ -21,6 +22,7 @@ export const MeetingJoin = () => {
   const {inviteId} = useParams<{ inviteId: string }>();
   const [meeting, error] = useMeetingByInvite(inviteId);
   const navigate = useNavigate();
+  document.title = useDocumentTitle(meeting);
 
   const reserveSlot = async (slot: MeetingSlot) => {
     if (!meeting || !meeting.id) {

@@ -7,6 +7,7 @@ import {useMeetingByInvite} from "../invite/use-meeting-by-invite";
 import styled from "@emotion/styled";
 import {useFirestore} from "../firebase/use-firestore";
 import {deleteField, doc, updateDoc} from "firebase/firestore";
+import {useDocumentTitle} from '../document-title/use-document-title';
 
 // TODO: tmp, use types for mui theme https://mui.com/material-ui/customization/theming/#custom-variables
 const CancelBooking = styled.div`
@@ -22,6 +23,7 @@ export const Booking = () => {
   const slot = slotId && meeting?.slots.find(s => s.id === slotId);
   const navigate = useNavigate();
   const db = useFirestore();
+  document.title = useDocumentTitle(meeting);
 
   const onBookingCancel = async() => {
     if (meeting && meeting.id && slotId) {

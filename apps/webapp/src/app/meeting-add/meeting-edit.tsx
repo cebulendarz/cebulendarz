@@ -10,6 +10,7 @@ import styled from "@emotion/styled";
 import {v4} from "uuid";
 import {ReplaySubject} from "rxjs";
 import {debounceTime} from "rxjs/operators";
+import {useDocumentTitle} from '../document-title/use-document-title';
 
 // eslint-disable-next-line no-restricted-globals
 const appPath = location.protocol + '//' + location.host;
@@ -23,7 +24,6 @@ function subscribeToMeetingDocument(db: Firestore, meetingId: string, setMeeting
         id: meetingId,
         slots: normalizeSlots(meeting.slots)
       }));
-      document.title = meeting?.title ?? 'Cebulendarz';
     } else {
       setError(`Spotkanie o identyfikatorze "${meetingId}" nie istnieje.`)
     }
@@ -54,6 +54,7 @@ export const MeetingEdit = () => {
   const [error, setError] = useState<string>();
   const [saveSnackbar, setSaveSnackbar] = useState<boolean>(false);
   const [change$] = useState(new ReplaySubject());
+  document.title = useDocumentTitle(meeting);
 
   useEffect(() => {
     if (meetingId) {

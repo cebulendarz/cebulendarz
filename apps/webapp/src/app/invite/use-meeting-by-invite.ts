@@ -26,6 +26,5 @@ export function useMeetingByInvite(inviteId?: string): [Meeting|undefined, strin
     },
     [db, inviteId]
   )
-  document.title = meeting?.title ?? 'Cebulendarz';
   return [meeting, error]
 }
