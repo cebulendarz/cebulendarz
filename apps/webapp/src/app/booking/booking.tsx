@@ -5,13 +5,12 @@ import { Alert, CircularProgress } from '@mui/material';
 import { Ical } from '../ical/ical';
 import { useMeetingByInvite } from '../invite/use-meeting-by-invite';
 import styled from '@emotion/styled';
-import { useTheme } from '@mui/material/styles';
 import { useFirestore } from '../firebase/use-firestore';
 import { deleteField, doc, updateDoc } from 'firebase/firestore';
+import { AppTheme } from '../ui-elements/appTheme';
 
-// TODO: tmp, use types for mui theme https://mui.com/material-ui/customization/theming/#custom-variables
 const CancelBooking = styled.div`
-  color: ${(props) => (props.theme as any).palette.primary.main};
+  color: ${(props) => (props.theme as AppTheme).palette.primary.main};
   cursor: pointer;
 `;
 

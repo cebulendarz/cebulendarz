@@ -16,6 +16,7 @@ import styled from '@emotion/styled';
 import { v4 } from 'uuid';
 import { ReplaySubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { DocumentSnapshot } from '@firebase/firestore';
 
 // eslint-disable-next-line no-restricted-globals
 const appPath = location.protocol + '//' + location.host;
@@ -26,20 +27,23 @@ function subscribeToMeetingDocument(
   setMeeting: (meeting: Meeting) => void,
   setError: (error: string) => void
 ) {
-  const unsubscribe = onSnapshot(doc(db, 'meetings', meetingId), (doc: any) => {
-    if (doc.exists()) {
-      const meeting = { ...(doc.data() as Meeting) };
-      setMeeting(
-        ensureAtLeastOneEmptySlot({
-          ...meeting,
-          id: meetingId,
-          slots: normalizeSlots(meeting.slots),
-        })
-      );
-    } else {
-      setError(`Spotkanie o identyfikatorze "${meetingId}" nie istnieje.`);
+  const unsubscribe = onSnapshot(
+    doc(db, 'meetings', meetingId),
+    (doc: DocumentSnapshot) => {
+      if (doc.exists()) {
+        const meeting = { ...(doc.data() as Meeting) };
+        setMeeting(
+          ensureAtLeastOneEmptySlot({
+            ...meeting,
+            id: meetingId,
+            slots: normalizeSlots(meeting.slots),
+          })
+        );
+      } else {
+        setError(`Spotkanie o identyfikatorze "${meetingId}" nie istnieje.`);
+      }
     }
-  });
+  );
   return () => unsubscribe();
 }
 

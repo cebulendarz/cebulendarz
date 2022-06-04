@@ -2,7 +2,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import styled from '@emotion/styled';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem/MenuItem';
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 import Dialog from '@mui/material/Dialog';
 import {
   Button,
@@ -31,11 +31,11 @@ export const SlotsImport = ({
 }: {
   onImport: (slots: Partial<MeetingSlot>[]) => void;
 }) => {
-  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | Element>(null);
   const menuOpen = Boolean(menuAnchorEl);
   const menuSelected = (action?: ImportAction) => {
     setMenuAnchorEl(null);
-    if (action != undefined) {
+    if (action !== undefined) {
       setDialogAction(action);
     }
   };
@@ -54,7 +54,9 @@ export const SlotsImport = ({
       <StyledSettingsIcon
         fontSize="small"
         color="secondary"
-        onClick={(event: any) => setMenuAnchorEl(event.currentTarget)}
+        onClick={(event: MouseEvent<SVGSVGElement>) =>
+          setMenuAnchorEl(event.currentTarget)
+        }
       />
       <Menu
         anchorEl={menuAnchorEl}

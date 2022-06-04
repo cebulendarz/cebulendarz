@@ -16,23 +16,6 @@ export const Ical = (props: {
   const [ical, setIcal] = useState<string>('');
   const [raw, setRaw] = useState<string>('');
 
-  function dateArray(
-    date: string,
-    timeFrom:
-      | moment.Moment
-      | Date
-      | string
-      | number
-      | (number | string)[]
-      | moment.MomentInputObject = props.timeFrom
-  ) {
-    const dateTime = moment(date + 'T' + timeFrom)
-      .toArray()
-      .splice(0, 5);
-    dateTime[1]++;
-    return dateTime as unknown as DateArray;
-  }
-
   useEffect(() => {
     try {
       const start = dateArray(props.date, props.timeFrom);
@@ -43,10 +26,10 @@ export const Ical = (props: {
         description: props.description,
         start: start,
         end: end,
-      }) as any;
+      });
       if (error) {
-        log.error(error);
-      } else {
+        log.error(`Error while generating ical`, error);
+      } else if (ical) {
         setIcal(ical);
         setRaw(
           URL.createObjectURL(
@@ -55,6 +38,8 @@ export const Ical = (props: {
             })
           )
         );
+      } else {
+        log.error(`Empty ical returned from event`);
       }
     } catch (e) {
       log.error(`Error while generating ical`, e);
@@ -83,3 +68,20 @@ export const Ical = (props: {
     </div>
   );
 };
+
+function dateArray(
+  date: string,
+  timeFrom:
+    | moment.Moment
+    | Date
+    | string
+    | number
+    | (number | string)[]
+    | moment.MomentInputObject
+) {
+  const dateTime = moment(date + 'T' + timeFrom)
+    .toArray()
+    .splice(0, 5);
+  dateTime[1]++;
+  return dateTime as unknown as DateArray;
+}
