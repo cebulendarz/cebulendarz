@@ -71,7 +71,7 @@ export const MeetingEdit = () => {
   const [error, setError] = useState<string>();
   const [saveSnackbar, setSaveSnackbar] = useState<boolean>(false);
   const [change$] = useState(new ReplaySubject());
-  document.title = useDocumentTitle(meeting);
+  useDocumentTitle(meeting?.title);
 
   useEffect(() => {
     if (meetingId) {

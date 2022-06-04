@@ -22,7 +22,7 @@ export const MeetingJoin = () => {
   const { inviteId } = useParams<{ inviteId: string }>();
   const [meeting, error] = useMeetingByInvite(inviteId);
   const navigate = useNavigate();
-  document.title = useDocumentTitle(meeting);
+  useDocumentTitle(meeting?.title);
 
   const reserveSlot = async (slot: MeetingSlot) => {
     if (!meeting || !meeting.id) {

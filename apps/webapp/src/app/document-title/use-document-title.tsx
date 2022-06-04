@@ -1,10 +1,13 @@
-import { Meeting } from '../meeting/meeting';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-export const useDocumentTitle = (meeting: Meeting | undefined): string => {
-  const [meetingTitle, setMeetingTitle] = useState<string>();
+export const useDocumentTitle = (title?: string): void => {
   useEffect(() => {
-    setMeetingTitle(meeting?.title);
-  }, [meeting?.title]);
-  return meetingTitle || 'Cebulendarz';
+    setTitleIfChanged(title ?? 'Cebulendarz');
+  }, [title]);
+};
+
+const setTitleIfChanged = (title: string): void => {
+  if (document.title !== title) {
+    document.title = title;
+  }
 };

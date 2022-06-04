@@ -26,7 +26,7 @@ export const Booking = () => {
   const slot = slotId && meeting?.slots.find((s) => s.id === slotId);
   const navigate = useNavigate();
   const db = useFirestore();
-  document.title = useDocumentTitle(meeting);
+  useDocumentTitle(meeting?.title);
 
   const onBookingCancel = async () => {
     if (meeting && meeting.id && slotId) {
