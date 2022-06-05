@@ -1,5 +1,5 @@
 import { AuthenticationContext } from './authencation.context';
-import { FC, ReactNode, useEffect, useReducer } from 'react';
+import { FC, ReactNode, useEffect, useMemo, useReducer } from 'react';
 import { authenticationReducer } from './authentication.reducer';
 import { authenticationInitialState } from './authentication.initial';
 import { LoggerFactory } from '@consdata/logger-api';
@@ -41,13 +41,9 @@ export const AuthenticationProvider: FC<AuthenticationProviderProps> = ({
     });
     return () => unsubscribe();
   }, [auth]);
+  const context = useMemo(() => ({ state, dispatch }), [state, dispatch]);
   return (
-    <AuthenticationContext.Provider
-      value={{
-        state,
-        dispatch,
-      }}
-    >
+    <AuthenticationContext.Provider value={context}>
       {children}
     </AuthenticationContext.Provider>
   );

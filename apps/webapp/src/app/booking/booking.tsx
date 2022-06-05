@@ -7,11 +7,10 @@ import { useMeetingByInvite } from '../invite/use-meeting-by-invite';
 import styled from '@emotion/styled';
 import { useFirestore } from '../firebase/use-firestore';
 import { deleteField, doc, updateDoc } from 'firebase/firestore';
-import { AppTheme } from '../ui-elements/appTheme';
 import { useDocumentTitle } from '../document-title/use-document-title';
 
 const CancelBooking = styled.div`
-  color: ${(props) => (props.theme as AppTheme).palette.primary.main};
+  color: ${({ theme }) => theme.palette.primary.main};
   cursor: pointer;
 `;
 
