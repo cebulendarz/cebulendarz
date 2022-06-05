@@ -2,11 +2,13 @@ import { Layout } from '../ui-elements/layout';
 import { Button, TextField } from '@mui/material';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { userSession } from '../session/user-session';
+import { useAuthentication } from '../auth/use-authentication';
 import { useDocumentTitle } from '../document-title/use-document-title';
+import { v4 } from 'uuid';
 
-export const Login = ({ onLogin }: { onLogin: (user: string) => void }) => {
+export const Login = () => {
   const [name, setName] = useState<string>();
+  const { dispatch: authDispatch } = useAuthentication();
   useDocumentTitle('Witaj ' + (name ?? ''));
   return (
     <Layout>
@@ -22,8 +24,13 @@ export const Login = ({ onLogin }: { onLogin: (user: string) => void }) => {
         <Button
           onClick={() => {
             if (name) {
-              userSession.setUserName(name);
-              onLogin(name);
+              authDispatch({
+                type: 'loggedIn',
+                user: {
+                  name,
+                  uuid: v4(),
+                },
+              });
             } else {
               alert('Nie bądźmy sobie obcy, przedstaw się :)');
             }
