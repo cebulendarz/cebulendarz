@@ -1,5 +1,5 @@
 import { AuthenticationContext } from './authencation.context';
-import { FC, ReactNode, useEffect, useReducer } from 'react';
+import { FC, ReactNode, useEffect, useMemo, useReducer } from 'react';
 import { authenticationReducer } from './authentication.reducer';
 import { authenticationInitialState } from './authentication.initial';
 import { AuthenticationStatus } from './authentication.state';
@@ -43,13 +43,9 @@ export const AuthenticationProvider: FC<AuthenticationProviderProps> = ({
       localStorage.removeItem('user-session-uuid');
     }
   }, [state.user]);
+  const context = useMemo(() => ({ state, dispatch }), [state, dispatch]);
   return (
-    <AuthenticationContext.Provider
-      value={{
-        state,
-        dispatch,
-      }}
-    >
+    <AuthenticationContext.Provider value={context}>
       {children}
     </AuthenticationContext.Provider>
   );
