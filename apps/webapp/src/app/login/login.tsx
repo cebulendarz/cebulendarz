@@ -1,32 +1,17 @@
 import { Layout } from '../ui-elements/layout';
-import { useAuthentication } from '../auth/use-authentication';
-import { v4 } from 'uuid';
 import { LoginEmail } from './login-email';
 import { LoginSlack } from './login-slack';
 import { LoginGoogle } from './login-google';
 import styled from '@emotion/styled';
 
 export const Login = () => {
-  const { dispatch: authDispatch } = useAuthentication();
   return (
     <Layout>
       <Panel>
-        <LoginEmail
-          disabled={true}
-          onCredentials={(email, password) =>
-            authDispatch({
-              type: 'loggedIn',
-              user: {
-                displayName: email,
-                email: email,
-                uuid: v4(),
-              },
-            })
-          }
-        />
+        <LoginEmail />
         <Separator />
-        <LoginGoogle onCredentials={() => {}} />
-        <LoginSlack onCredentials={() => {}} />
+        <LoginGoogle />
+        <LoginSlack />
       </Panel>
     </Layout>
   );
@@ -49,7 +34,7 @@ const Panel = styled.div`
   flex-direction: column;
   align-items: center;
 
-  > *:not(last-child-of) {
+  > *:not(last-child) {
     margin-bottom: 12px;
   }
 `;
