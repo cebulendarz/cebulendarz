@@ -1,46 +1,53 @@
 import { Layout } from '../ui-elements/layout';
-import { Button, TextField } from '@mui/material';
-import styled from '@emotion/styled';
-import { useState } from 'react';
 import { useAuthentication } from '../auth/use-authentication';
 import { v4 } from 'uuid';
+import { LoginEmail } from './login-email';
+import { LoginSlack } from './login-slack';
+import { LoginGoogle } from './login-google';
+import styled from '@emotion/styled';
 
 export const Login = () => {
-  const [name, setName] = useState<string>();
   const { dispatch: authDispatch } = useAuthentication();
   return (
     <Layout>
-      <Row>
-        <TextField
-          autoFocus
-          value={name ?? ''}
-          onChange={(change) => setName(change.target.value)}
-          label={'Imię i nazwisko'}
+      <Panel>
+        <LoginEmail
+          onCredentials={(email, password) =>
+            authDispatch({
+              type: 'loggedIn',
+              user: {
+                name: email,
+                uuid: v4(),
+              },
+            })
+          }
         />
-      </Row>
-      <Row>
-        <Button
-          onClick={() => {
-            if (name) {
-              authDispatch({
-                type: 'loggedIn',
-                user: {
-                  name,
-                  uuid: v4(),
-                },
-              });
-            } else {
-              alert('Nie bądźmy sobie obcy, przedstaw się :)');
-            }
-          }}
-        >
-          Zaloguj się
-        </Button>
-      </Row>
+        <Separator />
+        <LoginGoogle onCredentials={() => {}} />
+        <LoginSlack onCredentials={() => {}} />
+      </Panel>
     </Layout>
   );
 };
 
-const Row = styled.div`
-  margin-top: 16px;
+const Separator = styled.hr`
+  width: 100%;
+  max-width: 400px;
+
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+`;
+
+const Panel = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > *:not(last-child-of) {
+    margin-bottom: 12px;
+  }
 `;
