@@ -10,6 +10,7 @@ import styled from '@emotion/styled';
 import { useMeetingByInvite } from '../invite/use-meeting-by-invite';
 import { useAuthentication } from '../auth/use-authentication';
 import { AuthenticationUser } from '../auth/authentication.state';
+import { useDocumentTitle } from '../document-title/use-document-title';
 
 enum SlotAvailable {
   Booked,
@@ -23,6 +24,7 @@ export const MeetingJoin = () => {
   const [meeting, error] = useMeetingByInvite(inviteId);
   const navigate = useNavigate();
   const { state: auth } = useAuthentication();
+  useDocumentTitle(meeting?.title);
 
   const reserveSlot = async (slot: MeetingSlot) => {
     if (!meeting || !meeting.id) {

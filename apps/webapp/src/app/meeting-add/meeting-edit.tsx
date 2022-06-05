@@ -17,6 +17,7 @@ import { v4 } from 'uuid';
 import { ReplaySubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DocumentSnapshot } from '@firebase/firestore';
+import { useDocumentTitle } from '../document-title/use-document-title';
 
 // eslint-disable-next-line no-restricted-globals
 const appPath = location.protocol + '//' + location.host;
@@ -70,6 +71,7 @@ export const MeetingEdit = () => {
   const [error, setError] = useState<string>();
   const [saveSnackbar, setSaveSnackbar] = useState<boolean>(false);
   const [change$] = useState(new ReplaySubject());
+  useDocumentTitle(meeting?.title);
 
   useEffect(() => {
     if (meetingId) {
