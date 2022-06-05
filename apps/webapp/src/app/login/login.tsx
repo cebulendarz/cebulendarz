@@ -12,6 +12,7 @@ export const Login = () => {
     <Layout>
       <Panel>
         <LoginEmail
+          disabled={true}
           onCredentials={(email, password) =>
             authDispatch({
               type: 'loggedIn',
