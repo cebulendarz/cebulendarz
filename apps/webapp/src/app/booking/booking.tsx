@@ -7,6 +7,7 @@ import { useMeetingByInvite } from '../invite/use-meeting-by-invite';
 import styled from '@emotion/styled';
 import { useFirestore } from '../firebase/use-firestore';
 import { deleteField, doc, updateDoc } from 'firebase/firestore';
+import { useDocumentTitle } from '../document-title/use-document-title';
 
 const CancelBooking = styled.div`
   color: ${({ theme }) => theme.palette.primary.main};
@@ -24,6 +25,7 @@ export const Booking = () => {
   const slot = slotId && meeting?.slots.find((s) => s.id === slotId);
   const navigate = useNavigate();
   const db = useFirestore();
+  useDocumentTitle(meeting?.title);
 
   const onBookingCancel = async () => {
     if (meeting && meeting.id && slotId) {

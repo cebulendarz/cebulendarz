@@ -7,12 +7,14 @@ const StyledRouterLink = styled(RouterLink)`
   text-decoration: none;
 `;
 
-export const Splash = () => (
-  <Layout>
-    <div>
-      <StyledRouterLink to={'/meeting/add'}>
-        <Button>stwórz wydarzenie</Button>
-      </StyledRouterLink>
-    </div>
-  </Layout>
-);
+export const Splash = () => {
+  return (
+    <Layout>
+      <div>
+        <StyledRouterLink to={'/meeting/add'}>
+          <Button>stwórz wydarzenie</Button>
+        </StyledRouterLink>
+      </div>
+    </Layout>
+  );
+};
