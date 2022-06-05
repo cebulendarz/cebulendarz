@@ -3,9 +3,11 @@ import { Button, TextField } from '@mui/material';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { userSession } from '../session/user-session';
+import { useDocumentTitle } from '../document-title/use-document-title';
 
 export const Login = ({ onLogin }: { onLogin: (user: string) => void }) => {
   const [name, setName] = useState<string>();
+  useDocumentTitle('Witaj ' + (name ?? ''));
   return (
     <Layout>
       <Row>
