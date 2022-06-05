@@ -5,4 +5,5 @@ import {
 
 export const authenticationInitialState: AuthenticationState = {
   state: AuthenticationStatus.Pending,
+  user: undefined,
 };

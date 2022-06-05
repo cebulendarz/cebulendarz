@@ -7,7 +7,10 @@ export interface LoginEmailProps {
   onCredentials: (email: string, password: string) => void;
 }
 
-export const LoginEmail: FC<LoginEmailProps> = ({ onCredentials, disabled }) => {
+export const LoginEmail: FC<LoginEmailProps> = ({
+  onCredentials,
+  disabled,
+}) => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   return (

@@ -1,6 +1,6 @@
 import { Button, ButtonProps } from '@mui/material';
 import { FC, ReactNode } from 'react';
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export interface LoginButtonProps extends ButtonProps {
   children?: ReactNode;

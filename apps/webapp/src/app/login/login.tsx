@@ -17,7 +17,8 @@ export const Login = () => {
             authDispatch({
               type: 'loggedIn',
               user: {
-                name: email,
+                displayName: email,
+                email: email,
                 uuid: v4(),
               },
             })

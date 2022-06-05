@@ -25,7 +25,7 @@ export const MeetingAdd = () => {
       inviteId: v4(),
       locks: {},
       bookings: {},
-      organizerName: auth.user?.name ?? '',
+      organizerName: auth.user!.displayName,
     };
     setDoc(meetingDoc, meeting)
       .then(() => {

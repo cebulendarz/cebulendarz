@@ -44,7 +44,7 @@ export const MeetingJoin = () => {
             alert('Niestety, ktoś już zajął ten slot. Spróbuj z innym :)');
           } else {
             transaction.update(docRef, {
-              [`bookings.${slot.id}.userName`]: auth.user?.name,
+              [`bookings.${slot.id}.userName`]: auth.user!.displayName,
             });
             navigate('/meeting/' + meeting.inviteId + '/booking/' + slot.id);
           }

@@ -1,5 +1,6 @@
 import { LoggerFactory, LogLevel } from '@consdata/logger-api';
 import { ConsoleLogAppender } from '@consdata/logger-console';
+import { environment } from './environments/environment';
 
 LoggerFactory.addAppender(ConsoleLogAppender.instance);
-LoggerFactory.setRootLogLevel(LogLevel.INFO);
+LoggerFactory.setRootLogLevel(environment.logger.logLevel);

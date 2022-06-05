@@ -6,6 +6,9 @@ import { Layout } from './ui-elements/layout';
 import { Login } from './login/login';
 import { AppRouting } from './app.routing';
 import { useAuthentication } from './auth/use-authentication';
+import { AuthenticationStatus } from './auth/authentication.state';
+import { CircularProgress } from '@mui/material';
+import { ProfileIcon } from './profile/profile-icon';
 
 const LogoWrapper = styled(Layout)``;
 
@@ -18,12 +21,28 @@ export const App = () => {
           <img src="assets/cebula.png" alt="Logo aplikacji" width="100px" />
         </a>
       </LogoWrapper>
-      {auth.user && (
+      {auth.state === AuthenticationStatus.Pending && (
+        <Layout>
+          <CircularProgress />
+        </Layout>
+      )}
+      {auth.state === AuthenticationStatus.Logged && (
         <BrowserRouter>
           <AppRouting />
         </BrowserRouter>
       )}
-      {!auth.user && <Login />}
+      {auth.state === AuthenticationStatus.NotLogged && <Login />}
+      {auth.state === AuthenticationStatus.Logged && (
+        <ProfileIconWrapper>
+          <ProfileIcon />
+        </ProfileIconWrapper>
+      )}
     </>
   );
 };
+
+const ProfileIconWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  right: 8px;
+`;
