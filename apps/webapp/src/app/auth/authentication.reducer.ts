@@ -24,6 +24,7 @@ export const authenticationReducer: AuthenticationReducer = (state, action) => {
     return {
       ...state,
       state: AuthenticationStatus.NotLogged,
+      user: undefined
     };
   } else {
     return state;
