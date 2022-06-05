@@ -3,13 +3,11 @@ import { Button, TextField } from '@mui/material';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useAuthentication } from '../auth/use-authentication';
-import { useDocumentTitle } from '../document-title/use-document-title';
 import { v4 } from 'uuid';
 
 export const Login = () => {
   const [name, setName] = useState<string>();
   const { dispatch: authDispatch } = useAuthentication();
-  useDocumentTitle('Witaj ' + (name ?? ''));
   return (
     <Layout>
       <Row>
