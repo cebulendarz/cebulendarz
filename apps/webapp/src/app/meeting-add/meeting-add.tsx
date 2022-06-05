@@ -18,6 +18,9 @@ export const MeetingAdd = () => {
   useEffect(() => {
     const id = v4();
     const meetingDoc = doc(db, 'meetings', id);
+    if (!auth.user) {
+      throw new Error(`Can't call without authenticated user`);
+    }
     const meeting: Meeting = {
       id,
       slots: [],
@@ -25,7 +28,7 @@ export const MeetingAdd = () => {
       inviteId: v4(),
       locks: {},
       bookings: {},
-      organizerName: auth.user!.displayName,
+      organizerName: auth.user.displayName,
     };
     setDoc(meetingDoc, meeting)
       .then(() => {
@@ -36,7 +39,7 @@ export const MeetingAdd = () => {
         log.error(error);
         alert('Błąd tworzenia wydarzenia');
       });
-  }, [db, navigate]);
+  }, [db, navigate, auth]);
   return (
     <Layout>
       <CircularProgress style={{ marginTop: '32px' }} />

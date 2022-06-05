@@ -1,4 +1,4 @@
-import { LoggerFactory, LogLevel } from '@consdata/logger-api';
+import { LoggerFactory } from '@consdata/logger-api';
 import { ConsoleLogAppender } from '@consdata/logger-console';
 import { environment } from './environments/environment';
 

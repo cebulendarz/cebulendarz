@@ -2,15 +2,8 @@ import { Button, TextField } from '@mui/material';
 import styled from '@emotion/styled';
 import { FC, useState } from 'react';
 
-export interface LoginEmailProps {
-  disabled?: boolean;
-  onCredentials: (email: string, password: string) => void;
-}
-
-export const LoginEmail: FC<LoginEmailProps> = ({
-  onCredentials,
-  disabled,
-}) => {
+const disabled = true;
+export const LoginEmail: FC = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   return (
@@ -35,7 +28,7 @@ export const LoginEmail: FC<LoginEmailProps> = ({
         disabled={disabled}
         onClick={() => {
           if (email && password) {
-            onCredentials(email, password);
+            alert('Not yet implemented, use firebase auth');
           } else {
             alert('Nie bądźmy sobie obcy, przedstaw się :)');
           }

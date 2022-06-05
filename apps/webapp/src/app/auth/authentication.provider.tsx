@@ -2,8 +2,6 @@ import { AuthenticationContext } from './authencation.context';
 import { FC, ReactNode, useEffect, useReducer } from 'react';
 import { authenticationReducer } from './authentication.reducer';
 import { authenticationInitialState } from './authentication.initial';
-import { AuthenticationStatus } from './authentication.state';
-import { v4 } from 'uuid';
 import { LoggerFactory } from '@consdata/logger-api';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useFirebaseAuthentication } from '../firebase/use-firebase-authentication';
