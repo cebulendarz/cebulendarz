@@ -1,46 +1,91 @@
 import { Button, TextField } from '@mui/material';
 import styled from '@emotion/styled';
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
+import { useFirebaseAuthentication } from '../firebase/use-firebase-authentication';
+import { signInWithEmailAndPassword, AuthError } from 'firebase/auth';
+import { LoggerFactory } from '@consdata/logger-api';
 
-const disabled = true;
+const log = LoggerFactory.getLogger('LoginEmail');
+
 export const LoginEmail: FC = () => {
+  const auth = useFirebaseAuthentication();
+
   const [email, setEmail] = useState<string>();
+  const [emailError, setEmailError] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const [passwordError, setPasswordError] = useState<string>();
+
+  const loginWithEmail = useCallback(async () => {
+    if (!email) {
+      setEmailError('Podaje poprawny adres email');
+    } else {
+      setEmailError(undefined);
+    }
+    if (!password) {
+      setPasswordError('Podaj poprawne hasło');
+    } else {
+      setPasswordError(undefined);
+    }
+    if (email && password) {
+      try {
+        const user = await signInWithEmailAndPassword(auth, email, password);
+        console.log(user);
+      } catch (error) {
+        setEmailError(`Niepoprawne dane logowania`);
+        log.error(`Error while authenticating`, error);
+      }
+    }
+  }, [email, password]);
+
   return (
     <Panel>
-      <StyledTextField
-        disabled={disabled}
-        size="small"
-        autoFocus
-        value={email ?? ''}
-        onChange={(change) => setEmail(change.target.value)}
-        label={'Email'}
-      />
-      <StyledTextField
-        disabled={disabled}
-        size="small"
-        value={password ?? ''}
-        onChange={(change) => setPassword(change.target.value)}
-        type="password"
-        label={'Hasło'}
-      />
-      <Button
-        disabled={disabled}
-        onClick={() => {
-          if (email && password) {
-            alert('Not yet implemented, use firebase auth');
-          } else {
-            alert('Nie bądźmy sobie obcy, przedstaw się :)');
-          }
-        }}
-      >
-        Zaloguj się
-      </Button>
+      <Form>
+        <StyledTextField
+          size="small"
+          autoComplete="username"
+          autoFocus
+          value={email ?? ''}
+          onChange={(change) => setEmail(change.target.value)}
+          label={'Email'}
+          error={Boolean(emailError)}
+          helperText={emailError}
+          onBlur={() => setEmailError(undefined)}
+        />
+        <StyledTextField
+          size="small"
+          autoComplete="current-password"
+          value={password ?? ''}
+          onChange={(change) => setPassword(change.target.value)}
+          type="password"
+          label={'Hasło'}
+          error={Boolean(passwordError)}
+          helperText={passwordError}
+          onBlur={() => setPasswordError(undefined)}
+        />
+      </Form>
+      <div>
+        <Button onClick={loginWithEmail}>zaloguj</Button>
+      </div>
+      <Actions>
+        <Button size="small">zarejestruj się</Button>
+        <Button size="small">odzyskaj hasło</Button>
+      </Actions>
     </Panel>
   );
 };
 
 const Panel = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Actions = styled.div`
+  & > *:not(last-child) {
+    margin-right: 6px;
+  }
+`;
+
+const Form = styled.form`
   display: flex;
   flex-direction: column;
 `;
