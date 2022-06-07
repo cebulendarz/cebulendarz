@@ -28,8 +28,7 @@ export const LoginEmailForm: FC = () => {
     }
     if (email && password) {
       try {
-        const user = await signInWithEmailAndPassword(auth, email, password);
-        console.log(user);
+        await signInWithEmailAndPassword(auth, email, password);
       } catch (error) {
         setEmailError(`Niepoprawne dane logowania`);
         log.error(`Error while authenticating`, error);
@@ -39,7 +38,7 @@ export const LoginEmailForm: FC = () => {
 
   return (
     <Panel>
-      <Form>
+      <Form onSubmit={(e) => e.preventDefault()}>
         <StyledTextField
           size="small"
           autoComplete="username"
