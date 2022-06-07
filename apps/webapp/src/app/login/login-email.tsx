@@ -1,50 +1,50 @@
-import { Button, TextField } from '@mui/material';
+import { LoginEmailForm } from './login-email-form';
+import { Button } from '@mui/material';
 import styled from '@emotion/styled';
-import { FC, useState } from 'react';
+import { useState } from 'react';
+import { LoginEmailRegister } from './login-email-register';
+import { LoginEmailReset } from './login-email-reset';
 
-const disabled = true;
-export const LoginEmail: FC = () => {
-  const [email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
+enum LoginView {
+  Form,
+  Register,
+  Reset,
+}
+
+export const LoginEmail = () => {
+  const [view, setView] = useState<LoginView>(LoginView.Form);
   return (
-    <Panel>
-      <StyledTextField
-        disabled={disabled}
-        size="small"
-        autoFocus
-        value={email ?? ''}
-        onChange={(change) => setEmail(change.target.value)}
-        label={'Email'}
-      />
-      <StyledTextField
-        disabled={disabled}
-        size="small"
-        value={password ?? ''}
-        onChange={(change) => setPassword(change.target.value)}
-        type="password"
-        label={'Hasło'}
-      />
-      <Button
-        disabled={disabled}
-        onClick={() => {
-          if (email && password) {
-            alert('Not yet implemented, use firebase auth');
-          } else {
-            alert('Nie bądźmy sobie obcy, przedstaw się :)');
-          }
-        }}
-      >
-        Zaloguj się
-      </Button>
-    </Panel>
+    <div>
+      {view === LoginView.Form && <LoginEmailForm />}
+      {view === LoginView.Register && <LoginEmailRegister />}
+      {view === LoginView.Reset && <LoginEmailReset />}
+      <Actions>
+        {view === LoginView.Form && (
+          <>
+            <Button size="small" onClick={() => setView(LoginView.Register)}>
+              zarejestruj się
+            </Button>
+            <Button size="small" onClick={() => setView(LoginView.Reset)}>
+              odzyskaj hasło
+            </Button>
+          </>
+        )}
+        {view !== LoginView.Form && (
+          <>
+            <Button size="small" onClick={() => setView(LoginView.Form)}>
+              wróć
+            </Button>{' '}
+          </>
+        )}
+      </Actions>
+    </div>
   );
 };
 
-const Panel = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+const Actions = styled.div`
+  margin-top: 8px;
 
-const StyledTextField = styled(TextField)`
-  margin-bottom: 16px;
+  & > * {
+    margin: 0 6px;
+  }
 `;

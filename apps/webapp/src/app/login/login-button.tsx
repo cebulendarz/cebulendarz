@@ -17,4 +17,5 @@ export const LoginButton: FC<LoginButtonProps> = ({ children, ...props }) => {
 const StyledButton = styled(Button)`
   width: 100%;
   max-width: 200px;
+  height: 40px;
 `;
