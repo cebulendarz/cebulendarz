@@ -24,8 +24,6 @@ export const AuthenticationProvider: FC<AuthenticationProviderProps> = ({
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       log.trace(`Auth state changed [user={}]`, user);
       if (user) {
-        console.log(user);
-        console.log(user.emailVerified);
         dispatch({
           type: 'loggedIn',
           user: {
