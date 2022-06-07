@@ -1,8 +1,8 @@
-import {FC, useCallback} from 'react';
-import {LoginButton} from './login-button';
-import {useFirebaseAuthentication} from '../firebase/use-firebase-authentication';
-import {GoogleAuthProvider, signInWithRedirect} from 'firebase/auth';
-import styled from "@emotion/styled";
+import { FC, useCallback } from 'react';
+import { LoginButton } from './login-button';
+import { useFirebaseAuthentication } from '../firebase/use-firebase-authentication';
+import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
+import styled from '@emotion/styled';
 
 const GoogleLogoImage = styled.img`
   width: 30px;
@@ -15,9 +15,14 @@ export const LoginGoogle: FC = () => {
     const provider = new GoogleAuthProvider();
     await signInWithRedirect(auth, provider);
   }, [auth]);
-  return <LoginButton onClick={loginWithGoogle} startIcon={
-    <GoogleLogoImage src="assets/google-logo.svg"></GoogleLogoImage>
-  }>
-    Google
-  </LoginButton>;
+  return (
+    <LoginButton
+      onClick={loginWithGoogle}
+      startIcon={
+        <GoogleLogoImage src="assets/google-logo.svg"></GoogleLogoImage>
+      }
+    >
+      Google
+    </LoginButton>
+  );
 };

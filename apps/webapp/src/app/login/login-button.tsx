@@ -1,12 +1,12 @@
-import {Button, ButtonProps} from '@mui/material';
-import {FC, ReactNode} from 'react';
+import { Button, ButtonProps } from '@mui/material';
+import { FC, ReactNode } from 'react';
 import styled from '@emotion/styled';
 
 export interface LoginButtonProps extends ButtonProps {
   children?: ReactNode;
 }
 
-export const LoginButton: FC<LoginButtonProps> = ({children, ...props}) => {
+export const LoginButton: FC<LoginButtonProps> = ({ children, ...props }) => {
   return (
     <StyledButton variant="outlined" {...props}>
       {children}
@@ -14,10 +14,8 @@ export const LoginButton: FC<LoginButtonProps> = ({children, ...props}) => {
   );
 };
 
-
 const StyledButton = styled(Button)`
   width: 100%;
   max-width: 200px;
   height: 40px;
 `;
-

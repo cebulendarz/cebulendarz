@@ -1,11 +1,13 @@
-import {FC} from 'react';
-import {LoginButton} from './login-button';
-import styled from "@emotion/styled";
+import { FC } from 'react';
+import { LoginButton } from './login-button';
+import styled from '@emotion/styled';
 
-const LogoWrapper = styled.div<{disabled: boolean}>`
+const LogoWrapper = styled.div<{ disabled: boolean }>`
   position: relative;
   display: flex;
-  ${props => props.disabled && `
+  ${(props) =>
+    props.disabled &&
+    `
      ::after {
         content: '';
         position: absolute;
@@ -24,7 +26,14 @@ const LogoImage = styled.img`
 `;
 
 export const LoginSlack: FC = () => (
-  <LoginButton disabled={true} startIcon={<LogoWrapper disabled={true}><LogoImage src="assets/slack-logo.svg" /></LogoWrapper>}>
+  <LoginButton
+    disabled={true}
+    startIcon={
+      <LogoWrapper disabled={true}>
+        <LogoImage src="assets/slack-logo.svg" />
+      </LogoWrapper>
+    }
+  >
     Slack
   </LoginButton>
 );
