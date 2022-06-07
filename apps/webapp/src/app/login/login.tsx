@@ -39,6 +39,12 @@ const Panel = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 300px;
+  margin: 0 auto;
+
+  & > * {
+    width: 100%;
+  }
 `;
 
 const SocialLogins = styled.div`

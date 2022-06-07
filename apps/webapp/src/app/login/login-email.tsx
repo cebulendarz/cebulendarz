@@ -2,6 +2,7 @@ import { LoginEmailForm } from './login-email-form';
 import { Button } from '@mui/material';
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { LoginEmailRegister } from './login-email-register';
 
 enum LoginView {
   Form,
@@ -14,7 +15,7 @@ export const LoginEmail = () => {
   return (
     <div>
       {view === LoginView.Form && <LoginEmailForm />}
-      {view === LoginView.Register && <div>rejestracja</div>}
+      {view === LoginView.Register && <LoginEmailRegister />}
       {view === LoginView.Reset && <div>odzyskiwanie hasła</div>}
       <Actions>
         {view === LoginView.Form && (
