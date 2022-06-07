@@ -30,7 +30,10 @@ export const MeetingJoin = () => {
     if (!meeting || !meeting.id) {
       return;
     }
-    const state = slotState(meeting, slot, auth.user!);
+    if (!auth.user) {
+      throw new Error(`Can't call without authenticated user`);
+    }
+    const state = slotState(meeting, slot, auth.user);
     if (state === SlotAvailable.Available) {
       const docRef = doc(db, 'meetings', meeting.id);
       await runTransaction(db, async (transaction) => {
@@ -43,8 +46,11 @@ export const MeetingJoin = () => {
           if (existingLock) {
             alert('Niestety, ktoś już zajął ten slot. Spróbuj z innym :)');
           } else {
+            if (!auth.user) {
+              throw new Error(`Can't call without authenticated user`);
+            }
             transaction.update(docRef, {
-              [`bookings.${slot.id}.userName`]: auth.user?.name,
+              [`bookings.${slot.id}.userName`]: auth.user.displayName,
             });
             navigate('/meeting/' + meeting.inviteId + '/booking/' + slot.id);
           }
@@ -212,7 +218,11 @@ const SlotsRow = ({
               {slotsMap[day].map((slot) => (
                 <SlotEntry
                   key={slot.id}
-                  state={slotState(meeting, slot, auth.user!)}
+                  state={
+                    auth.user
+                      ? slotState(meeting, slot, auth.user)
+                      : SlotAvailable.Locked
+                  }
                   onClick={() => reserveSlot(slot)}
                 >
                   {slot.timeFrom} - {slot.timeTo}

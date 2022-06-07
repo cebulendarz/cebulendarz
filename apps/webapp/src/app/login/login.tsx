@@ -1,46 +1,57 @@
 import { Layout } from '../ui-elements/layout';
-import { Button, TextField } from '@mui/material';
+import { LoginSlack } from './login-slack';
+import { LoginGoogle } from './login-google';
 import styled from '@emotion/styled';
-import { useState } from 'react';
-import { useAuthentication } from '../auth/use-authentication';
-import { v4 } from 'uuid';
+import { LoginEmail } from './login-email';
 
 export const Login = () => {
-  const [name, setName] = useState<string>();
-  const { dispatch: authDispatch } = useAuthentication();
   return (
     <Layout>
-      <Row>
-        <TextField
-          autoFocus
-          value={name ?? ''}
-          onChange={(change) => setName(change.target.value)}
-          label={'Imię i nazwisko'}
-        />
-      </Row>
-      <Row>
-        <Button
-          onClick={() => {
-            if (name) {
-              authDispatch({
-                type: 'loggedIn',
-                user: {
-                  name,
-                  uuid: v4(),
-                },
-              });
-            } else {
-              alert('Nie bądźmy sobie obcy, przedstaw się :)');
-            }
-          }}
-        >
-          Zaloguj się
-        </Button>
-      </Row>
+      <Panel>
+        <LoginEmail />
+        <Separator />
+        <SocialLogins>
+          <div>
+            <LoginGoogle />
+          </div>
+          <div>
+            <LoginSlack />
+          </div>
+        </SocialLogins>
+      </Panel>
     </Layout>
   );
 };
 
-const Row = styled.div`
-  margin-top: 16px;
+const Separator = styled.hr`
+  width: 100%;
+  max-width: 400px;
+
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+`;
+
+const Panel = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
+  margin: 0 auto;
+
+  & > * {
+    width: 100%;
+  }
+`;
+
+const SocialLogins = styled.div`
+  display: flex;
+
+  & > * {
+    width: 140px;
+    margin: 0 8px;
+  }
 `;

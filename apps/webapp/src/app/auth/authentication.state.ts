@@ -1,13 +1,14 @@
 export enum AuthenticationStatus {
   Pending = 'Pending',
-  // NotLogged = 'NotLogged',
-  // Logging = 'Logging',
+  NotLogged = 'NotLogged',
   Logged = 'Logged',
 }
 
 export interface AuthenticationUser {
+  displayName: string;
+  email: string;
   uuid: string;
-  name: string;
+  avatarUrl?: string;
 }
 
 export interface AuthenticationState {
