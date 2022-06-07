@@ -3,6 +3,7 @@ import { Button } from '@mui/material';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { LoginEmailRegister } from './login-email-register';
+import { LoginEmailReset } from './login-email-reset';
 
 enum LoginView {
   Form,
@@ -16,7 +17,7 @@ export const LoginEmail = () => {
     <div>
       {view === LoginView.Form && <LoginEmailForm />}
       {view === LoginView.Register && <LoginEmailRegister />}
-      {view === LoginView.Reset && <div>odzyskiwanie hasła</div>}
+      {view === LoginView.Reset && <LoginEmailReset />}
       <Actions>
         {view === LoginView.Form && (
           <>
