@@ -1,8 +1,8 @@
 import { Layout } from '../ui-elements/layout';
-import { LoginEmail } from './login-email';
 import { LoginSlack } from './login-slack';
 import { LoginGoogle } from './login-google';
 import styled from '@emotion/styled';
+import { LoginEmail } from './login-email';
 
 export const Login = () => {
   return (
@@ -10,8 +10,14 @@ export const Login = () => {
       <Panel>
         <LoginEmail />
         <Separator />
-        <LoginGoogle />
-        <LoginSlack />
+        <SocialLogins>
+          <div>
+            <LoginGoogle />
+          </div>
+          <div>
+            <LoginSlack />
+          </div>
+        </SocialLogins>
       </Panel>
     </Layout>
   );
@@ -33,8 +39,13 @@ const Panel = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
 
-  > *:not(last-child) {
-    margin-bottom: 12px;
+const SocialLogins = styled.div`
+  display: flex;
+
+  & > * {
+    width: 140px;
+    margin: 0 8px;
   }
 `;

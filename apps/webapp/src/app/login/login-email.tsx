@@ -1,95 +1,48 @@
-import { Button, TextField } from '@mui/material';
+import { LoginEmailForm } from './login-email-form';
+import { Button } from '@mui/material';
 import styled from '@emotion/styled';
-import { FC, useCallback, useState } from 'react';
-import { useFirebaseAuthentication } from '../firebase/use-firebase-authentication';
-import { signInWithEmailAndPassword, AuthError } from 'firebase/auth';
-import { LoggerFactory } from '@consdata/logger-api';
+import { useState } from 'react';
 
-const log = LoggerFactory.getLogger('LoginEmail');
+enum LoginView {
+  Form,
+  Register,
+  Reset,
+}
 
-export const LoginEmail: FC = () => {
-  const auth = useFirebaseAuthentication();
-
-  const [email, setEmail] = useState<string>();
-  const [emailError, setEmailError] = useState<string>();
-  const [password, setPassword] = useState<string>();
-  const [passwordError, setPasswordError] = useState<string>();
-
-  const loginWithEmail = useCallback(async () => {
-    if (!email) {
-      setEmailError('Podaje poprawny adres email');
-    } else {
-      setEmailError(undefined);
-    }
-    if (!password) {
-      setPasswordError('Podaj poprawne hasło');
-    } else {
-      setPasswordError(undefined);
-    }
-    if (email && password) {
-      try {
-        const user = await signInWithEmailAndPassword(auth, email, password);
-        console.log(user);
-      } catch (error) {
-        setEmailError(`Niepoprawne dane logowania`);
-        log.error(`Error while authenticating`, error);
-      }
-    }
-  }, [email, password]);
-
+export const LoginEmail = () => {
+  const [view, setView] = useState<LoginView>(LoginView.Form);
   return (
-    <Panel>
-      <Form>
-        <StyledTextField
-          size="small"
-          autoComplete="username"
-          autoFocus
-          value={email ?? ''}
-          onChange={(change) => setEmail(change.target.value)}
-          label={'Email'}
-          error={Boolean(emailError)}
-          helperText={emailError}
-          onBlur={() => setEmailError(undefined)}
-        />
-        <StyledTextField
-          size="small"
-          autoComplete="current-password"
-          value={password ?? ''}
-          onChange={(change) => setPassword(change.target.value)}
-          type="password"
-          label={'Hasło'}
-          error={Boolean(passwordError)}
-          helperText={passwordError}
-          onBlur={() => setPasswordError(undefined)}
-        />
-      </Form>
-      <div>
-        <Button onClick={loginWithEmail}>zaloguj</Button>
-      </div>
+    <div>
+      {view === LoginView.Form && <LoginEmailForm />}
+      {view === LoginView.Register && <div>rejestracja</div>}
+      {view === LoginView.Reset && <div>odzyskiwanie hasła</div>}
       <Actions>
-        <Button size="small">zarejestruj się</Button>
-        <Button size="small">odzyskaj hasło</Button>
+        {view === LoginView.Form && (
+          <>
+            <Button size="small" onClick={() => setView(LoginView.Register)}>
+              zarejestruj się
+            </Button>
+            <Button size="small" onClick={() => setView(LoginView.Reset)}>
+              odzyskaj hasło
+            </Button>
+          </>
+        )}
+        {view !== LoginView.Form && (
+          <>
+            <Button size="small" onClick={() => setView(LoginView.Form)}>
+              wróć
+            </Button>{' '}
+          </>
+        )}
       </Actions>
-    </Panel>
+    </div>
   );
 };
 
-const Panel = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 const Actions = styled.div`
-  & > *:not(last-child) {
-    margin-right: 6px;
+  margin-top: 8px;
+
+  & > * {
+    margin: 0 6px;
   }
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledTextField = styled(TextField)`
-  margin-bottom: 16px;
 `;
