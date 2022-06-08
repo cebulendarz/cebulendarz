@@ -2,5 +2,6 @@
   "version": 2,
   "projects": {
     "webapp": "apps/webapp"
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }
