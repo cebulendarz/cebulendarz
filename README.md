@@ -1,7 +1,7 @@
 <h1 align="center">Cebulendarz - Twój prywatny asystent.</h1>
 
 <p align="center">
-  <img src="apps/webapp/src/assets/cebula.png" width="100" alt="Logo aplikacji">
+  <img src="docs/cebula.png" width="100" alt="Logo aplikacji">
   <br>
   <i>Cebulendarz pozwala łatwo planować spotkania dla grupy osób. Jeśli musisz ustalić terminy spotkania z kilkoma osobami, Cebulendarz zrobi to za Ciebie. Oznacz, kiedy jesteś dostępny i wyślij jedno zaproszenie do wszystkich. Każdy uczestnik będzie mógł wybrać najbardziej odpowiadający mu termin bez zbędnej organizacji i pilnowania.</i>
   <br>
