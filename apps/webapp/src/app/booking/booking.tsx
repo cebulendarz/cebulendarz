@@ -1,7 +1,8 @@
 import Container from '@mui/material/Container';
 import { Layout } from '../ui-elements/layout';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Alert, CircularProgress } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Ical } from '../ical/ical';
 import { useMeetingByInvite } from '../invite/use-meeting-by-invite';
 import styled from '@emotion/styled';

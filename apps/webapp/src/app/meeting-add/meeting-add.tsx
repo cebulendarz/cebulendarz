@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../ui-elements/layout';
-import { CircularProgress } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useEffect } from 'react';
 import { v4 } from 'uuid';
 import { useFirestore } from '../firebase/use-firestore';

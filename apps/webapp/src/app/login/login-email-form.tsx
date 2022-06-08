@@ -1,4 +1,5 @@
-import { Button, TextField } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
 import { FC, useCallback, useState } from 'react';
 import { useFirebaseAuthentication } from '../firebase/use-firebase-authentication';

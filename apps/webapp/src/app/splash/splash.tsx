@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Layout } from '../ui-elements/layout';
 import { Link as RouterLink } from 'react-router-dom';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 
 const StyledRouterLink = styled(RouterLink)`
   text-decoration: none;
