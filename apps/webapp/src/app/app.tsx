@@ -18,7 +18,7 @@ export const App = () => {
     <>
       <LogoWrapper>
         <a href="/">
-          <img src="assets/cebula.png" alt="Logo aplikacji" width="100px" />
+          <img src="assets/cebula.webp" alt="Logo aplikacji" width="100px" />
         </a>
       </LogoWrapper>
       {auth.state === AuthenticationStatus.Pending && (
