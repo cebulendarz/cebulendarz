@@ -15,7 +15,7 @@
     "@date-io/dayjs": "2.14.0",
     "@emotion/react": "11.9.0",
     "@emotion/styled": "11.8.1",
-    "@mui/icons-material": "5.8.2",
+    "@mui/icons-material": "5.8.3",
     "@mui/material": "5.8.2",
     "@mui/x-date-pickers": "5.0.0-alpha.5",
     "@sentry/react": "7.0.0",
