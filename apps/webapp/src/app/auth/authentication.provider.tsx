@@ -36,6 +36,7 @@ export const AuthenticationProvider: FC<AuthenticationProviderProps> = ({
             uuid: user.uid,
             avatarUrl: user.photoURL ? user.photoURL : undefined,
           },
+          firebaseUser: user,
         });
       } else {
         getRedirectResult(auth, browserPopupRedirectResolver).then((result) => {

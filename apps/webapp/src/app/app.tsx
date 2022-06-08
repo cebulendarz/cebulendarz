@@ -7,6 +7,7 @@ import { useAuthentication } from './auth/use-authentication';
 import { AuthenticationStatus } from './auth/authentication.state';
 import CircularProgress from '@mui/material/CircularProgress';
 import { ProfileIcon } from './profile/profile-icon';
+import { UserNotVerified } from './auth/user-not-verified';
 
 const LogoWrapper = styled(Layout)``;
 
@@ -30,9 +31,12 @@ export const App = () => {
         </Layout>
       )}
       {auth.state === AuthenticationStatus.Logged && (
-        <BrowserRouter>
-          <AppRouting />
-        </BrowserRouter>
+        <>
+          {!auth.firebaseUser?.emailVerified && <UserNotVerified />}
+          <BrowserRouter>
+            <AppRouting />
+          </BrowserRouter>
+        </>
       )}
       {auth.state === AuthenticationStatus.NotLogged && <Login />}
       {auth.state === AuthenticationStatus.Logged && (
