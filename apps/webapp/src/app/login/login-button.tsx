@@ -1,4 +1,5 @@
-import { Button, ButtonProps } from '@mui/material';
+import { type ButtonProps } from '@mui/material';
+import Button from '@mui/material/Button';
 import { FC, ReactNode } from 'react';
 import styled from '@emotion/styled';
 

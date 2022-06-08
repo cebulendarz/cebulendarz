@@ -1,13 +1,11 @@
 import { Layout } from '../ui-elements/layout';
 import { useParams } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
-import {
-  Alert,
-  CircularProgress,
-  Link,
-  Snackbar,
-  TextField,
-} from '@mui/material';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+import Link from '@mui/material/Link';
+import Snackbar from '@mui/material/Snackbar';
+import TextField from '@mui/material/TextField';
 import { useFirestore } from '../firebase/use-firestore';
 import { Meeting, MeetingSlot } from '../meeting/meeting';
 import { doc, type Firestore, onSnapshot, setDoc } from 'firebase/firestore';

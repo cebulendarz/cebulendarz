@@ -4,13 +4,11 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem/MenuItem';
 import { useState, MouseEvent } from 'react';
 import Dialog from '@mui/material/Dialog';
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-} from '@mui/material';
+import Button from '@mui/material/Button';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
 import { MeetingSlot } from '../meeting/meeting';
 
 const StyledSettingsIcon = styled(SettingsIcon)`

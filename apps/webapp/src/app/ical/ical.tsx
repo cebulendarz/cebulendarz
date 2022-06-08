@@ -1,8 +1,8 @@
-import moment from 'moment';
 import { createEvent, DateArray } from 'ics';
 import { useEffect, useState } from 'react';
 import { useQRCode } from 'next-qrcode';
 import { LoggerFactory } from '@consdata/logger-api';
+import dayjs from 'dayjs';
 
 const log = LoggerFactory.getLogger('Ical');
 
@@ -71,17 +71,11 @@ export const Ical = (props: {
 
 function dateArray(
   date: string,
-  timeFrom:
-    | moment.Moment
-    | Date
-    | string
-    | number
-    | (number | string)[]
-    | moment.MomentInputObject
-) {
-  const dateTime = moment(date + 'T' + timeFrom)
+  timeFrom: Date | string | number | (number | string)[]
+): DateArray {
+  const result = dayjs(date + 'T' + timeFrom)
     .toArray()
     .splice(0, 5);
-  dateTime[1]++;
-  return dateTime as unknown as DateArray;
+  result[1]++;
+  return result as unknown as DateArray;
 }
