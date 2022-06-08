@@ -3,7 +3,11 @@ import { FC, ReactNode, useEffect, useMemo, useReducer } from 'react';
 import { authenticationReducer } from './authentication.reducer';
 import { authenticationInitialState } from './authentication.initial';
 import { LoggerFactory } from '@consdata/logger-api';
-import { onAuthStateChanged } from 'firebase/auth';
+import {
+  browserPopupRedirectResolver,
+  getRedirectResult,
+  onAuthStateChanged,
+} from 'firebase/auth';
 import { useFirebaseAuthentication } from '../firebase/use-firebase-authentication';
 
 export interface AuthenticationProviderProps {
@@ -34,8 +38,12 @@ export const AuthenticationProvider: FC<AuthenticationProviderProps> = ({
           },
         });
       } else {
-        dispatch({
-          type: 'loggedOut',
+        getRedirectResult(auth, browserPopupRedirectResolver).then((result) => {
+          if (!result) {
+            dispatch({
+              type: 'loggedOut',
+            });
+          }
         });
       }
     });
