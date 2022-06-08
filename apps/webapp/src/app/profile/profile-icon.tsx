@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 import { useFirebaseAuthentication } from '../firebase/use-firebase-authentication';
 import { useCallback } from 'react';
 import { signOut } from 'firebase/auth';

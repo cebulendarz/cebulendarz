@@ -1,5 +1,5 @@
 import { LoginEmailForm } from './login-email-form';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { LoginEmailRegister } from './login-email-register';

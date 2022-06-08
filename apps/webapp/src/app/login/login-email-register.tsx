@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import { Button, TextField } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,

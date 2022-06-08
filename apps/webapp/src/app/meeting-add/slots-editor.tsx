@@ -1,13 +1,16 @@
 import { FC } from 'react';
 import { Meeting, MeetingSlot } from '../meeting/meeting';
-import { TextField, Tooltip } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button/Button';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import DeleteIcon from '@mui/icons-material/Delete';
-import moment from 'moment';
 import styled from '@emotion/styled';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import { SlotsImport } from './slots-import';
+import DayJsAdapter from '@date-io/dayjs';
+
+const dayjs = new DayJsAdapter();
 
 export type SlotChangedEvent = {
   slotId: string;
@@ -47,13 +50,17 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
         <div style={{ marginTop: '10px', display: 'flex' }} key={slot.id}>
           <DesktopDatePicker
             label="Data"
-            minDate={moment()}
+            minDate={dayjs.date()}
             mask="__-__-____"
             inputFormat="DD-MM-YYYY"
-            value={slot.date ? moment(slot.date, 'YYYY-MM-DD').toDate() : null}
+            // value={slot.date ? dayjs.parse(slot.date, 'YYYY-MM-DD').toDate() : null} // TODO: co z tym?
+            value={slot.date ? dayjs.parse(slot.date, 'YYYY-MM-DD') : null}
             onChange={(value) => {
               if (value) {
-                handleDateChange(slot.id, moment(value).format('YYYY-MM-DD'));
+                handleDateChange(
+                  slot.id,
+                  dayjs.formatByString(value, 'YYYY-MM-DD')
+                );
               } else {
                 handleDateChange(slot.id, '');
               }

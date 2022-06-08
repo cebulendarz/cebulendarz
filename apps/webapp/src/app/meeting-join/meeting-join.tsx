@@ -1,16 +1,19 @@
+import DayJsAdapter from '@date-io/dayjs';
+import styled from '@emotion/styled';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+import { doc, runTransaction } from 'firebase/firestore';
 import { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { doc, runTransaction } from 'firebase/firestore';
-import { useFirestore } from '../firebase/use-firestore';
-import { Meeting, MeetingSlot } from '../meeting/meeting';
-import { Alert, CircularProgress } from '@mui/material';
-import { Layout } from '../ui-elements/layout';
-import moment from 'moment/moment';
-import styled from '@emotion/styled';
-import { useMeetingByInvite } from '../invite/use-meeting-by-invite';
-import { useAuthentication } from '../auth/use-authentication';
 import { AuthenticationUser } from '../auth/authentication.state';
+import { useAuthentication } from '../auth/use-authentication';
 import { useDocumentTitle } from '../document-title/use-document-title';
+import { useFirestore } from '../firebase/use-firestore';
+import { useMeetingByInvite } from '../invite/use-meeting-by-invite';
+import { Meeting, MeetingSlot } from '../meeting/meeting';
+import { Layout } from '../ui-elements/layout';
+
+const dayjs = new DayJsAdapter();
 
 enum SlotAvailable {
   Booked,
@@ -143,38 +146,11 @@ const slotState = (
   } else if (!meeting.locks[slot.id]) {
     return SlotAvailable.Available;
   } else {
-    const expired = isLockExpired(meeting.locks[slot.id].expire);
-    const owner = meeting.locks[slot.id].user === user.uuid;
-    if (expired || owner) {
+    if (meeting.locks[slot.id].user === user.uuid) {
       return SlotAvailable.Available;
     } else {
       return SlotAvailable.Locked;
     }
-  }
-};
-
-function isLockExpired(expire: string) {
-  return moment(Date.now()).isAfter(expire);
-}
-
-const getDayName = (dayIndex: number) => {
-  switch (dayIndex) {
-    case 1:
-      return 'poniedziałek';
-    case 2:
-      return 'wtorek';
-    case 3:
-      return 'środa';
-    case 4:
-      return 'czwartek';
-    case 5:
-      return 'piątek';
-    case 6:
-      return 'sobota';
-    case 0:
-      return 'niedziela';
-    default:
-      return '';
   }
 };
 
@@ -211,8 +187,8 @@ const SlotsRow = ({
         {sortedDays.map((day) => (
           <SlotDayRow key={day}>
             <SlotDayRowHeader>
-              {moment(day).format('DD-MM-YYYY')} (
-              {getDayName(moment(day).day())})
+              {dayjs.formatByString(dayjs.date(day), 'DD-MM-YYYY')} (
+              {dayjs.format(dayjs.date(day), 'weekday')})
             </SlotDayRowHeader>
             <SlotDayRowHourSlots>
               {slotsMap[day].map((slot) => (
@@ -226,9 +202,6 @@ const SlotsRow = ({
                   onClick={() => reserveSlot(slot)}
                 >
                   {slot.timeFrom} - {slot.timeTo}
-                  {meeting.locks[slot.id]?.expire &&
-                    !isLockExpired(meeting.locks[slot.id]?.expire) &&
-                    ` (rezerwacja wygasa ${meeting.locks[slot.id]?.expire})`}
                   {meeting.bookings[slot.id]?.userName &&
                     ` (${meeting.bookings[slot.id]?.userName})`}
                 </SlotEntry>
