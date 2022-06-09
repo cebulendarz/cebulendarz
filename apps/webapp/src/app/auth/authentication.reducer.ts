@@ -19,12 +19,14 @@ export const authenticationReducer: AuthenticationReducer = (state, action) => {
       ...state,
       state: AuthenticationStatus.Logged,
       user: action.user,
+      firebaseUser: action.firebaseUser,
     };
   } else if (action.type === 'loggedOut') {
     return {
       ...state,
       state: AuthenticationStatus.NotLogged,
       user: undefined,
+      firebaseUser: undefined,
     };
   } else {
     return state;

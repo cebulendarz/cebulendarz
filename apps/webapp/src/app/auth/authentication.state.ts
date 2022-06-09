@@ -1,3 +1,5 @@
+import { User } from 'firebase/auth';
+
 export enum AuthenticationStatus {
   Pending = 'Pending',
   NotLogged = 'NotLogged',
@@ -14,4 +16,5 @@ export interface AuthenticationUser {
 export interface AuthenticationState {
   state: AuthenticationStatus;
   user?: AuthenticationUser;
+  firebaseUser?: User;
 }
