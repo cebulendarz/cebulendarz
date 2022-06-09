@@ -1,13 +1,13 @@
-import { Suspense, lazy } from 'react';
+import { lazy, Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Layout } from './ui-elements/layout';
 import { AppRouting } from './app.routing';
 import { useAuthentication } from './auth/use-authentication';
 import { AuthenticationStatus } from './auth/authentication.state';
-// import CircularProgress from '@mui/material/CircularProgress';
 import { ProfileIcon } from './profile/profile-icon';
 import { UserNotVerified } from './auth/user-not-verified';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const LazyLogin = lazy(() =>
   import('./login/login').then((m) => ({
