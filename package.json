@@ -35,7 +35,7 @@
   "devDependencies": {
     "@emotion/babel-plugin": "11.9.2",
     "@nrwl/cli": "14.2.1",
-    "@nrwl/eslint-plugin-nx": "14.2.1",
+    "@nrwl/eslint-plugin-nx": "14.2.2",
     "@nrwl/jest": "14.2.1",
     "@nrwl/linter": "14.2.1",
     "@nrwl/nx-cloud": "14.0.8",
