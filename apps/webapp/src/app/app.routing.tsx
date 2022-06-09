@@ -1,16 +1,47 @@
+import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Splash } from './splash/splash';
-import { MeetingAdd } from './meeting-add/meeting-add';
-import { MeetingEdit } from './meeting-add/meeting-edit';
-import { MeetingJoin } from './meeting-join/meeting-join';
-import { Booking } from './booking/booking';
+
+const LazySplash = lazy(() =>
+  import('./splash/splash').then((module) => ({
+    default: module.Splash,
+  }))
+);
+
+const LazyMeetingAdd = lazy(() =>
+  import('./meeting-add/meeting-add').then((module) => ({
+    default: module.MeetingAdd,
+  }))
+);
+
+const LazyMeetingEdit = lazy(() =>
+  import('./meeting-add/meeting-edit').then((module) => ({
+    default: module.MeetingEdit,
+  }))
+);
+
+const LazyMeetingJoin = lazy(() =>
+  import('./meeting-join/meeting-join').then((module) => ({
+    default: module.MeetingJoin,
+  }))
+);
+
+const LazyBooking = lazy(() =>
+  import('./booking/booking').then((module) => ({
+    default: module.Booking,
+  }))
+);
 
 export const AppRouting = () => (
-  <Routes>
-    <Route path="/" element={<Splash />} />
-    <Route path="meeting/add" element={<MeetingAdd />} />
-    <Route path="meeting/edit/:meetingId" element={<MeetingEdit />} />
-    <Route path="meeting/join/:inviteId" element={<MeetingJoin />} />
-    <Route path="meeting/:inviteId/booking/:slotId" element={<Booking />} />
-  </Routes>
+  <Suspense fallback={null}>
+    <Routes>
+      <Route path="/" element={<LazySplash />} />
+      <Route path="meeting/add" element={<LazyMeetingAdd />} />
+      <Route path="meeting/edit/:meetingId" element={<LazyMeetingEdit />} />
+      <Route path="meeting/join/:inviteId" element={<LazyMeetingJoin />} />
+      <Route
+        path="meeting/:inviteId/booking/:slotId"
+        element={<LazyBooking />}
+      />
+    </Routes>
+  </Suspense>
 );
