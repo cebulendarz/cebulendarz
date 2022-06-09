@@ -24,8 +24,9 @@ export const UserNotVerified = () => {
     <Layout>
       <Alert severity="info">
         Nie potwierdziłeś jeszcze swojego adresu email. Część funkcjonalności
-        jest dostępna jedynie dla zweryfikowanych kont. Skorzystaj z linku który
-        wysłaliśmy do Ciebie w wiadomości żeby dokończy rejestrację konta.
+        jest dostępna jedynie dla zweryfikowanych kont. Skorzystaj z linku,
+        który wysłaliśmy do Ciebie w wiadomości, żeby dokończyć rejestrację
+        konta.
       </Alert>
       <div style={{ fontWeight: '300', fontSize: '0.8em', marginTop: '8px' }}>
         {message && <div>{message}</div>}
