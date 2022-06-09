@@ -1,13 +1,19 @@
+import { Suspense, lazy } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Layout } from './ui-elements/layout';
-import { Login } from './login/login';
 import { AppRouting } from './app.routing';
 import { useAuthentication } from './auth/use-authentication';
 import { AuthenticationStatus } from './auth/authentication.state';
-import CircularProgress from '@mui/material/CircularProgress';
+// import CircularProgress from '@mui/material/CircularProgress';
 import { ProfileIcon } from './profile/profile-icon';
 import { UserNotVerified } from './auth/user-not-verified';
+
+const LazyLogin = lazy(() =>
+  import('./login/login').then((m) => ({
+    default: m.Login,
+  }))
+);
 
 const LogoWrapper = styled(Layout)``;
 
@@ -38,7 +44,11 @@ export const App = () => {
           </BrowserRouter>
         </>
       )}
-      {auth.state === AuthenticationStatus.NotLogged && <Login />}
+      {auth.state === AuthenticationStatus.NotLogged && (
+        <Suspense fallback={null}>
+          <LazyLogin />
+        </Suspense>
+      )}
       {auth.state === AuthenticationStatus.Logged && (
         <ProfileIconWrapper>
           <ProfileIcon />
