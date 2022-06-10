@@ -1,9 +1,16 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /events/{event} {
-      allow read: if true;
-      allow write: if true;
+  	function isAuthentiacted() {
+    	return request.auth != null
+    }
+    function isVerified() {
+    	return request.auth != null && request.auth.token.email_verified;
+    }
+    match /meetings/{event} {
+      allow read: if isAuthentiacted();
+      allow update: if isVerified();
+      allow write: if isVerified();
     }
     match /{document=**} {
       allow read, write: if false;
