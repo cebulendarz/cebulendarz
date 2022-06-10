@@ -11,6 +11,7 @@ export interface AuthenticationUser {
   email: string;
   uuid: string;
   avatarUrl?: string;
+  verified: boolean;
 }
 
 export interface AuthenticationState {

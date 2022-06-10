@@ -21,6 +21,10 @@ export const MeetingAdd = () => {
     if (!auth.user) {
       throw new Error(`Can't call without authenticated user`);
     }
+    if (!auth.user.verified) {
+      navigate(`/`, { replace: true });
+      return;
+    }
     const meeting: Meeting = {
       id,
       slots: [],

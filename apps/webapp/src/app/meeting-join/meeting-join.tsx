@@ -195,11 +195,11 @@ const SlotsRow = ({
                 <SlotEntry
                   key={slot.id}
                   state={
-                    auth.user
+                    auth.user && auth.user.verified
                       ? slotState(meeting, slot, auth.user)
                       : SlotAvailable.Locked
                   }
-                  onClick={() => reserveSlot(slot)}
+                  onClick={() => auth.user?.verified && reserveSlot(slot)}
                 >
                   {slot.timeFrom} - {slot.timeTo}
                   {meeting.bookings[slot.id]?.userName &&
