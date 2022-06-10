@@ -35,6 +35,7 @@ export const AuthenticationProvider: FC<AuthenticationProviderProps> = ({
             email: user.email ?? '?!',
             uuid: user.uid,
             avatarUrl: user.photoURL ? user.photoURL : undefined,
+            verified: user.emailVerified,
           },
           firebaseUser: user,
         });
