@@ -128,8 +128,8 @@ const FilterSwitch = ({
 }) => {
   return (
     <FilterSpan onClick={onClick}>
-      <Switch size="small" value={showPastSlots} checked={showPastSlots} />
-      {showPastSlots ? 'Filtruj przeszłe daty' : 'Pokaż wszystkie daty'}
+      <Switch size="small" checked={showPastSlots} />
+      {showPastSlots ? 'Ukryj przeszłe daty' : 'Pokaż wszystkie daty'}
     </FilterSpan>
   );
 };
@@ -184,7 +184,7 @@ const slotState = (
 };
 
 const isDatePast = (date: string): boolean => {
-  return dayjs.parse(date, 'YYYY-MM-DD') < dayjs.dayjs();
+  return dayjs.isBeforeDay(dayjs.parse(date, 'YYYY-MM-DD'), dayjs.dayjs());
 };
 
 const SlotsRow = ({
