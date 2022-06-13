@@ -190,14 +190,14 @@ const SlotsRow = ({
   meeting: Meeting;
   reserveSlot: (slot: MeetingSlot) => void;
 }) => {
-  const [showAllMeetings, setShowAllMeetings] = useState(true);
+  const [showPastMeetings, setShowPastMeetings] = useState(false);
 
   const slotsMap = useMemo(() => {
     if (meeting) {
       return meeting.slots
         .filter(
           (slot) =>
-            showAllMeetings ||
+            showPastMeetings ||
             dayjs.parse(slot.date, 'YYYY-MM-DD') > dayjs.dayjs()
         )
         .reduce((map, slot) => {
@@ -208,7 +208,7 @@ const SlotsRow = ({
     } else {
       return {};
     }
-  }, [meeting, showAllMeetings]);
+  }, [meeting, showPastMeetings]);
 
   const sortedDays = useMemo(
     () => Object.keys(slotsMap).sort((a, b) => a.localeCompare(b)),
@@ -222,8 +222,8 @@ const SlotsRow = ({
       <RowHeader>
         Dostępne terminy
         <FilterSwitch
-          filterPastMeetings={showAllMeetings}
-          onClick={() => setShowAllMeetings(!showAllMeetings)}
+          filterPastMeetings={showPastMeetings}
+          onClick={() => setShowPastMeetings(!showPastMeetings)}
         />
       </RowHeader>
       <div>
