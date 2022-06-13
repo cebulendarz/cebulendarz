@@ -120,22 +120,16 @@ const OrganizerRow = ({ meeting }: { meeting: Meeting }) => (
 );
 
 const FilterSwitch = ({
-  filterPastMeetings,
+  showPastSlots,
   onClick,
 }: {
-  filterPastMeetings: boolean;
+  showPastSlots: boolean;
   onClick: () => void;
 }) => {
   return (
     <FilterSpan onClick={onClick}>
-      <Switch
-        size="small"
-        value={filterPastMeetings}
-        checked={filterPastMeetings}
-      />
-      {filterPastMeetings
-        ? 'Filtruj przeszłe spotkania'
-        : 'Pokaż wszystkie spotkania'}
+      <Switch size="small" value={showPastSlots} checked={showPastSlots} />
+      {showPastSlots ? 'Filtruj przeszłe daty' : 'Pokaż wszystkie daty'}
     </FilterSpan>
   );
 };
@@ -200,12 +194,12 @@ const SlotsRow = ({
   meeting: Meeting;
   reserveSlot: (slot: MeetingSlot) => void;
 }) => {
-  const [showPastMeetings, setShowPastMeetings] = useState(false);
+  const [showPastSlots, setShowPastSlots] = useState(false);
 
   const slotsMap = useMemo(() => {
     if (meeting) {
       return meeting.slots
-        .filter((slot) => showPastMeetings || !isDatePast(slot.date))
+        .filter((slot) => showPastSlots || !isDatePast(slot.date))
         .reduce((map, slot) => {
           map[slot.date] = map[slot.date] || [];
           map[slot.date].push(slot);
@@ -214,7 +208,7 @@ const SlotsRow = ({
     } else {
       return {};
     }
-  }, [meeting, showPastMeetings]);
+  }, [meeting, showPastSlots]);
 
   const sortedDays = useMemo(
     () => Object.keys(slotsMap).sort((a, b) => a.localeCompare(b)),
@@ -228,8 +222,8 @@ const SlotsRow = ({
       <RowHeader>
         Dostępne terminy
         <FilterSwitch
-          filterPastMeetings={showPastMeetings}
-          onClick={() => setShowPastMeetings(!showPastMeetings)}
+          showPastSlots={showPastSlots}
+          onClick={() => setShowPastSlots(!showPastSlots)}
         />
       </RowHeader>
       <div>
