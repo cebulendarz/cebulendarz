@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import { doc, runTransaction } from 'firebase/firestore';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthenticationUser } from '../auth/authentication.state';
 import { useAuthentication } from '../auth/use-authentication';
@@ -12,6 +12,7 @@ import { useFirestore } from '../firebase/use-firestore';
 import { useMeetingByInvite } from '../invite/use-meeting-by-invite';
 import { Meeting, MeetingSlot } from '../meeting/meeting';
 import { Layout } from '../ui-elements/layout';
+import { Switch } from '@mui/material';
 
 const dayjs = new DayJsAdapter();
 
@@ -87,6 +88,9 @@ const Row = styled.div`
 `;
 
 const RowHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 0.7em;
   font-weight: 300;
 `;
@@ -113,6 +117,31 @@ const OrganizerRow = ({ meeting }: { meeting: Meeting }) => (
     <RowValue>{meeting.organizerName}</RowValue>
   </Row>
 );
+
+const FilterSwitch = ({
+  filterPastMeetings,
+  onClick,
+}: {
+  filterPastMeetings: boolean;
+  onClick: () => void;
+}) => {
+  return (
+    <FilterSpan onClick={onClick}>
+      <Switch
+        size="small"
+        value={filterPastMeetings}
+        checked={filterPastMeetings}
+      />
+      {filterPastMeetings
+        ? 'Filtruj przeszłe spotkania'
+        : 'Pokaż wszystkie spotkania'}
+    </FilterSpan>
+  );
+};
+
+const FilterSpan = styled.span`
+  cursor: pointer;
+`;
 
 const SlotEntry = styled.div`
   cursor: ${(props: { state: SlotAvailable }) => {
@@ -161,17 +190,26 @@ const SlotsRow = ({
   meeting: Meeting;
   reserveSlot: (slot: MeetingSlot) => void;
 }) => {
+  const [filterPastMeetings, setFilterPastMeetings] = useState(true);
+
   const slotsMap = useMemo(() => {
     if (meeting) {
-      return meeting.slots.reduce((map, slot) => {
-        map[slot.date] = map[slot.date] || [];
-        map[slot.date].push(slot);
-        return map;
-      }, {} as { [key: string]: MeetingSlot[] });
+      return meeting.slots
+        .filter(
+          (slot) =>
+            filterPastMeetings ||
+            dayjs.parse(`${slot.date} ${slot.timeTo}`, 'YYYY-MM-DD HH:mm') >
+              dayjs.dayjs()
+        )
+        .reduce((map, slot) => {
+          map[slot.date] = map[slot.date] || [];
+          map[slot.date].push(slot);
+          return map;
+        }, {} as { [key: string]: MeetingSlot[] });
     } else {
       return {};
     }
-  }, [meeting]);
+  }, [meeting, filterPastMeetings]);
 
   const sortedDays = useMemo(
     () => Object.keys(slotsMap).sort((a, b) => a.localeCompare(b)),
@@ -182,7 +220,13 @@ const SlotsRow = ({
 
   return (
     <Row>
-      <RowHeader>Dostępne terminy</RowHeader>
+      <RowHeader>
+        Dostępne terminy
+        <FilterSwitch
+          filterPastMeetings={filterPastMeetings}
+          onClick={() => setFilterPastMeetings(!filterPastMeetings)}
+        />
+      </RowHeader>
       <div>
         {sortedDays.map((day) => (
           <SlotDayRow key={day}>
