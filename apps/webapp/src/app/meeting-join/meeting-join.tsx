@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import { doc, runTransaction } from 'firebase/firestore';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthenticationUser } from '../auth/authentication.state';
 import { useAuthentication } from '../auth/use-authentication';
@@ -12,6 +12,7 @@ import { useFirestore } from '../firebase/use-firestore';
 import { useMeetingByInvite } from '../invite/use-meeting-by-invite';
 import { Meeting, MeetingSlot } from '../meeting/meeting';
 import { Layout } from '../ui-elements/layout';
+import { Switch } from '@mui/material';
 
 const dayjs = new DayJsAdapter();
 
@@ -19,6 +20,7 @@ enum SlotAvailable {
   Booked,
   Locked,
   Available,
+  Past,
 }
 
 export const MeetingJoin = () => {
@@ -87,6 +89,9 @@ const Row = styled.div`
 `;
 
 const RowHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 0.7em;
   font-weight: 300;
 `;
@@ -114,6 +119,25 @@ const OrganizerRow = ({ meeting }: { meeting: Meeting }) => (
   </Row>
 );
 
+const FilterSwitch = ({
+  showPastSlots,
+  onClick,
+}: {
+  showPastSlots: boolean;
+  onClick: () => void;
+}) => {
+  return (
+    <FilterSpan onClick={onClick}>
+      <Switch size="small" checked={showPastSlots} />
+      {showPastSlots ? 'Ukryj przeszłe daty' : 'Pokaż wszystkie daty'}
+    </FilterSpan>
+  );
+};
+
+const FilterSpan = styled.span`
+  cursor: pointer;
+`;
+
 const SlotEntry = styled.div`
   cursor: ${(props: { state: SlotAvailable }) => {
     return props.state === SlotAvailable.Available ? 'pointer' : 'default';
@@ -128,7 +152,10 @@ const SlotEntry = styled.div`
   color: ${(props: { state: SlotAvailable }) => {
     if (props.state === SlotAvailable.Available) {
       return 'green';
-    } else if (props.state === SlotAvailable.Booked) {
+    } else if (
+      props.state === SlotAvailable.Booked ||
+      props.state === SlotAvailable.Past
+    ) {
       return 'lightGray';
     } else {
       return 'gray';
@@ -143,6 +170,8 @@ const slotState = (
 ): SlotAvailable => {
   if (meeting.bookings[slot.id]) {
     return SlotAvailable.Booked;
+  } else if (isDatePast(slot.date)) {
+    return SlotAvailable.Past;
   } else if (!meeting.locks[slot.id]) {
     return SlotAvailable.Available;
   } else {
@@ -154,6 +183,10 @@ const slotState = (
   }
 };
 
+const isDatePast = (date: string): boolean => {
+  return dayjs.isBeforeDay(dayjs.parse(date, 'YYYY-MM-DD'), dayjs.dayjs());
+};
+
 const SlotsRow = ({
   meeting,
   reserveSlot,
@@ -161,17 +194,21 @@ const SlotsRow = ({
   meeting: Meeting;
   reserveSlot: (slot: MeetingSlot) => void;
 }) => {
+  const [showPastSlots, setShowPastSlots] = useState(false);
+
   const slotsMap = useMemo(() => {
     if (meeting) {
-      return meeting.slots.reduce((map, slot) => {
-        map[slot.date] = map[slot.date] || [];
-        map[slot.date].push(slot);
-        return map;
-      }, {} as { [key: string]: MeetingSlot[] });
+      return meeting.slots
+        .filter((slot) => showPastSlots || !isDatePast(slot.date))
+        .reduce((map, slot) => {
+          map[slot.date] = map[slot.date] || [];
+          map[slot.date].push(slot);
+          return map;
+        }, {} as { [key: string]: MeetingSlot[] });
     } else {
       return {};
     }
-  }, [meeting]);
+  }, [meeting, showPastSlots]);
 
   const sortedDays = useMemo(
     () => Object.keys(slotsMap).sort((a, b) => a.localeCompare(b)),
@@ -182,7 +219,13 @@ const SlotsRow = ({
 
   return (
     <Row>
-      <RowHeader>Dostępne terminy</RowHeader>
+      <RowHeader>
+        Dostępne terminy
+        <FilterSwitch
+          showPastSlots={showPastSlots}
+          onClick={() => setShowPastSlots(!showPastSlots)}
+        />
+      </RowHeader>
       <div>
         {sortedDays.map((day) => (
           <SlotDayRow key={day}>
