@@ -20,6 +20,7 @@ enum SlotAvailable {
   Booked,
   Locked,
   Available,
+  Past,
 }
 
 export const MeetingJoin = () => {
@@ -157,7 +158,10 @@ const SlotEntry = styled.div`
   color: ${(props: { state: SlotAvailable }) => {
     if (props.state === SlotAvailable.Available) {
       return 'green';
-    } else if (props.state === SlotAvailable.Booked) {
+    } else if (
+      props.state === SlotAvailable.Booked ||
+      props.state === SlotAvailable.Past
+    ) {
       return 'lightGray';
     } else {
       return 'gray';
@@ -172,6 +176,8 @@ const slotState = (
 ): SlotAvailable => {
   if (meeting.bookings[slot.id]) {
     return SlotAvailable.Booked;
+  } else if (isDatePast(slot.date)) {
+    return SlotAvailable.Past;
   } else if (!meeting.locks[slot.id]) {
     return SlotAvailable.Available;
   } else {
@@ -181,6 +187,10 @@ const slotState = (
       return SlotAvailable.Locked;
     }
   }
+};
+
+const isDatePast = (date: string): boolean => {
+  return dayjs.parse(date, 'YYYY-MM-DD') < dayjs.dayjs();
 };
 
 const SlotsRow = ({
@@ -195,11 +205,7 @@ const SlotsRow = ({
   const slotsMap = useMemo(() => {
     if (meeting) {
       return meeting.slots
-        .filter(
-          (slot) =>
-            showPastMeetings ||
-            dayjs.parse(slot.date, 'YYYY-MM-DD') > dayjs.dayjs()
-        )
+        .filter((slot) => showPastMeetings || !isDatePast(slot.date))
         .reduce((map, slot) => {
           map[slot.date] = map[slot.date] || [];
           map[slot.date].push(slot);
