@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import { SlotsImport } from './slots-import';
 import DayJsAdapter from '@date-io/dayjs';
+import { DesktopTimePicker } from '@mui/x-date-pickers';
 
 const dayjs = new DayJsAdapter();
 
@@ -53,7 +54,6 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
             minDate={dayjs.date()}
             mask="__-__-____"
             inputFormat="DD-MM-YYYY"
-            // value={slot.date ? dayjs.parse(slot.date, 'YYYY-MM-DD').toDate() : null} // TODO: co z tym?
             value={slot.date ? dayjs.parse(slot.date, 'YYYY-MM-DD') : null}
             onChange={(value) => {
               if (value) {
@@ -73,23 +73,54 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
               />
             )}
           />
-          <TextField
-            style={{ marginRight: '15px', width: '150px' }}
+          <DesktopTimePicker
             label="Od"
-            value={slot.timeFrom ?? ''}
-            onChange={(event) => {
-              handleTimeFromChange(slot.id, event.target.value);
+            inputFormat="HH:mm"
+            mask="__:__"
+            disableOpenPicker={true}
+            onChange={(value) => {
+              if (value) {
+                handleTimeFromChange(
+                  slot.id,
+                  dayjs.formatByString(value, 'HH:mm')
+                );
+              } else {
+                handleTimeFromChange(slot.id, '');
+              }
             }}
-            variant="standard"
+            value={slot.timeFrom ? dayjs.parse(slot.timeFrom, 'HH:mm') : null}
+            renderInput={(params) => (
+              <TextField
+                style={{ marginRight: '15px', width: '150px' }}
+                variant={'standard'}
+                {...params}
+              />
+            )}
           />
-          <TextField
-            style={{ marginRight: '15px', width: '150px' }}
+          <DesktopTimePicker
             label="Do"
-            value={slot.timeTo ?? ''}
-            onChange={(event) => {
-              handleTimeToChange(slot.id, event.target.value);
+            inputFormat="HH:mm"
+            mask="__:__"
+            disableOpenPicker={true}
+            onChange={(value) => {
+              console.log(value);
+              if (value) {
+                handleTimeToChange(
+                  slot.id,
+                  dayjs.formatByString(value, 'HH:mm')
+                );
+              } else {
+                handleTimeToChange(slot.id, '');
+              }
             }}
-            variant="standard"
+            value={slot.timeTo ? dayjs.parse(slot.timeTo, 'HH:mm') : null}
+            renderInput={(params) => (
+              <TextField
+                style={{ marginRight: '15px', width: '150px' }}
+                variant={'standard'}
+                {...params}
+              />
+            )}
           />
           <FlexFill />
           {index !== props.slots.length - 1 && (
