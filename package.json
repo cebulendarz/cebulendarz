@@ -39,7 +39,7 @@
     "@nrwl/jest": "14.3.1",
     "@nrwl/linter": "14.3.1",
     "@nrwl/nx-cloud": "14.1.0",
-    "@nrwl/react": "14.3.1",
+    "@nrwl/react": "14.3.2",
     "@nrwl/web": "14.3.1",
     "@nrwl/workspace": "14.3.1",
     "@testing-library/react": "13.3.0",
