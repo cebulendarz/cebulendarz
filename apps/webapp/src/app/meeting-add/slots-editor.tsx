@@ -78,16 +78,12 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
             inputFormat="HH:mm"
             mask="__:__"
             disableOpenPicker={true}
-            onChange={(value) => {
-              if (value) {
-                handleTimeFromChange(
-                  slot.id,
-                  dayjs.formatByString(value, 'HH:mm')
-                );
-              } else {
-                handleTimeFromChange(slot.id, '');
-              }
-            }}
+            onChange={(value) =>
+              handleTimeFromChange(
+                slot.id,
+                value ? dayjs.formatByString(value, 'HH:mm') : ''
+              )
+            }
             value={slot.timeFrom ? dayjs.parse(slot.timeFrom, 'HH:mm') : null}
             renderInput={(params) => (
               <TextField
@@ -102,17 +98,12 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
             inputFormat="HH:mm"
             mask="__:__"
             disableOpenPicker={true}
-            onChange={(value) => {
-              console.log(value);
-              if (value) {
-                handleTimeToChange(
-                  slot.id,
-                  dayjs.formatByString(value, 'HH:mm')
-                );
-              } else {
-                handleTimeToChange(slot.id, '');
-              }
-            }}
+            onChange={(value) =>
+              handleTimeToChange(
+                slot.id,
+                value ? dayjs.formatByString(value, 'HH:mm') : ''
+              )
+            }
             value={slot.timeTo ? dayjs.parse(slot.timeTo, 'HH:mm') : null}
             renderInput={(params) => (
               <TextField
