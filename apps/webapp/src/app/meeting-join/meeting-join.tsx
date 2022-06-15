@@ -185,7 +185,7 @@ const slotState = (
 
 const isDatePast = (date: string, time: string): boolean => {
   return dayjs.isBefore(
-    dayjs.parse(`${date} ${time}`, 'YYYY-MM-DD HH:mm'),
+    dayjs.parse(`${date} ${time}`, 'YYYY-MM-DD H:mm'),
     dayjs.dayjs()
   );
 };

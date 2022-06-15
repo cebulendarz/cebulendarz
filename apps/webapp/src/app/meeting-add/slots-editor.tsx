@@ -9,7 +9,7 @@ import styled from '@emotion/styled';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import { SlotsImport } from './slots-import';
 import DayJsAdapter from '@date-io/dayjs';
-import { DesktopTimePicker } from '@mui/x-date-pickers';
+import { TimeTextField } from './time-text-field';
 
 const dayjs = new DayJsAdapter();
 
@@ -73,45 +73,17 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
               />
             )}
           />
-          <DesktopTimePicker
+          <TimeTextField
+            initTime={slot.timeFrom}
             label="Od"
-            inputFormat="HH:mm"
-            mask="__:__"
-            disableOpenPicker={true}
-            onChange={(value) =>
-              handleTimeFromChange(
-                slot.id,
-                value ? dayjs.formatByString(value, 'HH:mm') : ''
-              )
-            }
-            value={slot.timeFrom ? dayjs.parse(slot.timeFrom, 'HH:mm') : null}
-            renderInput={(params) => (
-              <TextField
-                style={{ marginRight: '15px', width: '150px' }}
-                variant={'standard'}
-                {...params}
-              />
-            )}
+            style={{ marginRight: '15px', width: '150px' }}
+            timeChanged={(time) => handleTimeFromChange(slot.id, time)}
           />
-          <DesktopTimePicker
+          <TimeTextField
+            initTime={slot.timeTo}
             label="Do"
-            inputFormat="HH:mm"
-            mask="__:__"
-            disableOpenPicker={true}
-            onChange={(value) =>
-              handleTimeToChange(
-                slot.id,
-                value ? dayjs.formatByString(value, 'HH:mm') : ''
-              )
-            }
-            value={slot.timeTo ? dayjs.parse(slot.timeTo, 'HH:mm') : null}
-            renderInput={(params) => (
-              <TextField
-                style={{ marginRight: '15px', width: '150px' }}
-                variant={'standard'}
-                {...params}
-              />
-            )}
+            style={{ marginRight: '15px', width: '150px' }}
+            timeChanged={(time) => handleTimeToChange(slot.id, time)}
           />
           <FlexFill />
           {index !== props.slots.length - 1 && (
