@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import { SlotsImport } from './slots-import';
 import DayJsAdapter from '@date-io/dayjs';
+import { TimeTextField } from './time-text-field';
 
 const dayjs = new DayJsAdapter();
 
@@ -53,7 +54,6 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
             minDate={dayjs.date()}
             mask="__-__-____"
             inputFormat="DD-MM-YYYY"
-            // value={slot.date ? dayjs.parse(slot.date, 'YYYY-MM-DD').toDate() : null} // TODO: co z tym?
             value={slot.date ? dayjs.parse(slot.date, 'YYYY-MM-DD') : null}
             onChange={(value) => {
               if (value) {
@@ -73,23 +73,17 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
               />
             )}
           />
-          <TextField
-            style={{ marginRight: '15px', width: '150px' }}
+          <TimeTextField
+            initTime={slot.timeFrom}
             label="Od"
-            value={slot.timeFrom ?? ''}
-            onChange={(event) => {
-              handleTimeFromChange(slot.id, event.target.value);
-            }}
-            variant="standard"
-          />
-          <TextField
             style={{ marginRight: '15px', width: '150px' }}
+            timeChanged={(time) => handleTimeFromChange(slot.id, time)}
+          />
+          <TimeTextField
+            initTime={slot.timeTo}
             label="Do"
-            value={slot.timeTo ?? ''}
-            onChange={(event) => {
-              handleTimeToChange(slot.id, event.target.value);
-            }}
-            variant="standard"
+            style={{ marginRight: '15px', width: '150px' }}
+            timeChanged={(time) => handleTimeToChange(slot.id, time)}
           />
           <FlexFill />
           {index !== props.slots.length - 1 && (

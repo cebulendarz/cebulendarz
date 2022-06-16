@@ -170,7 +170,7 @@ const slotState = (
 ): SlotAvailable => {
   if (meeting.bookings[slot.id]) {
     return SlotAvailable.Booked;
-  } else if (isDatePast(slot.date)) {
+  } else if (isDatePast(slot.date, slot.timeTo)) {
     return SlotAvailable.Past;
   } else if (!meeting.locks[slot.id]) {
     return SlotAvailable.Available;
@@ -183,8 +183,11 @@ const slotState = (
   }
 };
 
-const isDatePast = (date: string): boolean => {
-  return dayjs.isBeforeDay(dayjs.parse(date, 'YYYY-MM-DD'), dayjs.dayjs());
+const isDatePast = (date: string, time: string): boolean => {
+  return dayjs.isBefore(
+    dayjs.parse(`${date} ${time}`, 'YYYY-MM-DD H:mm'),
+    dayjs.dayjs()
+  );
 };
 
 const SlotsRow = ({
@@ -199,7 +202,7 @@ const SlotsRow = ({
   const slotsMap = useMemo(() => {
     if (meeting) {
       return meeting.slots
-        .filter((slot) => showPastSlots || !isDatePast(slot.date))
+        .filter((slot) => showPastSlots || !isDatePast(slot.date, slot.timeTo))
         .reduce((map, slot) => {
           map[slot.date] = map[slot.date] || [];
           map[slot.date].push(slot);
