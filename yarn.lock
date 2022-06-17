@@ -2470,6 +2470,13 @@
   dependencies:
     nx "14.3.5"
 
+"@nrwl/cli@14.3.6":
+  version "14.3.6"
+  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-14.3.6.tgz#bf9d36822bbe9db42c250f4151df2b496ae7f13f"
+  integrity sha512-MNCBzM3ZDsujEc5crltH/kEyNBKx6DofLHdpzY1EoiY+yF57W7E1B6ERkVUGDc52sR4snEUKpQLXdVFjwP+z8A==
+  dependencies:
+    nx "14.3.6"
+
 "@nrwl/cypress@14.3.5":
   version "14.3.5"
   resolved "https://registry.yarnpkg.com/@nrwl/cypress/-/cypress-14.3.5.tgz#20df8aaa411de63f7716c59188ce3ad767a8dd39"
@@ -2625,6 +2632,13 @@
   integrity sha512-rdXeXadbOWTRdJMxa6MIdl6Daji+pSGo0kvgBVqAAcb/XL/9Hyyq42SLA+pclp8b1FfIqBt4Mxhpz4qsid5VqQ==
   dependencies:
     nx "14.3.5"
+
+"@nrwl/tao@14.3.6":
+  version "14.3.6"
+  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-14.3.6.tgz#cb9ac487397dd1c399add2fd8564bc6debc0fec4"
+  integrity sha512-g3y6VRq4wNtbFZIclJwRR/1hcTesx6h64g7h80VWtyRw0pVq/0zAjb8abeQSTDLM15uc1pQJYPEfsR/KgI3Sow==
+  dependencies:
+    nx "14.3.6"
 
 "@nrwl/web@14.3.5":
   version "14.3.5"
@@ -8063,6 +8077,42 @@ nx@14.3.5:
   dependencies:
     "@nrwl/cli" "14.3.5"
     "@nrwl/tao" "14.3.5"
+    "@parcel/watcher" "2.0.4"
+    chalk "4.1.0"
+    chokidar "^3.5.1"
+    cli-cursor "3.1.0"
+    cli-spinners "2.6.1"
+    cliui "^7.0.2"
+    dotenv "~10.0.0"
+    enquirer "~2.3.6"
+    fast-glob "3.2.7"
+    figures "3.2.0"
+    flat "^5.0.2"
+    fs-extra "^10.1.0"
+    glob "7.1.4"
+    ignore "^5.0.4"
+    js-yaml "4.1.0"
+    jsonc-parser "3.0.0"
+    minimatch "3.0.5"
+    npm-run-path "^4.0.1"
+    open "^8.4.0"
+    semver "7.3.4"
+    string-width "^4.2.3"
+    tar-stream "~2.2.0"
+    tmp "~0.2.1"
+    tsconfig-paths "^3.9.0"
+    tslib "^2.3.0"
+    v8-compile-cache "2.3.0"
+    yargs "^17.4.0"
+    yargs-parser "21.0.1"
+
+nx@14.3.6:
+  version "14.3.6"
+  resolved "https://registry.yarnpkg.com/nx/-/nx-14.3.6.tgz#0b30dbe96df2cd62cb68c9d3609e2dc3219b0a20"
+  integrity sha512-jBgqXEkRalo8PwXJzO4HVNN3P5pqyL5VawyNd34qPl+4t2XlDRqoK0J74i8liPGdKPBB1HjM2K1u+QNF2ROvQA==
+  dependencies:
+    "@nrwl/cli" "14.3.6"
+    "@nrwl/tao" "14.3.6"
     "@parcel/watcher" "2.0.4"
     chalk "4.1.0"
     chokidar "^3.5.1"
