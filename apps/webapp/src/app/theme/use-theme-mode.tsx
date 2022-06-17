@@ -9,7 +9,7 @@ export const useThemeMode = (): [
     () => ({
       change: () => {
         const currentTheme =
-          localStorage.getItem('theme') === 'light' ? 'dark' : 'light';
+          localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
         localStorage.setItem('theme', currentTheme);
         setMode(currentTheme);
       },

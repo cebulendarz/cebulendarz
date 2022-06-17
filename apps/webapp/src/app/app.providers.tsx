@@ -10,8 +10,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import 'dayjs/locale/pl';
 import dayjs from 'dayjs';
 import toArray from 'dayjs/plugin/toArray';
-import { ThemeModeContext } from './theme/theme-mode.context';
-import { useThemeMode } from './theme/use-theme-mode';
+import { ThemeModeProvider } from './theme/theme-mode.context';
 import { useTheme } from './theme/use-theme';
 
 dayjs.locale('pl');
@@ -20,19 +19,21 @@ dayjs.extend(toArray);
 export const AppProviders: FC<{
   children?: ReactNode;
 }> = ({ children }) => {
-  const [mode, themeMode] = useThemeMode();
-  const [theme] = useTheme(mode);
+  const [theme, themeMode] = useTheme();
 
   return (
     <FirebaseContext.Provider value={firebaseApp}>
       <AuthenticationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <ThemeModeContext.Provider value={themeMode}>
+          <ThemeModeProvider
+            mode={theme.palette.mode}
+            themeModeChange={themeMode.change}
+          >
             <ThemeProvider theme={theme}>
               <CssBaseline />
               {children}
             </ThemeProvider>
-          </ThemeModeContext.Provider>
+          </ThemeModeProvider>
         </LocalizationProvider>
       </AuthenticationProvider>
     </FirebaseContext.Provider>
