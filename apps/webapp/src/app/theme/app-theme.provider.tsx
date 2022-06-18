@@ -47,6 +47,8 @@ export const AppThemeProvider: FC<AppThemeProviderProps> = ({ children }) => {
       value={{
         theme: theme,
         mode: themeMode,
+        darkMode: themeMode === 'dark',
+        lightMode: themeMode === 'light',
         toggleMode: toggleThemeMode,
       }}
     >

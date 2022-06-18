@@ -23,13 +23,13 @@ const LogoWrapper = styled(Layout)``;
 
 export const App = () => {
   const { state: auth } = useAuthentication();
-  const { mode, toggleMode: toggleTheme } = useAppTheme();
+  const { darkMode: themeDarkMode, toggleMode: toggleTheme } = useAppTheme();
 
   return (
     <>
       <ThemeIconWrapper>
         <IconButton onClick={toggleTheme} color="inherit">
-          {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          {themeDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
       </ThemeIconWrapper>
       <LogoWrapper>
