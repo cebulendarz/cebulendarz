@@ -1,5 +1,5 @@
-import { FC, ReactNode, useMemo } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material';
+import { FC, ReactNode } from 'react';
+import { ThemeProvider } from '@mui/material';
 import { useAppTheme } from './use-app-theme';
 
 export interface AppThemeProviderProps {
