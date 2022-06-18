@@ -9,8 +9,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import 'dayjs/locale/pl';
 import dayjs from 'dayjs';
 import toArray from 'dayjs/plugin/toArray';
+import { MuiThemeProvider } from './theme/mui-theme.provider';
 import { AppThemeProvider } from './theme/app-theme.provider';
-import { AppThemeModeProvider } from './theme/app-theme-mode.provider';
 
 dayjs.locale('pl');
 dayjs.extend(toArray);
@@ -22,12 +22,12 @@ export const AppProviders: FC<{
     <FirebaseContext.Provider value={firebaseApp}>
       <AuthenticationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <AppThemeModeProvider>
-            <AppThemeProvider>
+          <AppThemeProvider>
+            <MuiThemeProvider>
               <CssBaseline />
               {children}
-            </AppThemeProvider>
-          </AppThemeModeProvider>
+            </MuiThemeProvider>
+          </AppThemeProvider>
         </LocalizationProvider>
       </AuthenticationProvider>
     </FirebaseContext.Provider>

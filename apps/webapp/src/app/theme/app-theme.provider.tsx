@@ -1,13 +1,25 @@
-import { FC, ReactNode, useMemo } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material';
-import { useAppThemeMode } from './use-app-theme-mode';
+import {
+  ReactNode,
+  FC,
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react';
+import { AppThemeContext } from './app-theme.context';
+import { createTheme, PaletteMode } from '@mui/material';
 
 export interface AppThemeProviderProps {
   children?: ReactNode;
 }
 
 export const AppThemeProvider: FC<AppThemeProviderProps> = ({ children }) => {
-  const { theme: themeMode } = useAppThemeMode();
+  const [themeMode, setThemeMode] = useState<PaletteMode>(
+    localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
+  );
+  const toggleThemeMode = useCallback(() => {
+    setThemeMode(themeMode === 'dark' ? 'light' : 'dark');
+  }, [setThemeMode, themeMode]);
   const theme = useMemo(
     () =>
       createTheme(
@@ -29,5 +41,16 @@ export const AppThemeProvider: FC<AppThemeProviderProps> = ({ children }) => {
       ),
     [themeMode]
   );
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  useEffect(() => localStorage.setItem('theme', themeMode), [themeMode]);
+  return (
+    <AppThemeContext.Provider
+      value={{
+        theme: theme,
+        mode: themeMode,
+        toggleMode: toggleThemeMode,
+      }}
+    >
+      {children}
+    </AppThemeContext.Provider>
+  );
 };

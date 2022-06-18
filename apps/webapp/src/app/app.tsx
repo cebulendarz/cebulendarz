@@ -11,7 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { IconButton } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { useAppThemeMode } from './theme/use-app-theme-mode';
+import { useAppTheme } from './theme/use-app-theme';
 
 const LazyLogin = lazy(() =>
   import('./login/login').then((m) => ({
@@ -23,13 +23,13 @@ const LogoWrapper = styled(Layout)``;
 
 export const App = () => {
   const { state: auth } = useAuthentication();
-  const { theme, toggle: toggleTheme } = useAppThemeMode();
+  const { mode, toggleMode: toggleTheme } = useAppTheme();
 
   return (
     <>
       <ThemeIconWrapper>
         <IconButton onClick={toggleTheme} color="inherit">
-          {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
       </ThemeIconWrapper>
       <LogoWrapper>
