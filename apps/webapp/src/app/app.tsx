@@ -8,6 +8,10 @@ import { AuthenticationStatus } from './auth/authentication.state';
 import { ProfileIcon } from './profile/profile-icon';
 import { UserNotVerified } from './auth/user-not-verified';
 import CircularProgress from '@mui/material/CircularProgress';
+import { IconButton } from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useAppTheme } from './theme/use-app-theme';
 
 const LazyLogin = lazy(() =>
   import('./login/login').then((m) => ({
@@ -19,8 +23,15 @@ const LogoWrapper = styled(Layout)``;
 
 export const App = () => {
   const { state: auth } = useAuthentication();
+  const { darkMode: themeDarkMode, toggleMode: toggleTheme } = useAppTheme();
+
   return (
     <>
+      <ThemeIconWrapper>
+        <IconButton onClick={toggleTheme} color="inherit">
+          {themeDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
+      </ThemeIconWrapper>
       <LogoWrapper>
         <a href="/">
           <img
@@ -62,4 +73,10 @@ const ProfileIconWrapper = styled.div`
   position: fixed;
   top: 0;
   right: 8px;
+`;
+
+const ThemeIconWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 8px;
 `;

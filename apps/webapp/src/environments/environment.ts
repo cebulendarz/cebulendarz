@@ -6,6 +6,6 @@ import { LogLevel } from '@consdata/logger-api';
 export const environment = {
   production: false,
   logger: {
-    logLevel: LogLevel.TRACE,
+    logLevel: LogLevel.DEBUG,
   },
 };

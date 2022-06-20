@@ -71,9 +71,9 @@ export const Ical = (props: {
 
 function dateArray(
   date: string,
-  timeFrom: Date | string | number | (number | string)[]
+  time: Date | string | number | (number | string)[]
 ): DateArray {
-  const result = dayjs(date + 'T' + timeFrom)
+  const result = dayjs(date + 'T' + time)
     .toArray()
     .splice(0, 5);
   result[1]++;
