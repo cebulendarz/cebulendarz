@@ -1,4 +1,4 @@
-import { lazy, Suspense, useContext } from 'react';
+import { lazy, Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Layout } from './ui-elements/layout';
@@ -11,7 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { IconButton } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { ThemeModeContext } from './theme/theme-mode.context';
+import { useAppTheme } from './theme/use-app-theme';
 
 const LazyLogin = lazy(() =>
   import('./login/login').then((m) => ({
@@ -23,13 +23,13 @@ const LogoWrapper = styled(Layout)``;
 
 export const App = () => {
   const { state: auth } = useAuthentication();
-  const { themeModeChange, mode } = useContext(ThemeModeContext);
+  const { darkMode: themeDarkMode, toggleMode: toggleTheme } = useAppTheme();
 
   return (
     <>
       <ThemeIconWrapper>
-        <IconButton onClick={themeModeChange} color="inherit">
-          {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        <IconButton onClick={toggleTheme} color="inherit">
+          {themeDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
       </ThemeIconWrapper>
       <LogoWrapper>
