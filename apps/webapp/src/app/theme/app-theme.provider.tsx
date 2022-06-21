@@ -22,22 +22,20 @@ export const AppThemeProvider: FC<AppThemeProviderProps> = ({ children }) => {
   }, [setThemeMode, themeMode]);
   const theme = useMemo(
     () =>
-      createTheme(
-        {
-          palette: {
-            mode: themeMode,
-            background: {
-              default: themeMode === 'light' ? '#fff' : '#2b2d30',
-            },
-            primary: {
-              main: themeMode === 'light' ? '#b31536' : '#e73259',
-            },
-            secondary: {
-              main: themeMode === 'light' ? '#999999' : '#999999',
-            },
+      createTheme({
+        palette: {
+          mode: themeMode,
+          background: {
+            default: themeMode === 'light' ? '#fff' : '#2b2d30',
           },
-        }
-      ),
+          primary: {
+            main: themeMode === 'light' ? '#b31536' : '#e73259',
+          },
+          secondary: {
+            main: themeMode === 'light' ? '#999999' : '#999999',
+          },
+        },
+      }),
     [themeMode]
   );
   useEffect(() => localStorage.setItem('theme', themeMode), [themeMode]);
