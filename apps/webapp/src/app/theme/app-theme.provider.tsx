@@ -27,7 +27,7 @@ export const AppThemeProvider: FC<AppThemeProviderProps> = ({ children }) => {
           palette: {
             mode: themeMode,
             background: {
-              default: themeMode === 'light' ? undefined : '#2b2d30',
+              default: themeMode === 'light' ? '#fff' : '#2b2d30',
             },
             primary: {
               main: themeMode === 'light' ? '#b31536' : '#e73259',
@@ -36,8 +36,7 @@ export const AppThemeProvider: FC<AppThemeProviderProps> = ({ children }) => {
               main: themeMode === 'light' ? '#999999' : '#999999',
             },
           },
-        },
-        [themeMode]
+        }
       ),
     [themeMode]
   );
