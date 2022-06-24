@@ -21,7 +21,7 @@
     "@types/uuid": "8.3.4",
     "core-js": "3.23.2",
     "dayjs": "1.11.3",
-    "firebase": "9.8.3",
+    "firebase": "9.8.4",
     "ics": "2.35.0",
     "next-qrcode": "2.1.0",
     "react": "18.2.0",
