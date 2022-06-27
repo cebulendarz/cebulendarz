@@ -19,7 +19,7 @@
     "@mui/material": "5.8.5",
     "@mui/x-date-pickers": "5.0.0-alpha.6",
     "@types/uuid": "8.3.4",
-    "core-js": "3.23.2",
+    "core-js": "3.23.3",
     "dayjs": "1.11.3",
     "firebase": "9.8.3",
     "ics": "2.35.0",
