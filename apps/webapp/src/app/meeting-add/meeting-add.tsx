@@ -30,7 +30,6 @@ export const MeetingAdd = () => {
       slots: [],
       title: '',
       inviteId: v4(),
-      locks: {},
       bookings: {},
       organizerName: auth.user.displayName,
     };

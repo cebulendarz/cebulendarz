@@ -172,14 +172,8 @@ const slotState = (
     return SlotAvailable.Booked;
   } else if (isDatePast(slot.date, slot.timeTo)) {
     return SlotAvailable.Past;
-  } else if (!meeting.locks[slot.id]) {
-    return SlotAvailable.Available;
   } else {
-    if (meeting.locks[slot.id].user === user.uuid) {
-      return SlotAvailable.Available;
-    } else {
-      return SlotAvailable.Locked;
-    }
+    return SlotAvailable.Available;
   }
 };
 

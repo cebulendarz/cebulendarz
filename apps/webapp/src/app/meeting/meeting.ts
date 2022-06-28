@@ -1,8 +1,3 @@
-export interface MeetingSlotLock {
-  user: string; // uuid przeglądarki użytkownika?
-  expire: string; // Data wygaśnięcia locka (np. założenie + 30min)
-}
-
 export interface MeetingSlotBooking {
   userName: string;
 }
@@ -14,13 +9,25 @@ export interface MeetingSlot {
   timeTo: string;
 }
 
+export interface MeetingOrganizer {
+  email: string;
+  name: string;
+}
+
+export interface MeetingModificationDates {
+  created: string;
+  updated: string;
+}
+
 export interface Meeting {
   id?: string;
   inviteId: string;
   organizerName?: string;
+  // @deprecated - to be removed in near future
+  organizer: MeetingOrganizer;
+  modificationDates: MeetingModificationDates;
   title?: string;
   description?: string;
   slots: MeetingSlot[];
-  locks: { [key: string]: MeetingSlotLock };
   bookings: { [key: string]: MeetingSlotBooking };
 }
