@@ -92,6 +92,7 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
                 <SlotBooked>
                   <Tooltip
                     title={`Zarezerwowany przez ${
+                      props.meeting.bookings[slot.id].name ??
                       props.meeting.bookings[slot.id].userName
                     }`}
                   >

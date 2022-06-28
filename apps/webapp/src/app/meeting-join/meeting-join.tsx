@@ -13,6 +13,7 @@ import { useMeetingByInvite } from '../invite/use-meeting-by-invite';
 import { Meeting, MeetingSlot } from '../meeting/meeting';
 import { Layout } from '../ui-elements/layout';
 import { Switch } from '@mui/material';
+import { PartialDeep } from 'type-fest';
 
 const dayjs = new DayJsAdapter();
 
@@ -47,16 +48,23 @@ export const MeetingJoin = () => {
           console.error(`Expected meeting document does not exist! ` + docRef);
           alert('Coś poważnie wybuchło, spójrz w konsolę.');
         } else {
-          const existingLock = doc.data()[`bookings.${slot.id}`];
-          if (existingLock) {
+          const existingBooking = doc.data()[`bookings.${slot.id}`];
+          if (existingBooking) {
             alert('Niestety, ktoś już zajął ten slot. Spróbuj z innym :)');
           } else {
             if (!auth.user) {
               throw new Error(`Can't call without authenticated user`);
             }
-            transaction.update(docRef, {
-              [`bookings.${slot.id}.userName`]: auth.user.displayName,
-            });
+            const update: PartialDeep<Meeting> = {
+              bookings: {
+                [slot.id]: {
+                  name: auth.user.displayName,
+                  email: auth.user.email,
+                  signDate: new Date().toISOString(),
+                },
+              },
+            };
+            transaction.update(docRef, update);
             navigate('/meeting/' + meeting.inviteId + '/booking/' + slot.id);
           }
         }
@@ -172,14 +180,8 @@ const slotState = (
     return SlotAvailable.Booked;
   } else if (isDatePast(slot.date, slot.timeTo)) {
     return SlotAvailable.Past;
-  } else if (!meeting.locks[slot.id]) {
-    return SlotAvailable.Available;
   } else {
-    if (meeting.locks[slot.id].user === user.uuid) {
-      return SlotAvailable.Available;
-    } else {
-      return SlotAvailable.Locked;
-    }
+    return SlotAvailable.Available;
   }
 };
 
@@ -248,8 +250,8 @@ const SlotsRow = ({
                   onClick={() => auth.user?.verified && reserveSlot(slot)}
                 >
                   {slot.timeFrom} - {slot.timeTo}
-                  {meeting.bookings[slot.id]?.userName &&
-                    ` (${meeting.bookings[slot.id]?.userName})`}
+                  {meeting.bookings[slot.id]?.name &&
+                    ` (${meeting.bookings[slot.id]?.name})`}
                 </SlotEntry>
               ))}
             </SlotDayRowHourSlots>

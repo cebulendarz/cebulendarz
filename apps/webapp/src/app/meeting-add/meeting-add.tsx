@@ -30,9 +30,15 @@ export const MeetingAdd = () => {
       slots: [],
       title: '',
       inviteId: v4(),
-      locks: {},
       bookings: {},
-      organizerName: auth.user.displayName,
+      organizer: {
+        name: auth.user.displayName,
+        email: auth.user.email,
+      },
+      modificationDates: {
+        created: new Date().toISOString(),
+        updated: new Date().toISOString(),
+      },
     };
     setDoc(meetingDoc, meeting)
       .then(() => {
