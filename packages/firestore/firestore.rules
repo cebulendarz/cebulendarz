@@ -15,8 +15,8 @@ service cloud.firestore {
       let onlyBookingsChanged = request.resource.data.diff(resource.data).affectedKeys().hasOnly(["bookings", "updatedBooking"]);
       let onlyExpectedBookingChanged = request.resource.data.bookings.diff(resource.data.bookings).affectedKeys().hasOnly([updatedBooking]);
       let bookingExists = updatedBooking in resource.data.bookings;
-      let userIsBookingOwner = !bookingExists || resource.data.bookings[updatedBooking].email == authEmail();
-      return onlyBookingsChanged && onlyExpectedBookingChanged && userIsBookingOwner;
+      let userIsBookingOwner =  resource.data.bookings[updatedBooking].email == authEmail();
+      return onlyBookingsChanged && onlyExpectedBookingChanged && (!bookingExists || userIsBookingOwner);
     }
     function isOwnerEditingOnwMeeting(meeting) {
     	return resource.data.organizer == null || resource.data.organizer.email == authEmail();
