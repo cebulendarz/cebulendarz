@@ -1,16 +1,30 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+  	function authEmail() {
+    	return request.auth.token.email
+    }
   	function isAuthentiacted() {
     	return request.auth != null
     }
     function isVerified() {
     	return request.auth != null && request.auth.token.email_verified;
     }
-    match /meetings/{event} {
+    function isUserEditingOwnBooking(meeting) {
+      let updatedBooking = request.resource.data.updatedBooking.id;
+      let onlyBookingsChanged = request.resource.data.diff(resource.data).affectedKeys().hasOnly("bookings", "updatedBooking");
+      let onlyExpectedBookingChanged = request.resouce.data.bookings.diff(resouce.data.bookings).hasOnly(updatedBooking);
+      let bookingExists = updatedBooking in resource.data.bookings;
+      let userIsBookingOwner = !bookingExists || resource.data.bookings[updatedBooking].email == authEmail();
+      return userIsBookingOwner;
+    }
+    function isOwnerEditingOnwMeeting(meeting) {
+    	return resource.data.organizer == null || resource.data.organizer.email == authEmail();
+    }
+    match /meetings/{meeting} {
       allow read: if isAuthentiacted();
-      allow update: if isVerified();
-      allow write: if isVerified();
+      allow update: if isVerified() && (isUserEditingOwnBooking(meeting) || isOwnerEditingOnwMeeting(meeting));
+      allow create: if isVerified();
     }
     match /{document=**} {
       allow read, write: if false;
