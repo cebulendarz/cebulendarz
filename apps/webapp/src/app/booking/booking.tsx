@@ -46,7 +46,7 @@ export const Booking = () => {
     return (
       <Layout>
         <Container maxWidth="sm">
-          <h1>{booking.userName}, jesteśmy umówieni!</h1>
+          <h1>{booking.name ?? booking.userName}, jesteśmy umówieni!</h1>
           <h3>
             Widzimy się {slot.date} o godzinie {slot.timeFrom}
           </h3>
