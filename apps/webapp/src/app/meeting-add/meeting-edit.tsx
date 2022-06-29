@@ -12,7 +12,7 @@ import { doc, type Firestore, onSnapshot, setDoc } from 'firebase/firestore';
 import { SlotsEditor } from './slots-editor';
 import styled from '@emotion/styled';
 import { v4 } from 'uuid';
-import {filter, Subject, switchMap, tap} from 'rxjs';
+import { filter, Subject, switchMap, tap } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DocumentSnapshot } from '@firebase/firestore';
 import { useDocumentTitle } from '../document-title/use-document-title';
@@ -83,20 +83,20 @@ export const MeetingEdit = () => {
   }, [db, meetingId]);
 
   const onMeetingChanged = (changed: Partial<Meeting>) => {
-    console.log({meeting, changed});
+    console.log({ meeting, changed });
     change$.next(
       ensureAtLeastOneEmptySlot({
         ...meeting,
-        ...changed
+        ...changed,
       } as Meeting)
     );
-  }
+  };
 
   useEffect(() => {
     const sub = change$
       .pipe(
         filter((m) => !!m?.id),
-        tap(meeting => setMeeting(meeting)),
+        tap((meeting) => setMeeting(meeting)),
         debounceTime(500),
         switchMap((meeting) => {
           return saveMeeting(db, meeting);

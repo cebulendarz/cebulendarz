@@ -57,11 +57,11 @@ export const MeetingJoin = () => {
             }
             const update: PartialDeep<Meeting> = {
               [`bookings.${[slot.id]}`]: {
-                  name: auth.user.displayName,
-                  email: auth.user.email,
-                  signDate: new Date().toISOString(),
+                name: auth.user.displayName,
+                email: auth.user.email,
+                signDate: new Date().toISOString(),
               },
-              updatedBooking: {id: slot.id}
+              updatedBooking: { id: slot.id },
             };
             transaction.update(docRef, update);
             navigate('/meeting/' + meeting.inviteId + '/booking/' + slot.id);
