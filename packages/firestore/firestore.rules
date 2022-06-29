@@ -12,11 +12,11 @@ service cloud.firestore {
     }
     function isUserEditingOwnBooking(meeting) {
       let updatedBooking = request.resource.data.updatedBooking.id;
-      let onlyBookingsChanged = request.resource.data.diff(resource.data).affectedKeys().hasOnly("bookings", "updatedBooking");
-      let onlyExpectedBookingChanged = request.resouce.data.bookings.diff(resouce.data.bookings).hasOnly(updatedBooking);
+      let onlyBookingsChanged = request.resource.data.diff(resource.data).affectedKeys().hasOnly(["bookings", "updatedBooking"]);
+      let onlyExpectedBookingChanged = request.resource.data.bookings.diff(resource.data.bookings).affectedKeys().hasOnly([updatedBooking]);
       let bookingExists = updatedBooking in resource.data.bookings;
       let userIsBookingOwner = !bookingExists || resource.data.bookings[updatedBooking].email == authEmail();
-      return userIsBookingOwner;
+      return onlyBookingsChanged && onlyExpectedBookingChanged && userIsBookingOwner;
     }
     function isOwnerEditingOnwMeeting(meeting) {
     	return resource.data.organizer == null || resource.data.organizer.email == authEmail();
