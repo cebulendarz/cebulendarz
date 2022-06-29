@@ -56,13 +56,12 @@ export const MeetingJoin = () => {
               throw new Error(`Can't call without authenticated user`);
             }
             const update: PartialDeep<Meeting> = {
-              bookings: {
-                [slot.id]: {
+              [`bookings.${[slot.id]}`]: {
                   name: auth.user.displayName,
                   email: auth.user.email,
                   signDate: new Date().toISOString(),
-                },
               },
+              updatedBooking: {id: slot.id}
             };
             transaction.update(docRef, update);
             navigate('/meeting/' + meeting.inviteId + '/booking/' + slot.id);
@@ -123,7 +122,7 @@ const DescriptionRow = ({ meeting }: { meeting: Meeting }) => (
 const OrganizerRow = ({ meeting }: { meeting: Meeting }) => (
   <Row>
     <RowHeader>Organizator</RowHeader>
-    <RowValue>{meeting.organizerName}</RowValue>
+    <RowValue>{meeting.organizer?.name ?? meeting.organizerName}</RowValue>
   </Row>
 );
 

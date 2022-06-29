@@ -34,4 +34,8 @@ export interface Meeting {
   description?: string;
   slots: MeetingSlot[];
   bookings: { [key: string]: MeetingSlotBooking };
+  // only as metadata for meeting join to leverage firestore rules restrictions (firestore rules cannot access changed object keys as list)
+  updatedBooking?: {
+    id: string
+  };
 }

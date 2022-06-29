@@ -12,7 +12,7 @@ import { doc, type Firestore, onSnapshot, setDoc } from 'firebase/firestore';
 import { SlotsEditor } from './slots-editor';
 import styled from '@emotion/styled';
 import { v4 } from 'uuid';
-import { filter, Subject, switchMap } from 'rxjs';
+import {filter, Subject, switchMap, tap} from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DocumentSnapshot } from '@firebase/firestore';
 import { useDocumentTitle } from '../document-title/use-document-title';
@@ -82,24 +82,29 @@ export const MeetingEdit = () => {
     }
   }, [db, meetingId]);
 
-  const onMeetingChanged = (changed: Partial<Meeting>) =>
+  const onMeetingChanged = (changed: Partial<Meeting>) => {
+    console.log({meeting, changed});
     change$.next(
       ensureAtLeastOneEmptySlot({
         ...meeting,
-        ...changed,
+        ...changed
       } as Meeting)
     );
+  }
 
   useEffect(() => {
     const sub = change$
       .pipe(
-        debounceTime(500),
         filter((m) => !!m?.id),
-        switchMap((meeting) => saveMeeting(db, meeting))
+        tap(meeting => setMeeting(meeting)),
+        debounceTime(500),
+        switchMap((meeting) => {
+          return saveMeeting(db, meeting);
+        })
       )
       .subscribe({
         complete: () => setSaveSnackbar(true),
-        error: (error) => alert('Nie udało się zapisać zmian'),
+        error: () => alert('Nie udało się zapisać zmian'),
       });
     return () => sub.unsubscribe();
   }, [change$]);
@@ -112,12 +117,6 @@ export const MeetingEdit = () => {
         <>
           <FormRow>
             <MeetingTitleEditor meeting={meeting} editor={onMeetingChanged} />
-          </FormRow>
-          <FormRow>
-            <MeetingOrganizerEditor
-              meeting={meeting}
-              editor={onMeetingChanged}
-            />
           </FormRow>
           <FormRow>
             <MeetingSlotsEditor meeting={meeting} editor={onMeetingChanged} />
@@ -191,25 +190,6 @@ const MeetingTitleEditor = ({
     onChange={(changed) =>
       editor({
         title: changed.target.value,
-      })
-    }
-  />
-);
-
-const MeetingOrganizerEditor = ({
-  meeting,
-  editor,
-}: {
-  meeting: Meeting;
-  editor: OnMeetingChanged;
-}) => (
-  <StyledTextField
-    label="Organizator"
-    variant="outlined"
-    value={meeting.organizerName ?? ''}
-    onChange={(changed) =>
-      editor({
-        organizerName: changed.target.value,
       })
     }
   />
