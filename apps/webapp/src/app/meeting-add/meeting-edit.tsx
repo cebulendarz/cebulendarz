@@ -83,7 +83,6 @@ export const MeetingEdit = () => {
   }, [db, meetingId]);
 
   const onMeetingChanged = (changed: Partial<Meeting>) => {
-    console.log({ meeting, changed });
     change$.next(
       ensureAtLeastOneEmptySlot({
         ...meeting,
@@ -107,7 +106,7 @@ export const MeetingEdit = () => {
         error: () => alert('Nie udało się zapisać zmian'),
       });
     return () => sub.unsubscribe();
-  }, [change$]);
+  }, [db, change$]);
 
   return (
     <Layout>
