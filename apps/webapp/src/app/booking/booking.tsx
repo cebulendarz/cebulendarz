@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import { useFirestore } from '../firebase/use-firestore';
 import { deleteField, doc, updateDoc } from 'firebase/firestore';
 import { useDocumentTitle } from '../document-title/use-document-title';
+import { useAuthentication } from '../auth/use-authentication';
 
 const CancelBooking = styled.div`
   color: ${({ theme }) => theme.palette.primary.main};
@@ -21,8 +22,9 @@ export const Booking = () => {
     slotId: string;
   }>();
 
+  const { state: auth } = useAuthentication();
   const [meeting, error] = useMeetingByInvite(inviteId);
-  const booking = slotId && meeting?.bookings[slotId];
+  const booking = slotId ? meeting?.bookings[slotId] : undefined;
   const slot = slotId && meeting?.slots.find((s) => s.id === slotId);
   const navigate = useNavigate();
   const db = useFirestore();
@@ -40,6 +42,12 @@ export const Booking = () => {
     return (
       <Layout>
         <Alert severity="error">{error}</Alert>
+      </Layout>
+    );
+  } else if (auth.user?.email !== booking?.email) {
+    return (
+      <Layout>
+        <Alert severity="error">Nie znaleziono rezerwacji.</Alert>
       </Layout>
     );
   } else if (meeting && slot && booking) {
