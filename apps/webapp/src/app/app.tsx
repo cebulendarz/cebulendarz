@@ -19,7 +19,9 @@ const LazyLogin = lazy(() =>
   }))
 );
 
-const LogoWrapper = styled(Layout)``;
+const LogoWrapper = styled(Layout)`
+  user-select: none;
+`;
 
 export const App = () => {
   const { state: auth } = useAuthentication();
