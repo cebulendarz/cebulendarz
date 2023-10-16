@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: npm install --global yarn && yarn --version
       - run: yarn install --frozen-lockfile
       - run: yarn nx workspace-lint
       - run: yarn nx format:check --all
