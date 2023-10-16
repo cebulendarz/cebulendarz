@@ -8,9 +8,13 @@ jobs:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: npm install --global yarn && yarn --version
-      - run: yarn install --frozen-lockfile
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - uses: borales/actions-yarn@v4
+        with:
+          cmd: install --frozen-lockfile
       - run: yarn nx workspace-lint
       - run: yarn nx format:check --all
       - run: yarn nx lint
