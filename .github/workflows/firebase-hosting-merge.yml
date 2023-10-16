@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build webapp
-        run: yarn install --frozen-lockfile && yarn build
+        run: npm ci --legacy-peer-deps && npm run -- build
         env:
           NX_FIREBASE_API_KEY: ${{ secrets.NX_FIREBASE_API_KEY }}
           NX_FIREBASE_AUTH_DOMAIN: ${{ secrets.NX_FIREBASE_AUTH_DOMAIN }}
