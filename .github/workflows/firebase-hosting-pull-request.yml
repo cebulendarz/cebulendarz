@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn install --frozen-lockfile
-      - run: yarn nx workspace-lint
-      - run: yarn nx format:check --all
-      - run: yarn nx lint
-      - run: yarn nx test
-      - run: yarn nx build --production
+      - run: npm ci --legacy-peer-deps
+      - run: npm run -- nx workspace-lint
+      - run: npm run -- nx format:check --all
+      - run: npm run -- nx lint
+      - run: npm run -- nx test
+      - run: npm run -- nx build --production
         env:
           NX_FIREBASE_API_KEY: ${{ secrets.NX_FIREBASE_API_KEY }}
           NX_FIREBASE_AUTH_DOMAIN: ${{ secrets.NX_FIREBASE_AUTH_DOMAIN }}

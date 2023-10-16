@@ -6,13 +6,13 @@
     "start": "nx serve",
     "build": "nx build --production",
     "test": "nx test",
-    "ci-pr-checks": "yarn nx workspace-lint && yarn nx format:check --all && yarn nx lint && yarn nx test && yarn nx build --production"
+    "ci-pr-checks": "npm run -- nx workspace-lint && npm run -- nx format:check --all && npm run -- nx lint && npm run -- nx test && npm run -- nx build --production"
   },
   "private": true,
   "dependencies": {
     "@consdata/logger-api": "0.15.0",
     "@consdata/logger-console": "0.15.0",
-    "@date-io/dayjs": "2.14.0",
+    "@date-io/dayjs": "2.17.0",
     "@emotion/react": "11.9.3",
     "@emotion/styled": "11.9.3",
     "@mui/icons-material": "5.8.4",

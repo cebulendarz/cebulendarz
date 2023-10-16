@@ -186,7 +186,7 @@ const slotState = (
 
 const isDatePast = (date: string, time: string): boolean => {
   return dayjs.isBefore(
-    dayjs.parse(`${date} ${time}`, 'YYYY-MM-DD H:mm'),
+    dayjs.parse(`${date} ${time}`, 'YYYY-MM-DD H:mm')!,
     dayjs.dayjs()
   );
 };
@@ -234,8 +234,8 @@ const SlotsRow = ({
         {sortedDays.map((day) => (
           <SlotDayRow key={day}>
             <SlotDayRowHeader>
-              {dayjs.formatByString(dayjs.date(day), 'DD-MM-YYYY')} (
-              {dayjs.format(dayjs.date(day), 'weekday')})
+              {dayjs.formatByString(dayjs.date(day)!, 'DD-MM-YYYY')} (
+              {dayjs.format(dayjs.date(day)!, 'weekday')})
             </SlotDayRowHeader>
             <SlotDayRowHourSlots>
               {slotsMap[day].map((slot) => (
