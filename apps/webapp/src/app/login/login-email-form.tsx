@@ -4,10 +4,7 @@ import styled from '@emotion/styled';
 import { FC, useCallback, useState } from 'react';
 import { useFirebaseAuthentication } from '../firebase/use-firebase-authentication';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { LoggerFactory } from '@consdata/logger-api';
 import CircularProgress from '@mui/material/CircularProgress';
-
-const log = LoggerFactory.getLogger('LoginEmail');
 
 export const LoginEmailForm: FC = () => {
   const auth = useFirebaseAuthentication();
@@ -36,7 +33,7 @@ export const LoginEmailForm: FC = () => {
       } catch (error) {
         setShowSpinner(false);
         setEmailError(`Niepoprawne dane logowania`);
-        log.error(`Error while authenticating`, error);
+        console.error(`Error while authenticating`, error);
       }
     }
   }, [email, password, auth]);

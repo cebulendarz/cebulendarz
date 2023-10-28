@@ -2,7 +2,6 @@ import { AuthenticationContext } from './authencation.context';
 import { FC, ReactNode, useEffect, useMemo, useReducer } from 'react';
 import { authenticationReducer } from './authentication.reducer';
 import { authenticationInitialState } from './authentication.initial';
-import { LoggerFactory } from '@consdata/logger-api';
 import {
   browserPopupRedirectResolver,
   getRedirectResult,
@@ -14,8 +13,6 @@ export interface AuthenticationProviderProps {
   children?: ReactNode;
 }
 
-const log = LoggerFactory.getLogger('AuthenticationProvider');
-
 export const AuthenticationProvider: FC<AuthenticationProviderProps> = ({
   children,
 }) => {
@@ -26,7 +23,7 @@ export const AuthenticationProvider: FC<AuthenticationProviderProps> = ({
   );
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      log.trace(`Auth state changed [user={}]`, user);
+      console.info(`Auth state changed [user=%o]`, user);
       if (user) {
         dispatch({
           type: 'loggedIn',

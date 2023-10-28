@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm ci --legacy-peer-deps
-      - run: npm run -- nx workspace-lint
       - run: npm run -- nx format:check --all
       - run: npm run -- nx lint
       - run: npm run -- nx test

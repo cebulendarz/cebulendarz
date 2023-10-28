@@ -4,16 +4,13 @@ import {
 } from './authentication.state';
 import { Reducer } from 'react';
 import { AuthenticationAction } from './authentication.action';
-import { LoggerFactory } from '@consdata/logger-api';
 
 export type AuthenticationReducer = Reducer<
   AuthenticationState,
   AuthenticationAction
 >;
 
-const log = LoggerFactory.getLogger('authenticationReducer');
 export const authenticationReducer: AuthenticationReducer = (state, action) => {
-  log.trace(`New action [action={}]`, action);
   if (action.type === 'loggedIn') {
     return {
       ...state,
