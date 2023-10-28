@@ -39,3 +39,5 @@ Thumbs.db
 
 /.env
 /.firebase
+
+.nx/cache

@@ -4,9 +4,6 @@ import TextField from '@mui/material/TextField';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { useCallback, useState } from 'react';
 import { useFirebaseAuthentication } from '../firebase/use-firebase-authentication';
-import { LoggerFactory } from '@consdata/logger-api';
-
-const log = LoggerFactory.getLogger('LoginEmailReset');
 
 export const LoginEmailReset = () => {
   const auth = useFirebaseAuthentication();
@@ -28,9 +25,9 @@ export const LoginEmailReset = () => {
         setMessage(
           'Link resetowania hasła zostały wysłany na podany adres email.'
         );
-        log.info('Password reset link sent [email={}]', email);
+        console.info('Password reset link sent [email=%o]', email);
       } catch (error: any) {
-        log.error(`Error while authenticating`, error);
+        console.error(`Error while authenticating`, error);
         if (error.code === 'auth/email-already-in-use') {
           setEmailError(`Podane adres jest już zajęty`);
         } else if (error.code === 'auth/invalid-email') {

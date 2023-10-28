@@ -7,9 +7,6 @@ import {
 } from 'firebase/auth';
 import { useCallback, useState } from 'react';
 import { useFirebaseAuthentication } from '../firebase/use-firebase-authentication';
-import { LoggerFactory } from '@consdata/logger-api';
-
-const log = LoggerFactory.getLogger('LoginEmailRegister');
 
 export const LoginEmailRegister = () => {
   const auth = useFirebaseAuthentication();
@@ -48,11 +45,11 @@ export const LoginEmailRegister = () => {
           email,
           password
         );
-        log.info('User registered [user={}]', user);
+        console.info('User registered [user=%o]', user);
         await sendEmailVerification(user.user);
-        log.info('Password reset link sent [user={}]', user);
+        console.info('Password reset link sent [user=%o]', user);
       } catch (error: any) {
-        log.error(`Error while authenticating`, error);
+        console.error(`Error while authenticating`, error);
         if (error.code === 'auth/email-already-in-use') {
           setEmailError(`Podane adres jest już zajęty`);
         } else if (error.code === 'auth/invalid-email') {

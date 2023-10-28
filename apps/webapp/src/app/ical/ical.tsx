@@ -1,10 +1,7 @@
 import { createEvent, DateArray } from 'ics';
 import { useEffect, useState } from 'react';
 import { useQRCode } from 'next-qrcode';
-import { LoggerFactory } from '@consdata/logger-api';
 import dayjs from 'dayjs';
-
-const log = LoggerFactory.getLogger('Ical');
 
 export const Ical = (props: {
   title: string;
@@ -28,7 +25,7 @@ export const Ical = (props: {
         end: end,
       });
       if (error) {
-        log.error(`Error while generating ical`, error);
+        console.error(`Error while generating ical`, error);
       } else if (ical) {
         setIcal(ical);
         setRaw(
@@ -39,10 +36,10 @@ export const Ical = (props: {
           )
         );
       } else {
-        log.error(`Empty ical returned from event`);
+        console.error(`Empty ical returned from event`);
       }
     } catch (e) {
-      log.error(`Error while generating ical`, e);
+      console.error(`Error while generating ical`, e);
     }
   }, [props]);
 
@@ -57,7 +54,6 @@ export const Ical = (props: {
             options={{
               type: 'image/jpeg',
               quality: 0.3,
-              level: 'M',
               margin: 4,
               scale: 4,
               width: 300,
