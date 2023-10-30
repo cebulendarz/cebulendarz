@@ -48,7 +48,7 @@ export const LoginEmailRegister = () => {
         console.info('User registered [user=%o]', user);
         await sendEmailVerification(user.user);
         console.info('Password reset link sent [user=%o]', user);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         console.error(`Error while authenticating`, error);
         if (error.code === 'auth/email-already-in-use') {
