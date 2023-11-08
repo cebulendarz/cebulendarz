@@ -32,8 +32,8 @@ export const Ical = (props: {
           URL.createObjectURL(
             new Blob([ical], {
               type: 'text/calendar',
-            })
-          )
+            }),
+          ),
         );
       } else {
         console.error(`Empty ical returned from event`);
@@ -67,7 +67,7 @@ export const Ical = (props: {
 
 function dateArray(
   date: string,
-  time: Date | string | number | (number | string)[]
+  time: Date | string | number | (number | string)[],
 ): DateArray {
   const result = dayjs(date + 'T' + time)
     .toArray()

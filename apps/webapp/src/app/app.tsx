@@ -16,7 +16,7 @@ import { useAppTheme } from './theme/use-app-theme';
 const LazyLogin = lazy(() =>
   import('./login/login').then((m) => ({
     default: m.Login,
-  }))
+  })),
 );
 
 const LogoWrapper = styled(Layout)`

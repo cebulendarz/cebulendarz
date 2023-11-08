@@ -24,7 +24,7 @@ function subscribeToMeetingDocument(
   db: Firestore,
   meetingId: string,
   setMeeting: (meeting: Meeting) => void,
-  setError: (error: string) => void
+  setError: (error: string) => void,
 ) {
   const unsubscribe = onSnapshot(
     doc(db, 'meetings', meetingId),
@@ -36,12 +36,12 @@ function subscribeToMeetingDocument(
             ...meeting,
             id: meetingId,
             slots: normalizeSlots(meeting.slots),
-          })
+          }),
         );
       } else {
         setError(`Spotkanie o identyfikatorze "${meetingId}" nie istnieje.`);
       }
-    }
+    },
   );
   return () => unsubscribe();
 }
@@ -87,7 +87,7 @@ export const MeetingEdit = () => {
       ensureAtLeastOneEmptySlot({
         ...meeting,
         ...changed,
-      } as Meeting)
+      } as Meeting),
     );
   };
 
@@ -99,7 +99,7 @@ export const MeetingEdit = () => {
         debounceTime(500),
         switchMap((meeting) => {
           return saveMeeting(db, meeting);
-        })
+        }),
       )
       .subscribe({
         complete: () => setSaveSnackbar(true),
@@ -215,7 +215,7 @@ const MeetingSlotsEditor = ({
                   event.timeFrom !== undefined ? event.timeFrom : slot.timeFrom,
                 timeTo: event.timeTo !== undefined ? event.timeTo : slot.timeTo,
               }
-            : slot
+            : slot,
         ),
       })
     }

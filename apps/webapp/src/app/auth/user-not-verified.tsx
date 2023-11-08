@@ -15,7 +15,7 @@ export const UserNotVerified = () => {
         setMessage(`Link weryfikacyjny został wysłąny na Twój adres email.`);
       } catch {
         setMessage(
-          `Nie można w tej chwili wysłać linku, spróbuj ponownie później.`
+          `Nie można w tej chwili wysłać linku, spróbuj ponownie później.`,
         );
       }
     }

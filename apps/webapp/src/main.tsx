@@ -6,5 +6,5 @@ import { AppProviders } from './app/app.providers';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <AppProviders>
     <App />
-  </AppProviders>
+  </AppProviders>,
 );

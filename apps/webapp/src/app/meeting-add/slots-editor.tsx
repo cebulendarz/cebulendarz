@@ -59,7 +59,7 @@ export const SlotsEditor: FC<AddSlotsComponentProps> = (props) => {
               if (value) {
                 handleDateChange(
                   slot.id,
-                  dayjs.formatByString(value, 'YYYY-MM-DD')
+                  dayjs.formatByString(value, 'YYYY-MM-DD'),
                 );
               } else {
                 handleDateChange(slot.id, '');

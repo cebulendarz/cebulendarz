@@ -15,7 +15,7 @@ export interface AppThemeProviderProps {
 
 export const AppThemeProvider: FC<AppThemeProviderProps> = ({ children }) => {
   const [themeMode, setThemeMode] = useState<PaletteMode>(
-    localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
+    localStorage.getItem('theme') === 'dark' ? 'dark' : 'light',
   );
   const toggleThemeMode = useCallback(() => {
     setThemeMode(themeMode === 'dark' ? 'light' : 'dark');
@@ -36,7 +36,7 @@ export const AppThemeProvider: FC<AppThemeProviderProps> = ({ children }) => {
           },
         },
       }),
-    [themeMode]
+    [themeMode],
   );
   useEffect(() => localStorage.setItem('theme', themeMode), [themeMode]);
   return (

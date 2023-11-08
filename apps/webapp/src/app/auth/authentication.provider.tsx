@@ -19,7 +19,7 @@ export const AuthenticationProvider: FC<AuthenticationProviderProps> = ({
   const auth = useFirebaseAuthentication();
   const [state, dispatch] = useReducer(
     authenticationReducer,
-    authenticationInitialState
+    authenticationInitialState,
   );
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

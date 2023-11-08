@@ -23,7 +23,7 @@ export const LoginEmailReset = () => {
       try {
         await sendPasswordResetEmail(auth, email);
         setMessage(
-          'Link resetowania hasła zostały wysłany na podany adres email.'
+          'Link resetowania hasła zostały wysłany na podany adres email.',
         );
         console.info('Password reset link sent [email=%o]', email);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

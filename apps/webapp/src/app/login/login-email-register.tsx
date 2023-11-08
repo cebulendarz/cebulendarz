@@ -43,7 +43,7 @@ export const LoginEmailRegister = () => {
         const user = await createUserWithEmailAndPassword(
           auth,
           email,
-          password
+          password,
         );
         console.info('User registered [user=%o]', user);
         await sendEmailVerification(user.user);

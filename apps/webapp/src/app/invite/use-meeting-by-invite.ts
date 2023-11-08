@@ -4,7 +4,7 @@ import { Meeting } from '../meeting/meeting';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 
 export function useMeetingByInvite(
-  inviteId?: string
+  inviteId?: string,
 ): [Meeting | undefined, string | undefined] {
   const [meeting, setMeeting] = useState<Meeting>();
   const [error, setError] = useState<string>();
@@ -16,12 +16,12 @@ export function useMeetingByInvite(
         (docs) => {
           if (docs.size !== 1) {
             setError(
-              `Zaproszenie o identyfikatorze "${inviteId}" nie istnieje.`
+              `Zaproszenie o identyfikatorze "${inviteId}" nie istnieje.`,
             );
           } else {
             setMeeting(docs.docs[0].data() as Meeting);
           }
-        }
+        },
       );
       return () => unsubscribe();
     } else {

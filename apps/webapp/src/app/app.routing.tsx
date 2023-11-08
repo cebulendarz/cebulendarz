@@ -4,31 +4,31 @@ import { Route, Routes } from 'react-router-dom';
 const LazySplash = lazy(() =>
   import('./splash/splash').then((module) => ({
     default: module.Splash,
-  }))
+  })),
 );
 
 const LazyMeetingAdd = lazy(() =>
   import('./meeting-add/meeting-add').then((module) => ({
     default: module.MeetingAdd,
-  }))
+  })),
 );
 
 const LazyMeetingEdit = lazy(() =>
   import('./meeting-add/meeting-edit').then((module) => ({
     default: module.MeetingEdit,
-  }))
+  })),
 );
 
 const LazyMeetingJoin = lazy(() =>
   import('./meeting-join/meeting-join').then((module) => ({
     default: module.MeetingJoin,
-  }))
+  })),
 );
 
 const LazyBooking = lazy(() =>
   import('./booking/booking').then((module) => ({
     default: module.Booking,
-  }))
+  })),
 );
 
 export const AppRouting = () => (
