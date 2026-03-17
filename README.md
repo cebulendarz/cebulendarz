@@ -7,9 +7,9 @@
   <br>
 </p>
 
-<p align="center">
+<!-- <p align="center">
   <img src="https://github.com/glipecki/cebulendarz/actions/workflows/firebase-hosting-merge.yml/badge.svg" alt="Badge statusu buildu dla brancha main">
-</p>
+</p> -->
 
 <p align="center">
   <img src="docs/consdathon.png" width="300" alt="Logo Consdathonu Summer 2022">
